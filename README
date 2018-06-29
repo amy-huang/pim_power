@@ -124,5 +124,8 @@ python replace_xml_vals.py clean_ARM.xml replace.txt test-ARM.xml
 python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json test-ARM.xml
 mcpat/mcpat -infile mcpat-out.xml -print_level 5
 
+cd cacti
+    For whatever reason, you must run cacti within the cacti directory.
+./cacti -infile ../3DDRAMforPIM.cfg
 
 Amy Huang, summer UTRA 2018
