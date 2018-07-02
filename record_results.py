@@ -4,22 +4,11 @@ if len(sys.argv) != 4:
     print("\n Argument format: <mcpat text output> <cacti text output> <results file to append to>\n")
     exit(0)
 
-mcpat_file = open(str(sys.argv[1]), 'r') 
-mcpat_lines = mcpat_file.readlines()
-mcpat_file.close()
 
-total_power = 0
+print("Getting results from McPAT and CACTI to sum to total power consumption")
+######################################################################################################
 
-# Finds first Gate Leakage and Runtime Dynamic power entries, which are for the whole system
-for line in mcpat_lines:
-    words = line.split()
-    if len(words) and words[0] == "Gate":
-        total_power += float(words[3])
-    if len(words) and words[0] == "Runtime":
-        total_power += float(words[3])
-        break
-
-print total_power
+print("\tGetting CACTI numbers")
 
 cacti_file = open(str(sys.argv[2]), 'r') 
 cacti_lines = cacti_file.readlines()
@@ -37,14 +26,27 @@ for line in cacti_lines:
     cols = line.split(':')
     if cols[0] == "Number of banks":
         num_banks = int(cols[1])
+        print("\t\tNumber of banks: " + str(num_banks))
+
     if cols[0] == "Read energy": 
         read_energy = float(cols[1].split()[0])
+        print("\t\tRead energy: " + str(read_energy) + " nJ")
+
     if cols[0] == "Write energy": 
         write_energy = float(cols[1].split()[0])
+        print("\t\tWrite energy: " + str(write_energy) + " nJ")
+
     if cols[0] == "Activation energy": 
         activation_energy = float(cols[1].split()[0])
+        print("\t\tActivation energy: " + str(activation_energy) + " nJ")
+
     if cols[0] == "Precharge energy": 
         precharge_energy = float(cols[1].split()[0])
+        print("\t\tPrecharge energy: " + str(precharge_energy) + " nJ")
+
+######################################################################################################
+
+print("\tCalculating hybrid memory cube energy using memory access stats")
 
 stats = open('cut_stats.txt', 'r')
 stat_lines = stats.readlines()
@@ -52,24 +54,60 @@ stats.close()
 
 num_reads = 0
 num_writes = 0
+sim_seconds = 0
+total_power = 0
 
 for line in stat_lines[::-1]:
     cols = line.split()
     if cols[0] == "system.mem_ctrls.memory_reads":
          num_reads = int(cols[1])
+         print("\t\tReads: " + str(num_reads))
     if cols[0] == "system.mem_ctrls.memory_writes":
          num_writes = int(cols[1])
-    if num_reads and num_writes:
+         print("\t\tWrites: " + str(num_writes))
+    if cols[0] == "absolute_sim_seconds":
+         sim_seconds = float(cols[1])
+         print("\t\tSeconds simulated: " + str(sim_seconds) + " s")
+    if sim_seconds and num_reads and num_writes:
         break
 
-total_power += num_reads * (activation_energy + read_energy + precharge_energy)
-total_power += num_writes * (activation_energy + write_energy + precharge_energy)
-print(str(total_power) + " nJ")
+read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
+print("\t\tRead energy = number of reads * (activation energy + read energy + precharge energy) = " + str(read_total) + " J")
+write_total = num_writes * (activation_energy + write_energy + precharge_energy) * (1.0/1000000000)
+print("\t\tWrite energy = number of reads * (activation energy + read energy + precharge energy) = " + str(write_total) + " J")
 
-print num_banks
-print read_energy
-print write_energy
-print activation_energy 
-print precharge_energy
-print num_reads
-print num_writes
+total_power += read_total
+total_power += write_total
+print("\tTotal power so far is " + str(total_power) + " J")
+
+######################################################################################################
+
+print("\tGetting McPAT numbers")
+mcpat_file = open(str(sys.argv[1]), 'r') 
+mcpat_lines = mcpat_file.readlines()
+mcpat_file.close()
+
+watts = 0
+
+# Finds first Gate Leakage and Runtime Dynamic power entries, which are for the whole system
+for line in mcpat_lines:
+    words = line.split()
+    if len(words) and words[0] == "Gate":
+        print("\t\tCore, cache and interconnect gate leakage: " + words[3] + " W")
+        watts += float(words[3])
+    if len(words) and words[0] == "Runtime":
+        print("\t\tCore, cache and interconnect runtime dynamic: " + words[3] + " W")
+        watts += float(words[3])
+        break
+
+print("\t\tCore, cache and interconnect total watts: " + str(watts) + " W")
+print("\t\tEnergy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
+total_power += watts * sim_seconds
+
+######################################################################################################
+
+print("\tTotal power is " + str(total_power) + " J. Writing sum to file")
+result_file = open(str(sys.argv[3]), 'a')
+result_file.write(str(total_power) + " nJ\n")
+result_file.close()
+ 

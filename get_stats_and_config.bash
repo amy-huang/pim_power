@@ -3,8 +3,12 @@
 # This script copies the stats file from the result directory in SMC-WORK created by simulation,
 # and then sums important stats across all CPUs/Mem controllers that are added to a new stats file
 
+echo "	Copying over config.json file from simulation result directory to here..."
+
 config_path=../SMC-WORK/scenarios/31/multithread_fc_q-partition-threads8-initialsize-042000-050/m5out/config.json
 cp $config_path .
+
+echo "	Copying over stats.txt file from simulation result directory to here..."
 
 original_stats_path=../SMC-WORK/scenarios/31/multithread_fc_q-partition-threads8-initialsize-042000-050/m5out/stats.txt
 newfile=cut_stats.txt   #Make a copy of stats file in current directory to add aggregate stats to
@@ -18,6 +22,13 @@ aggregate () {    # Adds some statistic, like # cycles executed, for all 8 CPUs
     # 2nd arg is new stat name. Add a new line to copied stats file with sum	
     echo $2"                       "$sum >> $newfile
 }
+
+aggregate_float () {
+    sum=$(grep -w $1 $newfile | grep -v "pim_sys" | awk '{s+=$2}END{print s}')  #ignore pim CPU value
+    echo $2"                       "$sum >> $newfile
+}
+
+echo "	Aggregating stats across all CPUs and memory controllers."
 
 # Aggregate stats should be renamed to matched the XML parameter for convenience
 aggregate  system.cpu[0-9].numCycles                        system.cpu.totalNumCycles
@@ -47,6 +58,7 @@ aggregate  system.cpu[0-9].dcache.ReadReq_misses::total     system.cpu.dcache.re
 aggregate  system.cpu[0-9].dcache.WriteReq_misses::total    system.cpu.dcache.write_misses
 aggregate  system.mem_ctrls[0-9][0-9].readReqs              system.mem_ctrls.memory_reads
 aggregate  system.mem_ctrls[0-9][0-9].writeReqs             system.mem_ctrls.memory_writes
+aggregate_float  timestamp[0-9].sim_seconds                       absolute_sim_seconds
 
 # Remove physical address tracking (which was to solve skiplist issue)
 sed -i '/physaddr/d' $newfile
