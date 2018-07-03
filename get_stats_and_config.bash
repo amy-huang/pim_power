@@ -4,12 +4,10 @@
 # and then sums important stats across all CPUs/Mem controllers that are added to a new stats file
 
 echo "	Copying over config.json file from simulation result directory to here..."
-
 config_path=../SMC-WORK/scenarios/31/multithread_fc_q-partition-threads8-initialsize-042000-050/m5out/config.json
 cp $config_path .
 
 echo "	Copying over stats.txt file from simulation result directory to here..."
-
 original_stats_path=../SMC-WORK/scenarios/31/multithread_fc_q-partition-threads8-initialsize-042000-050/m5out/stats.txt
 newfile=cut_stats.txt   #Make a copy of stats file in current directory to add aggregate stats to
 cp $original_stats_path $newfile 
@@ -28,9 +26,22 @@ aggregate_float () {
     echo $2"                       "$sum >> $newfile
 }
 
-echo "	Aggregating stats across all CPUs and memory controllers."
+sum_interconnect_accesses () {
+    sum=$(grep "\.trans_dist::ReadResp\|\.trans_dist::ReadRespWithInvalidate\|\.trans_dist::WriteResp\|\.trans_dist::Writeback\|\.trans_dist::UpgradeResp\|\.trans_dist::ReadExResp\|\.trans_dist::SCUpgradeFailReq" $newfile | grep -v "pim" | awk '{s+=$2}END{print s}')  #ignore pim CPU value
+    echo "total_interconnect_accesses                       "$sum >> $newfile
+}
 
-# Aggregate stats should be renamed to matched the XML parameter for convenience
+peak () {
+    peak=$(grep $1 $newfile | awk '{if (s<$2) s=$2}END{print s/1000000}')
+    echo $2"                       "$peak >> $newfile
+}
+
+# First get total time simulated
+aggregate_float  timestamp[0-9].sim_seconds                       absolute_sim_seconds
+
+# Only keep timestamp6 for other stats
+sed -i '/timestamp[0-5]/d' $newfile
+echo "	Aggregating stats across all CPUs, memory controllers."
 aggregate  system.cpu[0-9].numCycles                        system.cpu.totalNumCycles
 aggregate  system.cpu[0-9].num_idle_cycles                  system.cpu.totalIdleCycles
 aggregate  system.cpu[0-9].num_int_insts                    system.cpu.int_instructions
@@ -58,7 +69,8 @@ aggregate  system.cpu[0-9].dcache.ReadReq_misses::total     system.cpu.dcache.re
 aggregate  system.cpu[0-9].dcache.WriteReq_misses::total    system.cpu.dcache.write_misses
 aggregate  system.mem_ctrls[0-9][0-9].readReqs              system.mem_ctrls.memory_reads
 aggregate  system.mem_ctrls[0-9][0-9].writeReqs             system.mem_ctrls.memory_writes
-aggregate_float  timestamp[0-9].sim_seconds                       absolute_sim_seconds
+sum_interconnect_accesses
+peak bw_total::total  system.mem_ctrls.peak_bandwidth
 
 # Remove physical address tracking (which was to solve skiplist issue)
 sed -i '/physaddr/d' $newfile

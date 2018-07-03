@@ -232,13 +232,13 @@
 			<param name="flit_bits" value="64"/>
 			<param name="chip_coverage" value="1"/>
 			<param name="link_routing_over_percentage" value="0.5"/>
-			<stat name="total_accesses" value="100000"/>
+			<stat name="total_accesses" value="stats.total_interconnect_accesses"/>
 			<stat name="duty_cycle" value="0.2"/>
 		</component>		
 		<component id="system.mc" name="mc">
 			<param name="type" value="1"/>
 			<param name="mc_clock" value="1250"/>
-			<param name="peak_transfer_rate" value="6400"/>
+			<param name="peak_transfer_rate" value="stats.system.mem_ctrls.peak_bandwidth"/>
 			<param name="block_size" value="32"/>
 			<param name="number_mcs" value="16"/>
 			<param name="memory_channels_per_mc" value="1"/>
