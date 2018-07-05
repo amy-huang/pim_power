@@ -4,7 +4,8 @@
 # and then sums important stats across all CPUs/Mem controllers that are added to a new stats file
 
 echo "	Copying over config.json file from simulation result directory to here..."
-config_path=../SMC-WORK/scenarios/31/multithread_fc_q-partition-threads8-initialsize-042000-050/m5out/config.json
+#config_path=../SMC-WORK/scenarios/31/multithread_fc_q-partition-threads8-initialsize-042000-050/m5out/config.json
+config_path="$(find ../SMC-WORK/scenarios/31/ -name stats.txt)"
 cp $config_path .
 
 echo "	Copying over stats.txt file from simulation result directory to here..."
