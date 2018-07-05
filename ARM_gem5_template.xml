@@ -238,7 +238,7 @@
 		<component id="system.mc" name="mc">
 			<param name="type" value="1"/>
 			<param name="mc_clock" value="1250"/>
-			<param name="peak_transfer_rate" value="stats.system.mem_ctrls.peak_bandwidth"/>
+			<param name="peak_transfer_rate" value=".55"/>
 			<param name="block_size" value="32"/>
 			<param name="number_mcs" value="16"/>
 			<param name="memory_channels_per_mc" value="1"/>
