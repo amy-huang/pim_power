@@ -59,17 +59,18 @@ total_power = 0
 
 for line in stat_lines[::-1]:
     cols = line.split()
-    if cols[0] == "system.mem_ctrls.memory_reads":
-         num_reads = int(cols[1])
-         print("\t\tReads: " + str(num_reads))
-    if cols[0] == "system.mem_ctrls.memory_writes":
-         num_writes = int(cols[1])
-         print("\t\tWrites: " + str(num_writes))
-    if cols[0] == "absolute_sim_seconds":
-         sim_seconds = float(cols[1])
-         print("\t\tSeconds simulated: " + str(sim_seconds) + " s")
-    if sim_seconds and num_reads and num_writes:
-        break
+    if len(cols):
+	    if cols[0] == "system.mem_ctrls.memory_reads":
+		 num_reads = int(cols[1])
+		 print("\t\tReads: " + str(num_reads))
+	    if cols[0] == "system.mem_ctrls.memory_writes":
+		 num_writes = int(cols[1])
+		 print("\t\tWrites: " + str(num_writes))
+	    if cols[0] == "total_sim_seconds":
+		 sim_seconds = float(cols[1])
+		 print("\t\tSeconds simulated: " + str(sim_seconds) + " s")
+	    if sim_seconds and num_reads and num_writes:
+		break
 
 read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
 print("\t\tRead energy = number of reads * (activation energy + read energy + precharge energy) = " + str(read_total) + " J")
