@@ -37,10 +37,15 @@ peak () {
 }
 
 # First get total time simulated
-aggregate_float  timestamp[0-9].sim_seconds                       absolute_sim_seconds
+aggregate_float  timestamp[0-9].sim_seconds                      total_sim_seconds 
 
-# Only keep timestamp6 for other stats
+# Remove timestamp from sim_seconds entries, so they aren't deleted
+sed -i -e 's/timestamp[0-5].sim_seconds/sim_seconds/g' $newfile
+# Remove all other lines without timestamp6 in front of them
 sed -i '/timestamp[0-5]/d' $newfile
+# Remove 'timestamp6.' from remaining stats
+sed -i -e 's/timestamp6.//g' $newfile
+
 echo "	Aggregating stats across all CPUs, memory controllers."
 aggregate  system.cpu[0-9].numCycles                        system.cpu.totalNumCycles
 aggregate  system.cpu[0-9].num_idle_cycles                  system.cpu.totalIdleCycles
