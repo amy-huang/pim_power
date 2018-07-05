@@ -4,8 +4,6 @@ if len(sys.argv) != 4:
     print("\n Argument format: <mcpat text output> <cacti text output> <results file to append to>\n")
     exit(0)
 
-
-print("Getting results from McPAT and CACTI to sum to total power consumption")
 ######################################################################################################
 
 print("\tGetting CACTI numbers")
@@ -75,7 +73,7 @@ for line in stat_lines[::-1]:
 read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
 print("\t\tRead energy = number of reads * (activation energy + read energy + precharge energy) = " + str(read_total) + " J")
 write_total = num_writes * (activation_energy + write_energy + precharge_energy) * (1.0/1000000000)
-print("\t\tWrite energy = number of reads * (activation energy + read energy + precharge energy) = " + str(write_total) + " J")
+print("\t\tWrite energy = number of writes * (activation energy + read energy + precharge energy) = " + str(write_total) + " J")
 
 total_power += read_total
 total_power += write_total
@@ -109,6 +107,6 @@ total_power += watts * sim_seconds
 
 print("\tTotal power is " + str(total_power) + " J. Writing sum to file")
 result_file = open(str(sys.argv[3]), 'a')
-result_file.write(str(total_power) + " nJ\n")
+result_file.write(str(total_power) + " J\n")
 result_file.close()
  

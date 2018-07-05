@@ -77,8 +77,12 @@ aggregate  system.mem_ctrls[0-9][0-9].writeReqs             system.mem_ctrls.mem
 sum_interconnect_accesses
 peak bw_total::total  system.mem_ctrls.peak_bandwidth
 
+echo "  Cutting out unnecessary stats and setting NaN's to 0's.."
+
 # Remove physical address tracking (which was to solve skiplist issue)
 sed -i '/physaddr/d' $newfile
 
 # Set all nan stats to 0 (or else will print warnings)
 sed -i -e 's/nan/0/g' $newfile
+
+echo "Timestamp6 and aggregate stats in cut_stats.txt."
