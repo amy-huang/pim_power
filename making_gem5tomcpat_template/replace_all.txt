@@ -116,7 +116,7 @@ system.core0            FPU_duty_cycle                  0
 system.core0            ALU_cdb_duty_cycle              .76
 system.core0            MUL_cdb_duty_cycle              .82
 system.core0            FPU_cdb_duty_cycle              0
-system.core0            number_of_BPT                   2
+system.core0            number_of_BPT                   0 
 system.core0.predictor  local_predictor_size            10,3
 system.core0.predictor  local_predictor_entries         4
 system.core0.predictor  global_predictor_entries        4096
@@ -146,7 +146,7 @@ system.core0.dcache     write_accesses                  stats.system.cpu.dcache.
 system.core0.dcache     read_misses                     stats.system.cpu.dcache.read_misses
 system.core0.dcache     write_misses                    stats.system.cpu.dcache.write_misses
 system.core0.dcache     conflicts                       0
-system.core0.dcache     number_of_BTB                   2
+system.core0.dcache     number_of_BTB                   0 
 system.core0.BTB        BTB_config                      4096,4,2,2,1,1
 system.core0.BTB        read_accesses                   0
 system.core0.BTB        write_accesses                  0
@@ -215,7 +215,7 @@ system.mc               mc_clock                        1.25
 system.mc               peak_transfer_rate              .5
 system.mc               block_size                      32
 system.mc               number_mcs                      16
-system.mc               memory_channels_per_mc          16
+system.mc               memory_channels_per_mc          1  
 system.mc               number_ranks                    8
 system.mc               req_window_size_per_channel     32
 system.mc               IO_buffer_size_per_channel      64
