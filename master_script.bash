@@ -15,21 +15,28 @@ fi
 xmltemplate=$1
 cacticonfig=$2
 
-do_with_border "./get_stats_and_config.bash"
+#do_with_border "./get_stats_and_config.bash"
+echo "Getting stats and aggregating, cleaning into cut_stats.txt"
+./get_stats_and_config.bash
 
-do_with_border "python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate"
+#do_with_border "python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate"
+echo "Running gem5tomcpat to make XML for mcpat"
+python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate
 
-# Change print level 0-5
-do_with_border "./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt"
-#cat mcpat_power.txt # Comment to not print output to terminal
+#do_with_border "./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt"
+echo "Run McPAT"
+./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt
 
-do_with_border "cd cacti"
-do_with_border "./cacti -infile $cacticonfig > ../cacti_power.txt"
-echo "./master_script.bash: line 29:  5662 Segmentation fault      (core dumped) ./cacti -infile pim.cfg > ../cacti_power.txt"
-echo "If above 2 lines match, is ok. Cacti segfaults after giving relevant information."
-#cat ../cacti_power.txt # Comment to not print output to terminal
-do_with_border "cd .."
+#do_with_border "cd cacti"
+echo "Run CACTI"
+cd cacti
+#do_with_border "./cacti -infile $cacticonfig > ../cacti_power.txt"
+./cacti -infile $cacticonfig > ../cacti_power.txt
+#do_with_border "cd .."
+cd ..
 
-do_with_border "python record_results.py mcpat_power.txt cacti_power.txt results.txt"
+#do_with_border "python record_results.py mcpat_power.txt cacti_power.txt results.txt"
+echo "Calculate final results"
+python record_results.py mcpat_power.txt cacti_power.txt results.txt
 
 
