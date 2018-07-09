@@ -1,7 +1,7 @@
 import sys
 
-if len(sys.argv) != 4:
-    print("\n Argument format: <mcpat text output> <cacti text output> <results file to append to>\n")
+if len(sys.argv) != 3:
+    print("\n Argument format: <mcpat text output> <cacti text output> \n")
     exit(0)
 
 ######################################################################################################
@@ -54,10 +54,14 @@ num_reads = 0
 num_writes = 0
 sim_seconds = 0
 total_power = 0
+reported_memctrl_ng = 0
 
 for line in stat_lines[::-1]:
     cols = line.split()
     if len(cols):
+	    if cols[0] == "system.mem_ctrls.totalEnergy":
+		 reported_memctrl_ng = float(cols[1]) / 1000000000000 # Stats file reports in picoJoules
+		 print("\t\tReported memory controller energy: " + str(reported_memctrl_ng))
 	    if cols[0] == "system.mem_ctrls.memory_reads":
 		 num_reads = int(cols[1])
 		 print("\t\tReads: " + str(num_reads))
@@ -105,8 +109,9 @@ total_power += watts * sim_seconds
 
 ######################################################################################################
 
-print("\tTotal power is " + str(total_power) + " J. Writing sum to file")
+print("\tTotal power is " + str(total_power) + " J. ")
+"""
 result_file = open(str(sys.argv[3]), 'a')
 result_file.write(str(total_power) + " J\n")
 result_file.close()
- 
+"""

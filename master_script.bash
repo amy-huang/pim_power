@@ -1,42 +1,35 @@
 #!/bin/bash
 
-do_with_border () {
-    echo "----------------------------------------------------------------------------------"
-    echo $1
-    $1
-}
-
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
     then 
-     echo "Master power script: pass in name of xml template and cacti config file."
+     echo "Master power script: pass in name of xml template and cacti config file and name of result file."
      exit 1
 fi
 
 xmltemplate=$1
 cacticonfig=$2
+resultfile=$3
 
-#do_with_border "./get_stats_and_config.bash"
+export scenarionum=12  #Unique to scenario
 echo "Getting stats and aggregating, cleaning into cut_stats.txt"
-./get_stats_and_config.bash
+./get_stats_and_config.bash $scenarionum
 
-#do_with_border "python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate"
 echo "Running gem5tomcpat to make XML for mcpat"
 python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate
 
-#do_with_border "./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt"
-echo "Run McPAT"
+echo "Running McPAT"
 ./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt
 
-#do_with_border "cd cacti"
-echo "Run CACTI"
+echo "Running CACTI"
 cd cacti
-#do_with_border "./cacti -infile $cacticonfig > ../cacti_power.txt"
 ./cacti -infile $cacticonfig > ../cacti_power.txt
-#do_with_border "cd .."
 cd ..
 
-#do_with_border "python record_results.py mcpat_power.txt cacti_power.txt results.txt"
-echo "Calculate final results"
-python record_results.py mcpat_power.txt cacti_power.txt results.txt
+echo "Calculating final results"
+echo $original_stats_path >> $resultfile
+cat mcpat_power.txt >> $resultfile
+cat cacti_power.txt >> $resultfile
+python record_results.py mcpat_power.txt cacti_power.txt >> $resultfile
+
 
 
