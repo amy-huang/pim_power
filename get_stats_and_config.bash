@@ -8,7 +8,8 @@ echo "Preparing config and stats."
 # Copying config and stats file over 
 
 config_path="$(find ../SMC-WORK/scenarios/$1/ -name config.json)"
-original_stats_path="$(find ../SMC-WORK/scenarios/$1/ -name stats.txt)"
+#original_stats_path="$(find ../SMC-WORK/scenarios/$1/ -name stats.txt)"
+original_stats_path="$(find ../SMC-WORK/scenarios/$1/ -name stats_gem5.txt)"
 newstats=./cut_stats.txt   #Make a copy of stats file in current directory to add sum stats to
 
 echo "	Copying over config.json file from simulation result directory to here..."

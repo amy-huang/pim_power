@@ -26,7 +26,6 @@ cd cacti
 cd ..
 
 echo "Calculating final results"
-echo $original_stats_path >> $resultfile
 cat mcpat_power.txt >> $resultfile
 cat cacti_power.txt >> $resultfile
 python record_results.py mcpat_power.txt cacti_power.txt >> $resultfile
