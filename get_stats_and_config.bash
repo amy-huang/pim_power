@@ -22,7 +22,8 @@ echo "	Copying over stats.txt file from simulation result directory to here..."
 # Functions to create stats over CPUs, memory controllers, and etc.
 
 sum () {  # Pulls all stats containing first argument and sum; print as non-scientific notated integer
-    sum=$(grep -w $1 $newstats | grep -v "pim_sys" | awk '{s+=$2}END{printf ("%1.0d",s)}')  #ignore pim CPU value
+    #sum=$(grep -w $1 $newstats | grep -v "pim_sys" | awk '{s+=$2}END{printf ("%1.0d",s)}')  #ignore pim CPU value
+    sum=$(grep -w $1 $newstats | awk '{s+=$2}END{printf ("%1.0d",s)}')  #include PIM core values
    
     # Write to new stats file under name of second argument      
     echo $2"                       "$sum >> $newstats
