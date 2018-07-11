@@ -33,9 +33,9 @@ do
 	cd ..
 	
     echo "Calculating final results"
-	cat mcpat_power.txt > $num_threads-host-results.txt 
-	cat cacti_power.txt >> $num_threads-host-results.txt 
-	python record_results.py mcpat_power.txt cacti_power.txt >> $num_threads-host-results.txt
+	cat mcpat_power.txt > $num_threads-pim-results.txt 
+	cat cacti_power.txt >> $num_threads-pim-results.txt 
+	python record_results.py mcpat_power.txt cacti_power.txt >> $num_threads-pim-results.txt
 done
 
 

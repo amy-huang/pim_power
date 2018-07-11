@@ -52,7 +52,7 @@ sum  num_fp_insts                     system.cpu.fp_instructions         system.
 sum  Branches                         system.cpu.branch_instructions     system.pim.branch_instructions
 sum  num_load_insts                   system.cpu.load_instructions       system.pim.load_instructions
 sum  num_store_insts                  system.cpu.store_instructions      system.pim.store_instructions
-sum  committedInsts                   system.cpu.committed_instructions  system.pim.committed_instructio
+sum  committedInsts                   system.cpu.committed_instructions  system.pim.committed_instructions
 sum  num_int_register_reads           system.cpu.int_regfile_reads       system.pim.int_regfile_reads
 sum  num_int_register_writes          system.cpu.int_regfile_writes      system.pim.int_regfile_writes
 sum  num_fp_register_reads            system.cpu.float_regfile_reads     system.pim.float_regfile_reads
@@ -65,7 +65,7 @@ sum  itb.misses                       system.cpu.itlb.total_misses       system.
 sum  icache.ReadReq_accesses::total   system.cpu.icache.read_accesses    system.pim.icache.read_accesses
 sum  icache.demand_misses::total      system.cpu.icache.read_misses      system.pim.icache.read_misses
 sum  dcache.ReadReq_accesses::total   system.cpu.dcache.read_accesses    system.pim.dcache.read_accesses
-sum  dcache.WriteReq_accesses::total  system.cpu.dcache.write_accesses   system.pim.dcache.write_accesse
+sum  dcache.WriteReq_accesses::total  system.cpu.dcache.write_accesses   system.pim.dcache.write_accesses
 sum  dtb.accesses                     system.cpu.dtlb.total_accesses     system.pim.dtlb.total_accesses
 sum  dtb.misses                       system.cpu.dtlb.total_misses       system.pim.dtlb.total_misses
 sum  dcache.ReadReq_misses::total     system.cpu.dcache.read_misses      system.pim.dcache.read_misses
