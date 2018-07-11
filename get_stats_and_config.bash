@@ -34,6 +34,7 @@ peak () { # Find the highest value for some stat
 #################################################################################################################
 # Aggregating stats 
 
+<<<<<<< HEAD
 # Get this first to subtract from total energy
 prep_energy=$(grep "totalEnergy" cut_stats.txt | grep "timestamp$2" | awk '{s+=$2}END{print s}')
 echo "system.prep.Energy                       "$prep_energy >> $newstats
