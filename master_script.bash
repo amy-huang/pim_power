@@ -1,17 +1,16 @@
 #!/bin/bash
 
-if [ $# -ne 3 ]
+if [ $# -ne 2 ]
     then 
-     echo "Master power script: pass in name of xml template and cacti config file and name of result file."
+     echo "Master power script: pass in name of xml template and cacti config file" 
      exit 1
 fi
 
 xmltemplate=$1
 cacticonfig=$2
 
-config_path="linkedlist_experiment/host-config.json"
-original_stats="linkedlist_experiment/host-stats.txt"
-scenarionum=12 
+config_path="skiplist_1part_experiment/pim-config.json"
+original_stats="skiplist_1part_experiment/pim-stats.txt"
 
 cp $config_path ./config.json
 
@@ -34,9 +33,9 @@ do
 	cd ..
 	
     echo "Calculating final results"
-	cat mcpat_power.txt > $num_threads-testresults.txt 
-	cat cacti_power.txt >> $num_threads-testresults.txt
-	python record_results.py mcpat_power.txt cacti_power.txt >> $num_threads-testresults.txt
+	cat mcpat_power.txt > $num_threads-host-results.txt 
+	cat cacti_power.txt >> $num_threads-host-results.txt 
+	python record_results.py mcpat_power.txt cacti_power.txt >> $num_threads-host-results.txt
 done
 
 
