@@ -49,15 +49,15 @@ peak () { # Find the highest value for some stat
 
 sum system.mem_ctrls[0-9].totalEnergy   system.mem_ctrls.totalEnergy
 # First get total time simulated
-sum_float  sim_seconds                      total_sim_seconds 
 # Remove timestamp from sim_seconds entries, so they aren't deleted
 #sed -i -e 's/timestamp[0-9].sim_seconds/sim_seconds/g' $newstats
 # Remove all other lines without timestamp6 in front of them
-sed -i '/timestamp[1]/d' $newstats
+sed -i '/timestamp[7]/d' $newstats
 # Remove 'timestamp6.' from remaining stats
 #sed -i -e 's/timestamp4.//g' $newstats
 sed -i -e 's/timestamp[0-9].//g' $newstats
 
+sum_float  sim_seconds                      total_sim_seconds 
 echo "	Aggregating stats across all CPUs, memory controllers."
 sum  system.cpu[0-9].numCycles                        system.cpu.totalNumCycles
 sum  system.cpu[0-9].num_idle_cycles                  system.cpu.totalIdleCycles
@@ -84,10 +84,10 @@ sum  system.cpu[0-9].dtb.accesses                     system.cpu.dtlb.total_acce
 sum  system.cpu[0-9].dtb.misses                       system.cpu.dtlb.total_misses
 sum  system.cpu[0-9].dcache.ReadReq_misses::total     system.cpu.dcache.read_misses
 sum  system.cpu[0-9].dcache.WriteReq_misses::total    system.cpu.dcache.write_misses
-#sum  system.mem_ctrls[0-9][0-9].readReqs              system.mem_ctrls.memory_reads
-#sum  system.mem_ctrls[0-9][0-9].writeReqs             system.mem_ctrls.memory_writes
-sum  system.mem_ctrls[0-9].readReqs              system.mem_ctrls.memory_reads # For new pim setup with only 8 mem ctrllers not associated with pim cores
-sum  system.mem_ctrls[0-9].writeReqs             system.mem_ctrls.memory_writes
+sum  system.mem_ctrls[0-9][0-9].readReqs              system.mem_ctrls.memory_reads
+sum  system.mem_ctrls[0-9][0-9].writeReqs             system.mem_ctrls.memory_writes
+#sum  system.mem_ctrls[0-9].readReqs              system.mem_ctrls.memory_reads # For new pim setup with only 8 mem ctrllers not associated with pim cores
+#sum  system.mem_ctrls[0-9].writeReqs             system.mem_ctrls.memory_writes
 sum_interconnect_accesses
 peak bw_total::total  system.mem_ctrls.peak_bandwidth
 

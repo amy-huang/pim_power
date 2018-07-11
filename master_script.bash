@@ -18,17 +18,17 @@ echo "Running gem5tomcpat to make XML for mcpat"
 python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate
 
 echo "Running McPAT"
-./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt
+./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat-result.txt
 
 echo "Running CACTI"
 cd cacti
-./cacti -infile $cacticonfig > ../cacti_power.txt
+./cacti -infile $cacticonfig > ../cacti-result.txt
 cd ..
 
 echo "Calculating final results"
-cat mcpat_power.txt >> $resultfile
-cat cacti_power.txt >> $resultfile
-python record_results.py mcpat_power.txt cacti_power.txt >> $resultfile
+cat mcpat-result.txt > $resultfile
+cat cacti-result.txt >> $resultfile
+python record_results.py mcpat-result.txt cacti-result.txt >> $resultfile
 
 
 
