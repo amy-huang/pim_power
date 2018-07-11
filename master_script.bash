@@ -9,8 +9,8 @@ fi
 xmltemplate=$1
 cacticonfig=$2
 
-config_path="linkedlist_experiment/pim-config.json"
-original_stats="linkedlist_experiment/pim-stats.txt"
+config_path="linkedlist_experiment/host-config.json"
+original_stats="linkedlist_experiment/host-stats.txt"
 scenarionum=12 
 
 cp $config_path ./config.json
