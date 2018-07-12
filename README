@@ -1,16 +1,19 @@
-This tool is meant to measure power consumption of PIM simulations on SMCSim
-with McPAT for host cores, PIM units, caches, and interconnects and CACTI
-for the hybrid memory cube.
+This tool is meant to measure power consumption of concurrent data structure applications 
+simulated on a PIM setup in SMCSim, an ongoing hardware/software design project 
+directed by Professors R. Bahar and M. Herlihy at Brown University.
+
+This README explains McPAT, its supporting tools, and how to get it set up; the same is 
+done for CACTI. See the master script after that.
 
  __  __      ____      _____
 |  \/  | ___|  _ \ / \|_   _|
 | |\/| |/ __| |_) / _ \ | |  
 | |  | | (__|  __/ ___ \| |  
-|_|  |_|\___|_| /_/   \_\_|                              
+|_|  |_|\___|_| /_/   \_\_| Core, cache, interconnect energy                          
 
 ------------------------------------------------------------------------------------------
-| McPAT is run with ./mcpat/mcpat <stats file> <config file> <mcpat XML file>,
-| printing power calculations to terminal.
+| ./mcpat/mcpat <stats file> <config file> <mcpat XML file>
+|
 |     - The stats.txt is created by gem5 during simulation, and can be found 
 |       in SMC-WORK/scenarios/<a number>/multithread_<something something>. 
 |       For example, "SMC-WORK/scenarios/31/multithread_fc_q-p"
@@ -26,33 +29,35 @@ for the hybrid memory cube.
 ------------------------------------------------------------------------------------------
 
 Most of the work is getting the right parameters to match the simulator 
-configuration and statistic values from the stats file.
+configuration and statistic values from the stats file, which is done with:
 
 ------------------------------------------------------------------------------------------
-| GEM5ToMcPAT makes it easy to pull parameter values from the config file 
-| and statistic values from the config and stats file. It is run with:
 | python ./gem5tomcpat/GEM5ToMcPAT.py <stats file> <config file> <gem5tomcpat XML file>
 |
+| GEM5ToMcPAT makes it easy to pull parameter values from the config file 
+| and statistic values from the config and stats file. 
 | The gem5tomcpat XML file, instead of having numerical values for each stat, 
 | should have the name of a stats file stat to pull the value from.
 | E.g. <stat name="idle_cycles" value="stats.system.cpu.totalIdleCycles"/>
 | This will pull the stat system.cpu.totalIdleCycles from the stats file, and replace
-| the value with that number.
+
 |
-| Params can similarly be pulled from the config file.
-| By default, the result is written to mcpat-out.xml; this would be the mcpat xml in file.
+| Params can be pulled from the config.json, with "config.<param name>" for value.
+| By default, the result is written to mcpat-out.xml, which is the in file to mcpat.
 ------------------------------------------------------------------------------------------
 
+Making the gem5tomcpat XML file can be tedious, so I made a script to make replacing
+the values of params and stats easier:
+
 ------------------------------------------------------------------------------------------
-| My script replace_xml_vals.py helps in making the gem5tomcpat XML file, with stat and 
-| param names in place of values. It's run with: 
 | python <input XML file> <replacements text file> <output XML file>
+|
 | The input XML file can be any XML file from mcpat/ProcessorDescriptionFiles as a base. 
 | The replacements text file dictates what parameter values or stat names to use for each
 | XML param or stat, with columns being component, name, and value.
 | This is less tedious than directly editing an XML file, though the comments in 
-| the templates are informative to look at.
-| The output XML file can then be used as the input XML file to gem5tomcpat.
+| the templates have important information about the stats/params themselves.
+| What you get can then be used as the input XML file to gem5tomcpat.
 ------------------------------------------------------------------------------------------
 
 So here is what to do in chronological order.
@@ -67,20 +72,16 @@ So here is what to do in chronological order.
        according to your simulator's stats file and system configuration
        (This will take the longest)
     5) Run replace_xml_vals.py to get the gem5tomcpat xml file
-    6) Have stats and config files from simulation
-    7) Run GEM5ToMcPAT to get mcpat-out.xml
-    8) Make and run mcpat to get final power numbers
+    6) Use this xml file when running the master script!
 
   ____    _    ____ _____ ___ 
  / ___|  / \  / ___|_   _|_ _|
 | |     / _ \| |     | |  | | 
 | |___ / ___ \ |___  | |  | | 
- \____/_/   \_\____| |_| |___|
+ \____/_/   \_\____| |_| |___| Main memory energy
 
 Cacti is much easier to use than McPAT. It takes hybrid memory cube (HMC) parameters
 in a config file, and then gives energy per activation, read/write, and precharge.
-My next script will calculate total energy consumed based on number of reads and
-writes pulled from the stats file and multiplied with energy per each of those.
 
 What to do:
     1) Clone CACTI into this directory:
@@ -92,40 +93,21 @@ What to do:
        (This should take the longest)
     2.5) Make sure to include -num_clk and -mem_data_width
          Number of clock pins and width of memory data bus; mitigates segfaults
-    3) Make and run CACTI to get energy per operation
-    4) Use (non existent right now) script to combine that with read/write numbers
        in stats file to get total
- _____                           _           
-| ____|_  ____ _ _ __ ___  _ __ | | ___  ___ 
-|  _| \ \/ / _` | '_ ` _ \| '_ \| |/ _ \/ __|
-| |___ >  < (_| | | | | | | |_) | |  __/\__ \
-|_____/_/\_\__,_|_| |_| |_| .__/|_|\___||___/
-                          |_|                
+    3) Use this config file in the master script.
 
-In the directory: 
-    ARM_A9_2Ghz.xml is a template XML from mcpat/ProcessorDescriptionFiles
-    clean_ARM.xml is the same XML without comments or spaces in the value fields
-    replace.txt is the replacements text file used in my script
-    test-ARM.xml is the resulting text file for gem5tomcpat
-    cut_stats.txt and config.json are from one of my simulations
-    mcpat-out.xml is the result from running gem5tomcpat
 
-List of command line commands done from all encompassing directory:
 
-cp mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml .
-cp ARM_A9_2GHz.xml clean_ARM.xml
-vim clean_ARM.xml
-    The vim commands to clean this were:
-    Delete 1 line comments :% s/<!--.\{-}-->//g
-    Delete beginning line of multi line comments :g/<!--/d
-    Delete end line of multi line comments :g/-->/d
-    Delete any lines without a "<" symbol :%g!/</d
-python replace_xml_vals.py clean_ARM.xml replace.txt test-ARM.xml
-python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json test-ARM.xml
-mcpat/mcpat -infile mcpat-out.xml -print_level 5
 
-cd cacti
-    For whatever reason, you must run cacti within the cacti directory.
-./cacti -infile ../3DDRAMforPIM.cfg
 
-Amy Huang, summer UTRA 2018
+
+
+
+
+
+
+
+
+
+
+Amy Huang, summer UTRA 2018, with the gracious help of Jiwon Choe (PhD)

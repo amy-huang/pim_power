@@ -1,10 +1,15 @@
 #!/bin/bash
 #####################################################################################################
 # This script calculates energy consumed by a scenario experiment. It takes in
+#
 # 1) An XML template for gem5tomcpat, with stat values set to the names of stats from the stats file
 # 2) A CACIT config file, which is in the cacti directory, used to model HMC usage
 # 3) A config.json file from the simulation needed by McPAT
 # 4) A stats file containing 2, 4, 6, 8 thread stats in the timestamp periods of the same numbers.
+#
+# First, the stats processing script get_stats_and_config.bash is called to aggregate stats across
+# multiple cores/memory controllers for the right timestamp durations. Then gem5tomcpat, mcpat, and
+# cacti are run, then final calculation of energy is put into a result file.
 #####################################################################################################
 
 # Check that the number of arguments is correct and print usage if not
@@ -44,7 +49,7 @@ do
 	./cacti -infile $cacticonfig > ../cacti_power.txt
 	cd ..
 	
-    echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
+    	echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
 	cat mcpat_power.txt > $num_threads-pim-results.txt 
 	cat cacti_power.txt >> $num_threads-pim-results.txt 
 	python record_results.py mcpat_power.txt cacti_power.txt >> $num_threads-pim-results.txt

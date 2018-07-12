@@ -82,7 +82,7 @@ sum  dtb.accesses                     system.cpu.dtlb.total_accesses     system.
 sum  dtb.misses                       system.cpu.dtlb.total_misses       system.pim.dtlb.total_misses
 sum  dcache.ReadReq_misses::total     system.cpu.dcache.read_misses      system.pim.dcache.read_misses
 sum  dcache.WriteReq_misses::total    system.cpu.dcache.write_misses     system.pim.dcache.write_misses
-#sum  system.mem_ctrls[0-9].readReqs system.mem_ctrls.memory_reads 
+#sum  system.mem_ctrls[0-9].readReqs system.mem_ctrls.memory_reads # For pim setup 
 #sum  system.mem_ctrls[0-9].writeReqs system.mem_ctrls.memory_writes
 sum  system.mem_ctrls[0-9][0-9].readReqs system.mem_ctrls.memory_reads 
 sum  system.mem_ctrls[0-9][0-9].writeReqs system.mem_ctrls.memory_writes
