@@ -17,6 +17,7 @@ read_energy = 0
 write_energy = 0
 activation_energy = 0
 precharge_energy = 0
+
 for line in cacti_lines:
     while line[0] == '\t' or line[0] == ' ':
         line = line[1:]

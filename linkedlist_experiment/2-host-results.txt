@@ -530,15 +530,15 @@ Wire Properties:
 		Write energy: 2.05079 nJ
 		Precharge energy: 0.238456 nJ
 	Calculating hybrid memory cube energy using memory access stats
-		Writes: 0
-		Reads: 0
+		Writes: 84403
+		Reads: 139630122
 		Seconds simulated: 14.7466 s
-		Read energy = number of reads * (activation energy + read energy + precharge energy) = 0.0 J
-		Write energy = number of writes * (activation energy + read energy + precharge energy) = 0.0 J
-	Total power so far is 0.0 J
+		Read energy = number of reads * (activation energy + read energy + precharge energy) = 0.438841136722 J
+		Write energy = number of writes * (activation energy + read energy + precharge energy) = 0.000265289010569 J
+	Total power so far is 0.439106425732 J
 	Getting McPAT numbers
 		Core, cache and interconnect gate leakage: 0.212022 W
 		Core, cache and interconnect runtime dynamic: 0.308526 W
 		Core, cache and interconnect total watts: 0.520548 W
 		Energy consumed = Watts * seconds =  0.520548 * 14.7466 = 7.6763131368 J
-	Total power is 7.6763131368 J. 
+	Total power is 8.11541956253 J. 

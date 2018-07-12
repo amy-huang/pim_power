@@ -1,22 +1,26 @@
 #!/bin/bash
 
+#################################################################################################################
 # This script copies the stats file from the result directory in SMC-WORK created by simulation,
 # and then sums important stats across all CPUs/Mem controllers that are added to a new stats file
+#################################################################################################################
 
 newstats=./cut_stats.txt   #Make a copy of stats file in current directory to add sum stats to
 
-# Functions to create stats over CPUs, memory controllers, and etc.
+#################################################################################################################
 
 sum () {  # Pulls all stats containing first argument and sum; print as non-scientific notated integer
+    sum_both=$(grep $1 $newstats | awk '{s+=$2}END{printf ("%.1d",s)}')
     sum_cpu=$(grep $1 $newstats | grep -v "pim_sys" | awk '{s+=$2}END{printf ("%.1d",s)}')  #ignore pim CPU value
-    sum_pim=$(grep $1 $newstats | grep "pim_sys" | awk '{s+=$2}END{printf ("%1.1d",s)}')  #include PIM core values
+    sum_pim=$(grep $1 $newstats | grep "pim_sys" | awk '{s+=$2}END{printf ("%.1d",s)}')  #include PIM core values
    
     # Write to new stats file under name of second argument      
-    echo $2"                       "$sum_cpu >> $newstats
-    echo $3"                       "$sum_pim >> $newstats
+    echo $2"                       "$sum_both >> $newstats
+    #echo $2"                       "$sum_cpu >> $newstats
+    #echo $3"                       "$sum_pim >> $newstats
 }
 
-sum_float () { # Same as sum except supports floats
+sum_float () { 
     sum=$(grep $1 $newstats | grep -v "pim_sys" | awk '{s+=$2}END{print s}')  #ignore pim CPU value
     echo $2"                       "$sum >> $newstats
 }
@@ -31,12 +35,20 @@ peak () { # Find the highest value for some stat
     echo $2"                       "$peak >> $newstats
 }
 
+get_mem_ctrl_energies () {
+    prep_ng=$(grep "totalEnergy" $newstats | grep "timestamp$1" | awk '{s+=$2}END{printf ("%.10d",s)}')
+    final_ng=$(grep "totalEnergy" $newstats | grep "timestamp$2" | awk '{s+=$2}END{printf ("%.10d",s)}')
+    memctrl_ng=$(($final_ng-$prep_ng))
+    echo "system.all_mem_ctrl_energy                       "$memctrl_ng >> $newstats
+    echo "prepEnergy                       "$prep_ng >> $newstats
+    echo "finalEnergy                       "$final_ng >> $newstats
+
+}
 #################################################################################################################
 # Aggregating stats 
 
-# Get this first to subtract from total energy
-prep_energy=$(grep "totalEnergy" cut_stats.txt | grep "timestamp$1" | awk '{s+=$2}END{print s}')
-echo "system.prep.Energy                       "$prep_energy >> $newstats
+# Mem ctrl energy is cumulatively recorded among timestamps, so calculate first before removing first timestamp
+# get_mem_ctrl_energies
 
 # Remove all other lines not in the execution time duration
 sed -i '/timestamp['$1']/d' $newstats
@@ -70,8 +82,10 @@ sum  dtb.accesses                     system.cpu.dtlb.total_accesses     system.
 sum  dtb.misses                       system.cpu.dtlb.total_misses       system.pim.dtlb.total_misses
 sum  dcache.ReadReq_misses::total     system.cpu.dcache.read_misses      system.pim.dcache.read_misses
 sum  dcache.WriteReq_misses::total    system.cpu.dcache.write_misses     system.pim.dcache.write_misses
-sum  system.mem_ctrls[0-9].readReqs system.mem_ctrls.memory_reads 
-sum  system.mem_ctrls[0-9].writeReqs system.mem_ctrls.memory_writes
+#sum  system.mem_ctrls[0-9].readReqs system.mem_ctrls.memory_reads 
+#sum  system.mem_ctrls[0-9].writeReqs system.mem_ctrls.memory_writes
+sum  system.mem_ctrls[0-9][0-9].readReqs system.mem_ctrls.memory_reads 
+sum  system.mem_ctrls[0-9][0-9].writeReqs system.mem_ctrls.memory_writes
 sum_interconnect_accesses
 peak bw_total::total  system.mem_ctrls.peak_bandwidth
 
