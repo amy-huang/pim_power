@@ -43,6 +43,9 @@ for line in cacti_lines:
         precharge_energy = float(cols[1].split()[0])
         print("\t\tPrecharge energy: " + str(precharge_energy) + " nJ")
 
+print("\t\tPer read energy: " + str(activation_energy + read_energy + precharge_energy))
+print("\t\tPer write energy: " + str(activation_energy + write_energy + precharge_energy))
+
 ######################################################################################################
 
 print("\tCalculating hybrid memory cube energy using memory access stats")
@@ -56,24 +59,30 @@ num_writes = 0
 sim_seconds = 0
 total_power = 0
 reported_memctrl_ng = 0
+activ_rw_prech = 0
+refresh = 0
+act_pre_back = 0
 
 for line in stat_lines[::-1]:
     cols = line.split()
     if len(cols):
-	    if cols[0] == "system.mem_ctrls.totalEnergy":
-		 reported_memctrl_ng = float(cols[1]) / 1000000000000 # Stats file reports in picoJoules
-		 print("\t\tReported memory controller energy: " + str(reported_memctrl_ng))
-	    if cols[0] == "system.mem_ctrls.memory_reads":
-		 num_reads = int(cols[1])
-		 print("\t\tReads: " + str(num_reads))
-	    if cols[0] == "system.mem_ctrls.memory_writes":
-		 num_writes = int(cols[1])
-		 print("\t\tWrites: " + str(num_writes))
-	    if cols[0] == "total_sim_seconds":
-		 sim_seconds = float(cols[1])
-		 print("\t\tSeconds simulated: " + str(sim_seconds) + " s")
-	    if sim_seconds and num_reads and num_writes:
-		break
+        if cols[0] == "system.mem_ctrls.total_refreshEnergy":
+            refresh = float(cols[1])/1000000000000
+        if cols[0] == "system.mem_ctrls.total_actEnergy" or cols[0] == "system.mem_ctrls.total_preEnergy" or cols[0] == "system.mem_ctrls.total_readEnergy" or cols[0] == "system.mem_ctrls.total_writeEnergy":
+            activ_rw_prech += float(cols[1])/1000000000000
+        if cols[0] == "system.mem_ctrls.total_actBackEnergy" or cols[0] == "system.mem_ctrls.total_preBackEnergy":
+            act_pre_back += float(cols[1])/1000000000000
+        if cols[0] == "total_reads":
+            num_reads = float(cols[1])
+            print("\t\tReads: " + str(num_reads))
+        if cols[0] == "total_writes":
+            num_writes = float(cols[1])
+            print("\t\tWrites: " + str(num_writes))
+        if cols[0] == "total_sim_seconds":
+		    sim_seconds = float(cols[1])
+		    print("\t\tSeconds simulated: " + str(sim_seconds) + " s")
+
+print("\tReads+writes: " + str(num_reads + num_writes))
 
 read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
 print("\t\tRead energy = number of reads * (activation energy + read energy + precharge energy) = " + str(read_total) + " J")
@@ -83,6 +92,9 @@ print("\t\tWrite energy = number of writes * (activation energy + read energy + 
 total_power += read_total
 total_power += write_total
 print("\tTotal power so far is " + str(total_power) + " J")
+print("\tStats reported total energy activ/RW/prech: " + str(activ_rw_prech))
+print("\tStats reported total energy refr: " + str(refresh))
+print("\tStats reported total energy act/pre background: " + str(act_pre_back))
 
 ######################################################################################################
 

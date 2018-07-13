@@ -49,10 +49,10 @@ do
 	./cacti -infile $cacticonfig > ../cacti_power.txt
 	cd ..
 	
-    	echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
-	cat mcpat_power.txt > $num_threads-pim-results.txt 
+    echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
+	python record_results.py mcpat_power.txt cacti_power.txt > $num_threads-pim-results.txt
+	cat mcpat_power.txt >> $num_threads-pim-results.txt 
 	cat cacti_power.txt >> $num_threads-pim-results.txt 
-	python record_results.py mcpat_power.txt cacti_power.txt >> $num_threads-pim-results.txt
 done
 
 
