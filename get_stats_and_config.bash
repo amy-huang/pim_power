@@ -36,11 +36,16 @@ peak () { # Find the highest value for some stat
 }
 
 get_mem_ctrl_energies () {
-    prep_ng=$(grep "totalEnergy" $newstats | grep "timestamp$1" | awk '{s+=$2}END{printf ("%.10d",s)}')
-    final_ng=$(grep "totalEnergy" $newstats | grep "timestamp$2" | awk '{s+=$2}END{printf ("%.10d",s)}')
-    memctrl_ng=$(($final_ng-$prep_ng))
-    echo "system.all_mem_ctrl_energy                       "$memctrl_ng >> $newstats
-    echo "prepEnergy                       "$prep_ng >> $newstats
+    sum
+    for ctrl_num in {0..7}
+    do
+        pim_rhr=$(grep pim_vault_ctrls$ctrl_num $newstats | grep readRowHitRate | awk '{s=$2}END{printf ("%f", s)}')
+        pim_reads=$(grep pim_vault_ctrls$ctrl_num $newstats | grep num_reads::total | awk '{s+=$2}END{print s}')  #ignore pim CPU value
+        
+        cpu_hr=$(grep pim_vault_ctrls$ctrl_num | grep readRowHitRate | awk '{s=$2}END{printf ("%f", s)}')
+        
+    done
+
     echo "finalEnergy                       "$final_ng >> $newstats
 
 }
@@ -126,8 +131,8 @@ sum refreshEnergy system.mem_ctrls.total_refreshEnergy
 sum actBackEnergy system.mem_ctrls.total_actBackEnergy
 sum preBackEnergy system.mem_ctrls.total_preBackEnergy
 
-sum num_reads total_reads
-sum num_writes total_writes
+sum num_reads::total total_reads
+sum num_writes::total total_writes
 
 
 #################################################################################################################
