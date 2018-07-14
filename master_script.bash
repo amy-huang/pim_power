@@ -13,9 +13,9 @@
 #####################################################################################################
 
 # Check that the number of arguments is correct and print usage if not
-if [ $# -ne 4 ]
+if [ $# -ne 5 ]
     then 
-     echo "./master_script.bash <XML template> <cacti config file> <config.json path> <stats path>"
+     echo "./master_script.bash <XML template> <cacti config file> <config.json path> <stats path> <host or pim>"
      exit 1
 fi
 
@@ -49,10 +49,10 @@ do
 	./cacti -infile $cacticonfig > ../cacti_power.txt
 	cd ..
 	
-    	echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
-	cat mcpat_power.txt > $num_threads-pim-results.txt 
-	cat cacti_power.txt >> $num_threads-pim-results.txt 
-	python record_results.py mcpat_power.txt cacti_power.txt >> $num_threads-pim-results.txt
+    echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
+	python record_results.py mcpat_power.txt cacti_power.txt > $num_threads-$5-results.txt
+	cat mcpat_power.txt >> $num_threads-$5-results.txt 
+	cat cacti_power.txt >> $num_threads-$5-results.txt 
 done
 
 

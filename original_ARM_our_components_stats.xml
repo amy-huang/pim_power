@@ -238,18 +238,18 @@
 		<component id="system.mc" name="mc">
 			<param name="type" value="1"/> 
 			<param name="mc_clock" value="400"/>
-			<param name="peak_transfer_rate" value="6400"/>
+			<param name="peak_transfer_rate" value="10500"/>
 			<param name="block_size" value="64"/>
-			<param name="number_mcs" value="0"/>
+			<param name="number_mcs" value="16"/>
 			<param name="memory_channels_per_mc" value="1"/>
-			<param name="number_ranks" value="0"/>
+			<param name="number_ranks" value="8"/>
 			<param name="req_window_size_per_channel" value="32"/>
 			<param name="IO_buffer_size_per_channel" value="32"/>
 			<param name="databus_width" value="128"/>
 			<param name="addressbus_width" value="51"/>
-			<stat name="memory_accesses" value="stats.system.mem_ctrls.memory_writes+stats.system.mem_ctrls.memory_reads"/>
-			<stat name="memory_reads" value="stats.system.mem_ctrls.memory_reads"/>
-			<stat name="memory_writes" value="stats.system.mem_ctrls.memory_writes"/>
+			<stat name="memory_accesses" value="total_reads+total_writes"/>
+			<stat name="memory_reads" value="total_reads"/>
+			<stat name="memory_writes" value="total_writes"/>
 			<param name="withPHY" value="1"/>
 		</component>
 		<component id="system.niu" name="niu">
