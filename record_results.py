@@ -82,6 +82,11 @@ for line in stat_lines[::-1]:
 		    sim_seconds = float(cols[1])
 		    print("\t\tSeconds simulated: " + str(sim_seconds) + " s")
 
+
+
+print("\tStats reported total energy activ/RW/prech: " + str(activ_rw_prech))
+print("\tStats reported total energy refr: " + str(refresh))
+print("\tStats reported total energy act/pre background: " + str(act_pre_back))
 print("\tReads+writes: " + str(num_reads + num_writes))
 
 read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
@@ -92,9 +97,6 @@ print("\t\tWrite energy = number of writes * (activation energy + read energy + 
 total_power += read_total
 total_power += write_total
 print("\tTotal power so far is " + str(total_power) + " J")
-print("\tStats reported total energy activ/RW/prech: " + str(activ_rw_prech))
-print("\tStats reported total energy refr: " + str(refresh))
-print("\tStats reported total energy act/pre background: " + str(act_pre_back))
 
 ######################################################################################################
 
