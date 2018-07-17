@@ -1,12 +1,15 @@
 import sys
 
+# This script calculates how much energy main memory has consumed based on CACTI and the stats file, and then adds it to the energy of everything else as estimated by McPAT to get a total number.
+# The CACTI output, McPAT, then stats file is parsed.
+
 if len(sys.argv) != 3:
     print("\n Argument format: <mcpat text output> <cacti text output> \n")
     exit(0)
 
 ######################################################################################################
 
-print("\tGetting CACTI numbers")
+print("CACTI numbers")
 
 cacti_file = open(str(sys.argv[2]), 'r') 
 cacti_lines = cacti_file.readlines()
@@ -19,32 +22,27 @@ activation_energy = 0
 precharge_energy = 0
 
 for line in cacti_lines:
+    # Ignore whitespace at beginning of lines
     while line[0] == '\t' or line[0] == ' ':
         line = line[1:]
     
     cols = line.split(':')
-    if cols[0] == "Number of banks":
-        num_banks = int(cols[1])
-        print("\t\tNumber of banks: " + str(num_banks))
 
     if cols[0] == "Read energy": 
         read_energy = float(cols[1].split()[0])
-        print("\t\tRead energy: " + str(read_energy) + " nJ")
+        print("\tRead energy: " + str(read_energy) + " nJ")
 
     if cols[0] == "Write energy": 
         write_energy = float(cols[1].split()[0])
-        print("\t\tWrite energy: " + str(write_energy) + " nJ")
+        print("\tWrite energy: " + str(write_energy) + " nJ")
 
     if cols[0] == "Activation energy": 
         activation_energy = float(cols[1].split()[0])
-        print("\t\tActivation energy: " + str(activation_energy) + " nJ")
+        print("\tActivation energy: " + str(activation_energy) + " nJ")
 
     if cols[0] == "Precharge energy": 
         precharge_energy = float(cols[1].split()[0])
-        print("\t\tPrecharge energy: " + str(precharge_energy) + " nJ")
-
-print("\t\tPer read energy: " + str(activation_energy + read_energy + precharge_energy))
-print("\t\tPer write energy: " + str(activation_energy + write_energy + precharge_energy))
+        print("\tPrecharge energy: " + str(precharge_energy) + " nJ")
 
 ######################################################################################################
 
@@ -74,13 +72,13 @@ for line in stat_lines[::-1]:
             act_pre_back += float(cols[1])/1000000000000
         if cols[0] == "total_reads":
             num_reads = float(cols[1])
-            print("\t\tReads: " + str(num_reads))
+            print("\tReads: " + str(num_reads))
         if cols[0] == "total_writes":
             num_writes = float(cols[1])
-            print("\t\tWrites: " + str(num_writes))
+            print("\tWrites: " + str(num_writes))
         if cols[0] == "total_sim_seconds":
-		    sim_seconds = float(cols[1])
-		    print("\t\tSeconds simulated: " + str(sim_seconds) + " s")
+	    sim_seconds = float(cols[1])
+	    print("\tSeconds simulated: " + str(sim_seconds) + " s")
 
 
 
@@ -90,17 +88,17 @@ print("\tStats reported total energy act/pre background: " + str(act_pre_back))
 print("\tReads+writes: " + str(num_reads + num_writes))
 
 read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
-print("\t\tRead energy = number of reads * (activation energy + read energy + precharge energy) = " + str(read_total) + " J")
+print("\tRead energy = number of reads * (activation energy + read energy + precharge energy) = " + str(read_total) + " J")
 write_total = num_writes * (activation_energy + write_energy + precharge_energy) * (1.0/1000000000)
-print("\t\tWrite energy = number of writes * (activation energy + read energy + precharge energy) = " + str(write_total) + " J")
+#print("\tWrite energy = number of writes * (activation energy + read energy + precharge energy) = " + str(write_total) + " J")
 
 total_power += read_total
 total_power += write_total
-print("\tTotal power so far is " + str(total_power) + " J")
+print("\tCACTI maximum estimate is " + str(total_power) + " J")
 
 ######################################################################################################
 
-print("\tGetting McPAT numbers")
+print("Getting McPAT numbers")
 mcpat_file = open(str(sys.argv[1]), 'r') 
 mcpat_lines = mcpat_file.readlines()
 mcpat_file.close()
@@ -111,15 +109,15 @@ watts = 0
 for line in mcpat_lines:
     words = line.split()
     if len(words) and words[0] == "Gate":
-        print("\t\tCore, cache and interconnect gate leakage: " + words[3] + " W")
+        #print("\tCore, cache and interconnect gate leakage: " + words[3] + " W")
         watts += float(words[3])
     if len(words) and words[0] == "Runtime":
-        print("\t\tCore, cache and interconnect runtime dynamic: " + words[3] + " W")
+        #print("\tCore, cache and interconnect runtime dynamic: " + words[3] + " W")
         watts += float(words[3])
         break
 
-print("\t\tCore, cache and interconnect total watts: " + str(watts) + " W")
-print("\t\tEnergy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
+#print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
+print("\tEnergy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
 total_power += watts * sim_seconds
 
 ######################################################################################################
