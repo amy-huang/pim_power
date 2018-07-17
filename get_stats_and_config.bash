@@ -131,8 +131,8 @@ sum refreshEnergy system.mem_ctrls.total_refreshEnergy
 sum actBackEnergy system.mem_ctrls.total_actBackEnergy
 sum preBackEnergy system.mem_ctrls.total_preBackEnergy
 
-sum num_reads::total total_reads
-sum num_writes::total total_writes
+sum [0-9].num_reads::total total_reads
+sum [0-9].num_writes::total total_writes
 
 
 #################################################################################################################

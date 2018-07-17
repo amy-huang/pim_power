@@ -55,7 +55,7 @@ stats.close()
 num_reads = 0
 num_writes = 0
 sim_seconds = 0
-total_power = 0
+total_energy = 0
 reported_memctrl_ng = 0
 activ_rw_prech = 0
 refresh = 0
@@ -86,9 +86,9 @@ print("\tStats reported total energy activ/RW/prech: " + str(activ_rw_prech))
 print("\tStats reported total energy refr: " + str(refresh))
 print("\tStats reported total energy act/pre background: " + str(act_pre_back))
 print("\tTotal stats reported energy (used this for total energy): " + str(activ_rw_prech + refresh + act_pre_back))
-total_power += activ_rw_prech
-total_power += refresh 
-total_power += act_pre_back
+total_energy += activ_rw_prech
+total_energy += refresh 
+total_energy += act_pre_back
 
 
 read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
@@ -118,16 +118,21 @@ for line in mcpat_lines:
 
 #print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
 print("\tEnergy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
-total_power += watts * sim_seconds
+mcpat_energy = watts * sim_seconds
+total_energy += mcpat_energy
 
 ######################################################################################################
 
-print("\tTotal power is " + str(total_power) + " J. ")
+print("\tTotal power is " + str(total_energy) + " J. ")
 
 result_file = open(str(sys.argv[3]), 'a')
-result_file.write(str(total_power) + "\t")
+result_file.write(str(total_energy) + "\t")
+result_file.write(str(mcpat_energy) + "\t")
 result_file.write(str(activ_rw_prech) + "\t")
 result_file.write(str(refresh) + "\t")
 result_file.write(str(act_pre_back) + "\t")
+result_file.write(str(sim_seconds) + "\t")
+result_file.write(str(num_reads) + "\t")
+result_file.write(str(num_writes) + "\t")
 result_file.write("\n")
 result_file.close()

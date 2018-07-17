@@ -30,7 +30,8 @@ experiment=$6
 # Copy config file to current directory for use by gem5tomcpat
 cp $config_path ./config.json
 
-echo "Total activ/rw/pre    refresh background" > $experiment-$pim_or_host.tsv
+# Add column headers to result file that only has numbers
+echo "Total mcpat_ng activ/rw/pre    refresh background  sim_seconds num_reads   num_writes" > $experiment-$pim_or_host.tsv
 
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads
@@ -50,10 +51,9 @@ do
 	echo "Running McPAT - energy for cores, caches, interconnects"
 	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt
 	
-    echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
+    echo "Writing detailed results to $num_threads-$pim_or_host-results.txt and just numbers to $experiment-$pim_or_host.tsv"
 	python record_results.py mcpat_power.txt $cacti_out $experiment-$pim_or_host.tsv > $num_threads-$pim_or_host-results.txt
 	cat mcpat_power.txt >> $num_threads-$pim_or_host-results.txt 
-	
 done
 
 
