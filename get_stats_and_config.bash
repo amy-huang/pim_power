@@ -109,7 +109,7 @@ sum  num_fp_alu_accesses              system.cpu.fpu_accesses            system.
 sum  itb.accesses                     system.cpu.itlb.total_accesses     system.pim.itlb.total_accesses
 sum  itb.misses                       system.cpu.itlb.total_misses       system.pim.itlb.total_misses
 sum  icache.ReadReq_accesses::total   system.cpu.icache.read_accesses    system.pim.icache.read_accesses
-sum  icache.demand_misses::total      system.cpu.icache.read_misses      system.pim.icache.read_misses
+sum  icache.ReadReq_misses::total      system.cpu.icache.read_misses      system.pim.icache.read_misses
 sum  dcache.ReadReq_accesses::total   system.cpu.dcache.read_accesses    system.pim.dcache.read_accesses
 sum  dcache.WriteReq_accesses::total  system.cpu.dcache.write_accesses   system.pim.dcache.write_accesses
 sum  dtb.accesses                     system.cpu.dtlb.total_accesses     system.pim.dtlb.total_accesses
@@ -121,7 +121,7 @@ sum  dcache.WriteReq_misses::total    system.cpu.dcache.write_misses     system.
 #sum  system.mem_ctrls[0-9][0-9].readReqs system.mem_ctrls.memory_reads 
 #sum  system.mem_ctrls[0-9][0-9].writeReqs system.mem_ctrls.memory_writes
 sum_interconnect_accesses
-peak bw_total::total  system.mem_ctrls.peak_bandwidth
+peak [0-9].bw_total::total  system.mem_ctrls.peak_bandwidth
 
 sum actEnergy system.mem_ctrls.total_actEnergy
 sum preEnergy system.mem_ctrls.total_preEnergy

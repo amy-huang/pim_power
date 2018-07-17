@@ -1,0 +1,334 @@
+timestamp8.system.mem_ctrls7.clk_domain.voltage_domain.voltage            1                       # Voltage in Volts
+timestamp8.system.mem_ctrls7.clk_domain.clock                800                       # Clock period in ticks
+timestamp8.system.mem_ctrls7.atomic_fadd_count                 0                       # atomic fadd count
+timestamp8.system.mem_ctrls7.atomic_min_count                  0                       # atomic min count
+timestamp8.system.mem_ctrls7.atomic_inc_count                  0                       # atomic inc count
+timestamp8.system.mem_ctrls7.bytes_read::system.cpu6.data         1024                       # Number of bytes read from this memory
+timestamp8.system.mem_ctrls7.bytes_read::total              1024                       # Number of bytes read from this memory
+timestamp8.system.mem_ctrls7.bytes_written::writebacks         2304                       # Number of bytes written to this memory
+timestamp8.system.mem_ctrls7.bytes_written::total           2304                       # Number of bytes written to this memory
+timestamp8.system.mem_ctrls7.num_reads::system.cpu6.data            4                       # Number of read requests responded to by this memory
+timestamp8.system.mem_ctrls7.num_reads::total                  4                       # Number of read requests responded to by this memory
+timestamp8.system.mem_ctrls7.num_writes::writebacks            9                       # Number of write requests responded to by this memory
+timestamp8.system.mem_ctrls7.num_writes::total                 9                       # Number of write requests responded to by this memory
+timestamp8.system.mem_ctrls7.bw_read::system.cpu6.data         6667                       # Total read bandwidth from this memory (bytes/s)
+timestamp8.system.mem_ctrls7.bw_read::total                 6667                       # Total read bandwidth from this memory (bytes/s)
+timestamp8.system.mem_ctrls7.bw_write::writebacks          15000                       # Write bandwidth from this memory (bytes/s)
+timestamp8.system.mem_ctrls7.bw_write::total               15000                       # Write bandwidth from this memory (bytes/s)
+timestamp8.system.mem_ctrls7.bw_total::writebacks          15000                       # Total bandwidth to/from this memory (bytes/s)
+timestamp8.system.mem_ctrls7.bw_total::system.cpu6.data         6667                       # Total bandwidth to/from this memory (bytes/s)
+timestamp8.system.mem_ctrls7.bw_total::total               21666                       # Total bandwidth to/from this memory (bytes/s)
+timestamp8.system.mem_ctrls7.readReqs                          4                       # Number of read requests accepted
+timestamp8.system.mem_ctrls7.writeReqs                         9                       # Number of write requests accepted
+timestamp8.system.mem_ctrls7.readBursts                       32                       # Number of DRAM read bursts, including those serviced by the write queue
+timestamp8.system.mem_ctrls7.writeBursts                      72                       # Number of DRAM write bursts, including those merged in the write queue
+timestamp8.system.mem_ctrls7.bytesReadDRAM                  1024                       # Total number of bytes read from DRAM
+timestamp8.system.mem_ctrls7.bytesReadWrQ                      0                       # Total number of bytes read from write queue
+timestamp8.system.mem_ctrls7.bytesWritten                   2304                       # Total number of bytes written to DRAM
+timestamp8.system.mem_ctrls7.bytesReadSys                   1024                       # Total read bytes from the system interface side
+timestamp8.system.mem_ctrls7.bytesWrittenSys                2304                       # Total written bytes from the system interface side
+timestamp8.system.mem_ctrls7.servicedByWrQ                     0                       # Number of DRAM read bursts serviced by the write queue
+timestamp8.system.mem_ctrls7.mergedWrBursts                    0                       # Number of DRAM write bursts merged with an existing one
+timestamp8.system.mem_ctrls7.neitherReadNorWriteReqs           49                       # Number of requests that are neither read nor write
+timestamp8.system.mem_ctrls7.perBankRdBursts::0                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::1                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::2                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::3                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::4                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::5                8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::6                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::7                8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::8                8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::9                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::10               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::11               8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::12               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::13               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::14               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankRdBursts::15               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::0                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::1                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::2                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::3                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::4                8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::5                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::6                0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::7                9                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::8                8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::9                8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::10              15                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::11              16                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::12               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::13               8                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::14               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.perBankWrBursts::15               0                       # Per bank write bursts
+timestamp8.system.mem_ctrls7.numRdRetry                        0                       # Number of times read queue was full causing retry
+timestamp8.system.mem_ctrls7.numWrRetry                        0                       # Number of times write queue was full causing retry
+timestamp8.system.mem_ctrls7.totGap                 153554124000                       # Total gap between requests
+timestamp8.system.mem_ctrls7.readPktSize::0                    0                       # Read request sizes (log2)
+timestamp8.system.mem_ctrls7.readPktSize::1                    0                       # Read request sizes (log2)
+timestamp8.system.mem_ctrls7.readPktSize::2                    0                       # Read request sizes (log2)
+timestamp8.system.mem_ctrls7.readPktSize::3                    0                       # Read request sizes (log2)
+timestamp8.system.mem_ctrls7.readPktSize::4                    0                       # Read request sizes (log2)
+timestamp8.system.mem_ctrls7.readPktSize::5                   32                       # Read request sizes (log2)
+timestamp8.system.mem_ctrls7.writePktSize::0                   0                       # Write request sizes (log2)
+timestamp8.system.mem_ctrls7.writePktSize::1                   0                       # Write request sizes (log2)
+timestamp8.system.mem_ctrls7.writePktSize::2                   0                       # Write request sizes (log2)
+timestamp8.system.mem_ctrls7.writePktSize::3                   0                       # Write request sizes (log2)
+timestamp8.system.mem_ctrls7.writePktSize::4                   0                       # Write request sizes (log2)
+timestamp8.system.mem_ctrls7.writePktSize::5                  72                       # Write request sizes (log2)
+timestamp8.system.mem_ctrls7.rdQLenPdf::0                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::1                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::2                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::3                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::4                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::5                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::6                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::7                      4                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::8                      0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::9                      0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::10                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::11                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::12                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::13                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::14                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::15                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::16                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::17                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::18                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::19                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::20                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::21                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::22                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::23                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::24                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::25                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::26                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::27                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::28                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::29                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::30                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::31                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::32                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::33                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::34                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::35                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::36                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::37                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::38                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::39                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::40                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::41                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::42                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::43                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::44                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::45                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::46                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::47                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::48                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::49                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::50                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::51                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::52                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::53                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::54                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::55                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::56                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::57                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::58                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::59                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::60                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::61                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::62                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.rdQLenPdf::63                     0                       # What read queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::0                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::1                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::2                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::3                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::4                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::5                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::6                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::7                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::8                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::9                      0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::10                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::11                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::12                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::13                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::14                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::15                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::16                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::17                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::18                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::19                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::20                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::21                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::22                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::23                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::24                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::25                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::26                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::27                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::28                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::29                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::30                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::31                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::32                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::33                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::34                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::35                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::36                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::37                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::38                     3                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::39                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::40                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::41                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::42                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::43                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::44                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::45                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::46                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::47                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::48                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::49                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::50                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::51                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::52                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::53                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::54                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::55                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::56                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::57                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::58                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::59                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::60                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::61                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::62                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.wrQLenPdf::63                     0                       # What write queue length does an incoming req see
+timestamp8.system.mem_ctrls7.bytesPerActivate::samples           16                       # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.bytesPerActivate::mean          208                       # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.bytesPerActivate::gmean   169.058536                       # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.bytesPerActivate::stdev    88.217912                       # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.bytesPerActivate::32-63            3     18.75%     18.75% # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.bytesPerActivate::224-255            3     18.75%     37.50% # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.bytesPerActivate::256-287           10     62.50%    100.00% # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.bytesPerActivate::total           16                       # Bytes accessed per row activation
+timestamp8.system.mem_ctrls7.rdPerTurnAround::samples            3                       # Reads before turning the bus around for writes
+timestamp8.system.mem_ctrls7.rdPerTurnAround::mean     18.666667                       # Reads before turning the bus around for writes
+timestamp8.system.mem_ctrls7.rdPerTurnAround::stdev    25.716402                       # Reads before turning the bus around for writes
+timestamp8.system.mem_ctrls7.rdPerTurnAround::0                1     33.33%     33.33% # Reads before turning the bus around for writes
+timestamp8.system.mem_ctrls7.rdPerTurnAround::8                1     33.33%     66.67% # Reads before turning the bus around for writes
+timestamp8.system.mem_ctrls7.rdPerTurnAround::48               1     33.33%    100.00% # Reads before turning the bus around for writes
+timestamp8.system.mem_ctrls7.rdPerTurnAround::total            3                       # Reads before turning the bus around for writes
+timestamp8.system.mem_ctrls7.wrPerTurnAround::samples            3                       # Writes before turning the bus around for reads
+timestamp8.system.mem_ctrls7.wrPerTurnAround::mean            24                       # Writes before turning the bus around for reads
+timestamp8.system.mem_ctrls7.wrPerTurnAround::gmean    24.000000                       # Writes before turning the bus around for reads
+timestamp8.system.mem_ctrls7.wrPerTurnAround::24               3    100.00%    100.00% # Writes before turning the bus around for reads
+timestamp8.system.mem_ctrls7.wrPerTurnAround::total            3                       # Writes before turning the bus around for reads
+timestamp8.system.mem_ctrls7.totQLat                      798400                       # Total ticks spent queuing
+timestamp8.system.mem_ctrls7.totMemAccLat                1340800                       # Total ticks spent from burst creation until serviced by the DRAM
+timestamp8.system.mem_ctrls7.totBusLat                    102400                       # Total ticks spent in databus transfers
+timestamp8.system.mem_ctrls7.avgQLat                    24950.00                       # Average queueing delay per DRAM burst
+timestamp8.system.mem_ctrls7.avgBusLat                   3200.00                       # Average bus latency per DRAM burst
+timestamp8.system.mem_ctrls7.avgMemAccLat               41900.00                       # Average memory access latency per DRAM burst
+timestamp8.system.mem_ctrls7.avgRdBW                        0.01                       # Average DRAM read bandwidth in MiByte/s
+timestamp8.system.mem_ctrls7.avgWrBW                        0.01                       # Average achieved write bandwidth in MiByte/s
+timestamp8.system.mem_ctrls7.avgRdBWSys                     0.01                       # Average system read bandwidth in MiByte/s
+timestamp8.system.mem_ctrls7.avgWrBWSys                     0.01                       # Average system write bandwidth in MiByte/s
+timestamp8.system.mem_ctrls7.peakBW                     10000.00                       # Theoretical peak bandwidth in MiByte/s
+timestamp8.system.mem_ctrls7.busUtil                        0.00                       # Data bus utilization in percentage
+timestamp8.system.mem_ctrls7.busUtilRead                    0.00                       # Data bus utilization in percentage for reads
+timestamp8.system.mem_ctrls7.busUtilWrite                   0.00                       # Data bus utilization in percentage for writes
+timestamp8.system.mem_ctrls7.avgRdQLen                      8.00                       # Average read queue length when enqueuing
+timestamp8.system.mem_ctrls7.avgWrQLen                     34.79                       # Average write queue length when enqueuing
+timestamp8.system.mem_ctrls7.readRowHits                      28                       # Number of row buffer hits during reads
+timestamp8.system.mem_ctrls7.writeRowHits                     60                       # Number of row buffer hits during writes
+timestamp8.system.mem_ctrls7.readRowHitRate                87.50                       # Row buffer hit rate for reads
+timestamp8.system.mem_ctrls7.writeRowHitRate               83.33                       # Row buffer hit rate for writes
+timestamp8.system.mem_ctrls7.avgGap                 11811855692.31                       # Average gap between requests
+timestamp8.system.mem_ctrls7.pageHitRate                   84.62                       # Row buffer hit rate, read and write combined
+timestamp8.system.mem_ctrls7.memoryStateTime::IDLE  150258326950                       # Time in different power states
+timestamp8.system.mem_ctrls7.memoryStateTime::REF     3338400600                       # Time in different power states
+timestamp8.system.mem_ctrls7.memoryStateTime::PRE_PDN            0                       # Time in different power states
+timestamp8.system.mem_ctrls7.memoryStateTime::ACT        5214950                       # Time in different power states
+timestamp8.system.mem_ctrls7.memoryStateTime::ACT_PDN            0                       # Time in different power states
+timestamp8.system.mem_ctrls7.actEnergy::0           1110412.800000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actEnergy::1           1227139.200000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actEnergy::2           1186617.600000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actEnergy::3           1083196.800000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actEnergy::4           1028764.800000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actEnergy::5           962841.600000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actEnergy::6           892684.800000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actEnergy::7           1181779.200000                       # Energy for activate commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::0                 749088                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::1                 827832                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::2                 800496                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::3                 730728                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::4                 694008                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::5                 649536                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::6                 602208                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.preEnergy::7                 797232                       # Energy for precharge commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::0          4354022.400000                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::1          4862707.200000                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::2               4834752                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::3          4366502.400000                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::4          3875788.800000                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::5          3655142.400000                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::6          3395558.400000                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.readEnergy::7          4526745.600000                       # Energy for read commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::0         1917665.280000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::1         2083553.280000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::2         1884487.680000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::3         1785369.600000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::4         1834721.280000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::5         1718599.680000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::6         1549393.920000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.writeEnergy::7         2037104.640000                       # Energy for write commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::0       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::1       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::2       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::3       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::4       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::5       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::6       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.refreshEnergy::7       8103122138.880000                       # Energy for refresh commands per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::0       2381150047.680000                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::1       2382351261.120000                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::2         2381350104                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::3       2379166392.960000                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::4       2381128925.760000                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::5       2378382310.080000                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::6       2377972402.560000                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.actBackEnergy::7       2386456738.560000                       # Energy for active background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::0       112006523424                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::1       112005469728.000015                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::2       112006347936                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::3       112008263472                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::4       112006541952                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::5       112008951264                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::6       112009310832                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.preBackEnergy::7       112001868432                       # Energy for precharge background per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::0         122498926799.039993                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::1         122499944359.680008                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::2         122499526532.160004                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::3         122498517800.640015                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::4         122498226299.519989                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::5         122497441832.639999                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::6         122496845218.559998                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.totalEnergy::7         122499990170.880005                       # Total energy per rank (pJ)
+timestamp8.system.mem_ctrls7.averagePower::0           64.419294                       # Core power per rank (mW)
+timestamp8.system.mem_ctrls7.averagePower::1           64.419830                       # Core power per rank (mW)
+timestamp8.system.mem_ctrls7.averagePower::2           64.419610                       # Core power per rank (mW)
+timestamp8.system.mem_ctrls7.averagePower::3           64.419079                       # Core power per rank (mW)
+timestamp8.system.mem_ctrls7.averagePower::4           64.418926                       # Core power per rank (mW)
+timestamp8.system.mem_ctrls7.averagePower::5           64.418514                       # Core power per rank (mW)
+timestamp8.system.mem_ctrls7.averagePower::6           64.418200                       # Core power per rank (mW)
+timestamp8.system.mem_ctrls7.averagePower::7           64.419854                       # Core power per rank (mW)
+timestamp8.system.smcxbar.pkt_count_system.seriallink0.master::system.mem_ctrls7.port           24                       # Packet count per connected master and slave (bytes)
+timestamp8.system.smcxbar.pkt_count_system.seriallink1.master::system.mem_ctrls7.port           32                       # Packet count per connected master and slave (bytes)
+timestamp8.system.smcxbar.pkt_count_system.seriallink2.master::system.mem_ctrls7.port           28                       # Packet count per connected master and slave (bytes)
+timestamp8.system.smcxbar.pkt_count_system.seriallink3.master::system.mem_ctrls7.port           31                       # Packet count per connected master and slave (bytes)
+timestamp8.system.smcxbar.pkt_size_system.seriallink0.master::system.mem_ctrls7.port          768                       # Cumulative packet size per connected master and slave (bytes)
+timestamp8.system.smcxbar.pkt_size_system.seriallink1.master::system.mem_ctrls7.port          512                       # Cumulative packet size per connected master and slave (bytes)
+timestamp8.system.smcxbar.pkt_size_system.seriallink2.master::system.mem_ctrls7.port         1024                       # Cumulative packet size per connected master and slave (bytes)
+timestamp8.system.smcxbar.pkt_size_system.seriallink3.master::system.mem_ctrls7.port         1024                       # Cumulative packet size per connected master and slave (bytes)
