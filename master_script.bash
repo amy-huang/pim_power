@@ -13,9 +13,9 @@
 #####################################################################################################
 
 # Check that the number of arguments is correct and print usage if not
-if [ $# -ne 5 ]
+if [ $# -ne 6 ]
     then 
-     echo "./master_script.bash <XML template> <config.json path> <stats path> <cacti out file> <host or pim>"
+     echo "./master_script.bash <XML template> <config.json path> <stats path> <cacti out file> <host or pim> <experiment dir or name>"
      exit 1
 fi
 
@@ -25,9 +25,12 @@ config_path=$2
 original_stats=$3
 cacti_out=$4
 pim_or_host=$5
+experiment=$6
 
 # Copy config file to current directory for use by gem5tomcpat
 cp $config_path ./config.json
+
+echo "Total activ/rw/pre    refresh background" > $experiment-$pim_or_host.tsv
 
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads
@@ -48,7 +51,7 @@ do
 	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt
 	
     echo "Calculating energy for memory controllers, HMC main memory, and total; writing mcpat, cacti output and final results"
-	python record_results.py mcpat_power.txt $cacti_out > $num_threads-$pim_or_host-results.txt
+	python record_results.py mcpat_power.txt $cacti_out $experiment-$pim_or_host.tsv > $num_threads-$pim_or_host-results.txt
 	cat mcpat_power.txt >> $num_threads-$pim_or_host-results.txt 
 	
 done

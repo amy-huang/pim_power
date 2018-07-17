@@ -3,8 +3,8 @@ import sys
 # This script calculates how much energy main memory has consumed based on CACTI and the stats file, and then adds it to the energy of everything else as estimated by McPAT to get a total number.
 # The CACTI output, McPAT, then stats file is parsed.
 
-if len(sys.argv) != 3:
-    print("\n Argument format: <mcpat text output> <cacti text output> \n")
+if len(sys.argv) != 4:
+    print("\n Argument format: <mcpat text output> <cacti text output> <name of tsv file for totals> \n")
     exit(0)
 
 ######################################################################################################
@@ -85,16 +85,16 @@ for line in stat_lines[::-1]:
 print("\tStats reported total energy activ/RW/prech: " + str(activ_rw_prech))
 print("\tStats reported total energy refr: " + str(refresh))
 print("\tStats reported total energy act/pre background: " + str(act_pre_back))
-print("\tReads+writes: " + str(num_reads + num_writes))
+print("\tTotal stats reported energy (used this for total energy): " + str(activ_rw_prech + refresh + act_pre_back))
+total_power += activ_rw_prech
+total_power += refresh 
+total_power += act_pre_back
+
 
 read_total = num_reads * (activation_energy + read_energy + precharge_energy) * (1.0/1000000000)
-print("\tRead energy = number of reads * (activation energy + read energy + precharge energy) = " + str(read_total) + " J")
 write_total = num_writes * (activation_energy + write_energy + precharge_energy) * (1.0/1000000000)
-#print("\tWrite energy = number of writes * (activation energy + read energy + precharge energy) = " + str(write_total) + " J")
-
-total_power += read_total
-total_power += write_total
-print("\tCACTI maximum estimate is " + str(total_power) + " J")
+print("\tReads+writes: " + str(num_reads + num_writes))
+print("\tCACTI maximum estimate for DRAM energy is " + str(read_total+write_total) + " J")
 
 ######################################################################################################
 
@@ -123,8 +123,11 @@ total_power += watts * sim_seconds
 ######################################################################################################
 
 print("\tTotal power is " + str(total_power) + " J. ")
-"""
+
 result_file = open(str(sys.argv[3]), 'a')
-result_file.write(str(total_power) + " J\n")
+result_file.write(str(total_power) + "\t")
+result_file.write(str(activ_rw_prech) + "\t")
+result_file.write(str(refresh) + "\t")
+result_file.write(str(act_pre_back) + "\t")
+result_file.write("\n")
 result_file.close()
-"""
