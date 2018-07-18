@@ -1,21 +1,20 @@
-CACTI numbers
-	Activation energy: 0.931097 nJ
-	Read energy: 1.8637 nJ
-	Write energy: 1.86394 nJ
-	Precharge energy: 0.298999 nJ
+Getting CACTI numbers
 	Calculating hybrid memory cube energy using memory access stats
 	Writes: 549.0
 	Reads: 95051810.0
 	Seconds simulated: 4.21286 s
-	Stats reported total energy activ/RW/prech: 0.465218677268
-	Stats reported total energy refr: 11.5015050107
-	Stats reported total energy act/pre background: 163.492838784
-	Total stats reported energy (used this for total energy): 175.459562472
-	Reads+writes: 95052359.0
-	CACTI maximum estimate for DRAM energy is 0.294072608197 J
+in nJ:
+	Cacti per read: 1.8637		gem5 per read: 0.499146042261
+	Cacti per write: 1.86394		gem5 per read: 0.920089180328
+	Cacti per activation: 0.931097		gem5 per activation: 0.604799987454
+	Cacti per precharge: 0.298999		gem5 per precharge: 0.407999991537
+	Stats reported total energy activ/RW/prech: 0.096269574097
+	Stats reported total energy act/pre background: 32.6714497917
+	Stats reported total energy refr: 2.29785346867
+	Total stats reported energy (used this for total energy): 35.0655728345
 Getting McPAT numbers
 	Energy consumed = Watts * seconds =  2.7005479 * 4.21286 = 11.377030226 J
-	Total power is 186.836592698 J. 
+	Total power is 46.4426030605 J. 
 McPAT (version 1.2 of June, 2014) is computing the target processor...
  
 
