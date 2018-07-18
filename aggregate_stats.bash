@@ -97,6 +97,8 @@ sum_interconnect_accesses
 sum [0-9].num_reads::total system.all_ctrls.total_reads
 sum [0-9].num_writes::total system.all_ctrls.total_writes
 sum bytesPerActivate::samples   system.all_ctrls.activations  
+sum readRowHits system.all_ctrls.total_readRowHits
+sum writeRowHits system.all_ctrls.total_writeRowHits
 
 #################################################################################################################
 # Further cleaning

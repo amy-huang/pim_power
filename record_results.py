@@ -58,6 +58,10 @@ gem5_act_back_total = 0
 gem5_pre_back_total = 0
 gem5_refr_total = 0
 
+# Row buffer; used for cacti estimation energy
+read_hits = 0
+write_hits = 0
+
 for line in stat_lines[::-1]:
     cols = line.split()
     if len(cols):
@@ -78,11 +82,13 @@ for line in stat_lines[::-1]:
 
         if cols[0] == "system.all_ctrls.total_actEnergy":
             gem5_act_total += float(cols[1])/1e12 # Stats file records energy in pJ (1E-12 J)
+
         if cols[0] == "system.all_ctrls.total_readEnergy":
             gem5_read_total += float(cols[1])/1e12
 
         if cols[0] == "system.all_ctrls.total_writeEnergy":
             gem5_write_total += float(cols[1])/1e12
+            print("\tWrite ng: " + str(float(cols[1])/1e12))
 
         if cols[0] == "system.all_ctrls.total_preEnergy":
             gem5_pre_total += float(cols[1])/1e12
@@ -99,7 +105,7 @@ for line in stat_lines[::-1]:
 # Compare cacti versus gem5 stats per-operation energy
 print("in nJ:")
 print("\tCacti per read: " + str(cacti_read) + "\t\tgem5 per read: " + str(gem5_read_total*1e9/num_reads))
-print("\tCacti per write: " + str(cacti_write) + "\t\tgem5 per read: " + str(gem5_write_total*1e9/num_writes))
+print("\tCacti per write: " + str(cacti_write) + "\t\tgem5 per write: " + str(gem5_write_total*1e9/num_writes))
 print("\tCacti per activation: " + str(cacti_act) + "\t\tgem5 per activation: " + str(gem5_act_total*1e9/num_act_pre))
 print("\tCacti per precharge: " + str(cacti_pre) + "\t\tgem5 per precharge: " + str(gem5_pre_total*1e9/num_act_pre))
 
@@ -140,12 +146,20 @@ mcpat_energy = watts * sim_seconds
 total_energy += mcpat_energy
 
 ######################################################################################################
+# Comparing CACTI estimation of DRAM energy vs. gem5 - not including refresh or background
+
+cacti_energy = (read_hits * cacti_read + (num_reads - read_hits) * (cacti_act + cacti_read + cacti_pre) + \
+               write_hits * cacti_write + (num_writes - write_hits) * (cacti_act + cacti_write + cacti_pre)) \
+               / 1e9    # energy per operation is in nJ from CACTI 
+
+######################################################################################################
 
 print("\tTotal power is " + str(total_energy) + " J. ")
 
 result_file = open(str(sys.argv[3]), 'a')
 result_file.write('%.4f' % total_energy + "\t")
 result_file.write('%.4f' % mcpat_energy + "\t")
+result_file.write('%.4f' % cacti_energy + "\t")
 result_file.write('%.6f' % activ_rw_prech + "\t")
 result_file.write('%.4f' % gem5_refr_total + "\t")
 result_file.write('%.4f' % act_pre_back + "\t")
@@ -153,5 +167,7 @@ result_file.write('%.4f' % sim_seconds + "\t")
 
 result_file.write('%.0f' % num_reads + "\t")
 result_file.write('%.0f' % num_writes + "\t")
+result_file.write('%.0f' % num_act_pre + "\t")
+
 result_file.write("\n")
 result_file.close()
