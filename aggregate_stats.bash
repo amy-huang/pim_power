@@ -24,11 +24,12 @@ sum () {  # Pulls all stats containing first argument, sums them, and print to n
     #echo $3"                       "$sum_pim >> $newstats
 }
 
-sum_cumulative () { # Subtract value at prep timestamp from the one at execution timestamp and print stat
-    prep=$(grep $1 $newstats | grep timestamp$prep_tstamp | awk '{s=$2}END{printf ("%f",s)}')
-    exe=$(grep $1 $newstats | grep timestamp$exec_tstamp | awk '{s=$2}END{printf ("%f",s)}')
-    final=$(awk -v p=$prep -v e=$exe 'BEGIN{printf("%f", e-p)}')
-    echo $2"                       "$final >> $newstats
+sum_cumulative () { # Add negative sum for prep timestamp, and positive sum for exec timestamp under same stat 
+                    # name so that total sum is their difference 
+    prep=$(grep $1 $newstats | grep timestamp$prep_tstamp | awk '{s-=$2}END{printf ("%f",s)}')
+    exe=$(grep $1 $newstats | grep timestamp$exec_tstamp | awk '{s+=$2}END{printf ("%f",s)}')
+    echo $2"                       "$prep >> $newstats
+    echo $2"                       "$exe >> $newstats
 }
 
 sum_float () { 

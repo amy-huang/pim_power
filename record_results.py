@@ -74,45 +74,44 @@ for line in stat_lines[::-1]:
             print("\tWrites: " + str(num_writes))
 
         if cols[0] == "system.all_ctrls.activations":
-            num_act_pre = float(cols[1])/1000000000000  # Stats file records energy in pJ (1E-12 J)
+            num_act_pre += float(cols[1])  
 
         if cols[0] == "system.all_ctrls.total_actEnergy":
-            gem5_act_total = float(cols[1])/1000000000000
-
+            gem5_act_total += float(cols[1])/1e12 # Stats file records energy in pJ (1E-12 J)
         if cols[0] == "system.all_ctrls.total_readEnergy":
-            gem5_read_total = float(cols[1])/1000000000000
+            gem5_read_total += float(cols[1])/1e12
 
         if cols[0] == "system.all_ctrls.total_writeEnergy":
-            gem5_write_total = float(cols[1])/1000000000000
+            gem5_write_total += float(cols[1])/1e12
 
         if cols[0] == "system.all_ctrls.total_preEnergy":
-            gem5_pre_total = float(cols[1])/1000000000000
+            gem5_pre_total += float(cols[1])/1e12
 
         if cols[0] == "system.all_ctrls.total_actBackEnergy":
-            gem5_act_back_total = float(cols[1])/1000000000000
+            gem5_act_back_total += float(cols[1])/1e12
 
         if cols[0] == "system.all_ctrls.total_preBackEnergy":
-            gem5_pre_back_total = float(cols[1])/1000000000000
+            gem5_pre_back_total += float(cols[1])/1e12
 
         if cols[0] == "system.all_ctrls.total_refreshEnergy":
-            gem5_refr_total = float(cols[1])/1000000000000  
+            gem5_refr_total += float(cols[1])/1e12  
 
 # Compare cacti versus gem5 stats per-operation energy
-print("\tin Joules: \n")
-print("\tCacti per read: " + str(cacti_read) + " gem5 per read: " + str(gem5_read_total/num_reads))
-print("\tCacti per write: " + str(cacti_write) + " gem5 per read: " + str(gem5_write_total/num_writes))
-print("\tCacti per activation: " + str(cacti_act) + " gem5 per activation: " + str(gem5_act_total/num_act_pre))
-print("\tCacti per precharge: " + str(cacti_pre) + " gem5 per precharge: " + str(gem5_pre_total/num_act_pre))
+print("in nJ:")
+print("\tCacti per read: " + str(cacti_read) + "\t\tgem5 per read: " + str(gem5_read_total*1e9/num_reads))
+print("\tCacti per write: " + str(cacti_write) + "\t\tgem5 per read: " + str(gem5_write_total*1e9/num_writes))
+print("\tCacti per activation: " + str(cacti_act) + "\t\tgem5 per activation: " + str(gem5_act_total*1e9/num_act_pre))
+print("\tCacti per precharge: " + str(cacti_pre) + "\t\tgem5 per precharge: " + str(gem5_pre_total*1e9/num_act_pre))
 
 # Compare total energy by type of operation
 activ_rw_prech = gem5_act_total + gem5_read_total + gem5_write_total + gem5_pre_total
 act_pre_back = gem5_act_back_total + gem5_pre_back_total
 print("\tStats reported total energy activ/RW/prech: " + str(activ_rw_prech))
 print("\tStats reported total energy act/pre background: " + str(act_pre_back))
-print("\tStats reported total energy refr: " + str(refresh))
-print("\tTotal stats reported energy (used this for total energy): " + str(activ_rw_prech + refresh + act_pre_back))
+print("\tStats reported total energy refr: " + str(gem5_refr_total))
+print("\tTotal stats reported energy (used this for total energy): " + str(activ_rw_prech + gem5_refr_total + act_pre_back))
 total_energy += activ_rw_prech
-total_energy += refresh 
+total_energy += gem5_refr_total 
 total_energy += act_pre_back
 
 ######################################################################################################
@@ -148,7 +147,7 @@ result_file = open(str(sys.argv[3]), 'a')
 result_file.write(str(total_energy) + "\t")
 result_file.write(str(mcpat_energy) + "\t")
 result_file.write(str(activ_rw_prech) + "\t")
-result_file.write(str(refresh) + "\t")
+result_file.write(str(gem5_refr_total) + "\t")
 result_file.write(str(act_pre_back) + "\t")
 result_file.write(str(sim_seconds) + "\t")
 result_file.write(str(num_reads) + "\t")

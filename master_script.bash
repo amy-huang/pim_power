@@ -45,7 +45,7 @@ do
     grep "timestamp$((num_threads-1))\|timestamp$num_threads" $original_stats > cut_stats.txt
 
 	echo "Getting stats and aggregating, cleaning into cut_stats.txt"
-	./aggregate_stats.bash "$((num_threads-1))" num_threads 
+	./aggregate_stats.bash "$((num_threads-1))" $num_threads 
 
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
 	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate
