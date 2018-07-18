@@ -6,6 +6,8 @@
 # 2) A CACIT config file, which is in the cacti directory, used to model HMC usage
 # 3) A config.json file from the simulation needed by McPAT
 # 4) A stats file containing 2, 4, 6, 8 thread stats in the timestamp periods of the same numbers.
+#    In total there are 8 timestamps, with odd ones showing stats for preparing data structures
+#    and the even ones showing stats for the application execution - what we care about
 #
 # First, the stats processing script get_stats_and_config.bash is called to aggregate stats across
 # multiple cores/memory controllers for the right timestamp durations. Then gem5tomcpat, mcpat, and
@@ -43,7 +45,7 @@ do
     grep "timestamp$((num_threads-1))\|timestamp$num_threads" $original_stats > cut_stats.txt
 
 	echo "Getting stats and aggregating, cleaning into cut_stats.txt"
-	./get_stats_and_config.bash "$((num_threads-1))" num_threads 
+	./aggregate_stats.bash "$((num_threads-1))" num_threads 
 
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
 	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate
