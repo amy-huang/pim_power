@@ -1,15 +1,19 @@
 #!/bin/bash
 
 #################################################################################################################
-# This script copies the stats file from the result directory in SMC-WORK created by simulation,
-# and then sums important stats across all CPUs/Mem controllers that are added to a new stats file
+# For each number of threads in {2 4 6 8}, the master script greps lines of the 2 relevant timestamps into below.
+newstats=./cut_stats.txt
+prep_tstamp=$1
+exec_tstamp=$2
+
+# DRAM energy is the only cumulative stat, so that is found by subtracting the energy stat at the execution 
+# timestamp from the one at the preparation timestamp. The others are taken just from execution timestamp. 
+# Then, this script aggregates stats for CPUs and memory controllers, since mcpat takes in total number of 
+# operations of each kind done on all CPUs/controllers.
 #################################################################################################################
 
-newstats=./cut_stats.txt   #Make a copy of stats file in current directory to add sum stats to
-
-#################################################################################################################
-
-sum () {  # Pulls all stats containing first argument and sum; print as non-scientific notated integer
+sum () {  # Pulls all stats containing first argument, sums them, and print to new stats file as new stat with
+          # value as non-scientific notated float
     sum_both=$(grep $1 $newstats | awk '{s+=$2}END{printf ("%f",s)}')
     sum_cpu=$(grep $1 $newstats | grep -v "pim_sys" | awk '{s+=$2}END{printf ("%f",s)}')  #ignore pim CPU value
     sum_pim=$(grep $1 $newstats | grep "pim_sys" | awk '{s+=$2}END{printf ("%f",s)}')  #include PIM core values
@@ -20,8 +24,15 @@ sum () {  # Pulls all stats containing first argument and sum; print as non-scie
     #echo $3"                       "$sum_pim >> $newstats
 }
 
+sum_cumulative () { # Subtract value at prep timestamp from the one at execution timestamp and print stat
+    prep=$(grep $1 $newstats | grep timestamp$prep_tstamp | awk '{s=$2}END{printf ("%f",s)}')
+    exe=$(grep $1 $newstats | grep timestamp$exec_tstamp | awk '{s=$2}END{printf ("%f",s)}')
+    final=$(awk -v p=$prep -v e=$exe 'BEGIN{printf("%f", e-p)}')
+    echo $2"                       "$final >> $newstats
+}
+
 sum_float () { 
-    sum=$(grep $1 $newstats | grep -v "pim_sys" | awk '{s+=$2}END{print s}')  #ignore pim CPU value
+    sum=$(grep $1 $newstats | awk '{s+=$2}END{print s}')  
     echo $2"                       "$sum >> $newstats
 }
 
@@ -35,61 +46,25 @@ peak () { # Find the highest value for some stat
     echo $2"                       "$peak >> $newstats
 }
 
-get_mem_ctrl_energies () {
-    sum
-    for ctrl_num in {0..7}
-    do
-        pim_rhr=$(grep pim_vault_ctrls$ctrl_num $newstats | grep readRowHitRate | awk '{s=$2}END{printf ("%f", s)}')
-        pim_reads=$(grep pim_vault_ctrls$ctrl_num $newstats | grep num_reads::total | awk '{s+=$2}END{print s}')  #ignore pim CPU value
-        
-        cpu_hr=$(grep pim_vault_ctrls$ctrl_num | grep readRowHitRate | awk '{s=$2}END{printf ("%f", s)}')
-        
-    done
-
-    echo "finalEnergy                       "$final_ng >> $newstats
-
-}
-#################################################################################################################
-# DRAM energy calculations/sanity checks
-
-#total_energy_first=$(grep totalEnergy $newstats | grep timestamp$1 | awk '{s+=$2}END{printf ("%f",s)}')
-#total_energy_second=$(grep totalEnergy $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}')
-#total_energy=$(($total_energy_second-$total_energy_first))
-
-avg_pwr=$(grep "averagePower::0" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}')
-seconds=$(grep "sim_seconds" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}')
-#
-#echo $avg_pwr $seconds
-#
-#act=$(grep "actEnergy" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}' > test_add.txt)
-#echo \n >> test_add.txt
-#pre=$(grep "preEnergy" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}' >> test_add.txt)
-#echo \n >> test_add.txt
-#r_ng=$(grep "readEnergy" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}' >> test_add.txt)
-#echo \n >> test_add.txt
-#w_ng=$(grep "writeEnergy" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}' >> test_add.txt)
-#echo \n >> test_add.txt
-#refresh=$(grep "refreshEnergy" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}' >> test_add.txt)
-#echo \n >> test_add.txt
-#actBack=$(grep "actBackEnergy" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}' >> test_add.txt)
-#echo \n >> test_add.txt
-#preBack=$(grep "preBackEnergy" $newstats | grep timestamp$2 | awk '{s+=$2}END{printf ("%f",s)}' >> test_add.txt)
-#echo \n >> test_add.txt
-
-#awk '{sum+=$1};END{print sum}' test_add.txt
-
 #################################################################################################################
 # Aggregating stats 
 
-# Mem ctrl energy is cumulatively recorded among timestamps, so calculate first before removing first timestamp
-# get_mem_ctrl_energies
+# Main memory energy is cumulative for both timestamps, so subtract the values at the first one from those
+# of the second. These are total energies from each kind of operation as recorded by DRAMpower in gem5
+sum_cumulative  actEnergy      system.mem_ctrls.total_actEnergy      
+sum_cumulative  preEnergy      system.mem_ctrls.total_preEnergy      
+sum_cumulative  readEnergy     system.mem_ctrls.total_readEnergy     
+sum_cumulative  writeEnergy    system.mem_ctrls.total_writeEnergy    
+sum_cumulative  refreshEnergy  system.mem_ctrls.total_refreshEnergy  
+sum_cumulative  actBackEnergy  system.mem_ctrls.total_actBackEnergy  
+sum_cumulative  preBackEnergy  system.mem_ctrls.total_preBackEnergy  
 
-# Remove all other lines not in the execution time duration
-sed -i '/timestamp['$1']/d' $newstats
+# Remove lines of first timestamp, because rest of stats are not cumulative
+sed -i '/timestamp['$prep_tstamp']/d' $newstats
 # Remove timestamp from remaining stats
 sed -i -e 's/timestamp[0-9].//g' $newstats
 # Sum the stats that aren't cumulative, and are only for the execution time
-echo "	Aggregating stats across all CPUs, memory controllers."
+echo "	Aggregating stats across all CPUs, interconnects, and memory controllers"
 sum_float  sim_seconds                      total_sim_seconds 
 sum  numCycles                        system.cpu.totalNumCycles          system.pim.totalNumCycles
 sum  num_idle_cycles                  system.cpu.totalIdleCycles         system.pim.totalIdleCycles
@@ -116,21 +91,8 @@ sum  dtb.accesses                     system.cpu.dtlb.total_accesses     system.
 sum  dtb.misses                       system.cpu.dtlb.total_misses       system.pim.dtlb.total_misses
 sum  dcache.ReadReq_misses::total     system.cpu.dcache.read_misses      system.pim.dcache.read_misses
 sum  dcache.WriteReq_misses::total    system.cpu.dcache.write_misses     system.pim.dcache.write_misses
-#sum  system.mem_ctrls[0-9].readReqs system.mem_ctrls.memory_reads # For pim setup 
-#sum  system.mem_ctrls[0-9].writeReqs system.mem_ctrls.memory_writes
-#sum  system.mem_ctrls[0-9][0-9].readReqs system.mem_ctrls.memory_reads 
-#sum  system.mem_ctrls[0-9][0-9].writeReqs system.mem_ctrls.memory_writes
 sum_interconnect_accesses
-peak [0-9].bw_total::total  system.mem_ctrls.peak_bandwidth
-
-sum actEnergy system.mem_ctrls.total_actEnergy
-sum preEnergy system.mem_ctrls.total_preEnergy
-sum readEnergy system.mem_ctrls.total_readEnergy
-sum writeEnergy system.mem_ctrls.total_writeEnergy
-sum refreshEnergy system.mem_ctrls.total_refreshEnergy
-sum actBackEnergy system.mem_ctrls.total_actBackEnergy
-sum preBackEnergy system.mem_ctrls.total_preBackEnergy
-
+# To/from main memory
 sum [0-9].num_reads::total total_reads
 sum [0-9].num_writes::total total_writes
 
