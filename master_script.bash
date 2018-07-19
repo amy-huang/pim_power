@@ -33,19 +33,20 @@ experiment=$6
 cp $config_path ./config.json
 
 # Add column headers to result file that only has numbers
-echo "Total mcpat_ng cacti_act/rw/pre   gem5_act/rw/pre refresh background  sim_seconds num_reads   num_writes  num_activations/precharges" > $experiment-$pim_or_host.tsv
+echo "Total_NG McPAT_NG Cacti_a/rw/p Gem5_a/rw/p Refr Background Seconds Reads Writes Acts/Pres" > $experiment-$pim_or_host.tsv
 
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads
 do
     # Copy the relevant timestamps to new stats file with both timestamps; some stats are cumulative
     # Ex. if num_threads is 6, we copy timestamps 5 and 6 to cut_stats.txt
-    grep timestamp$num_threads $original_stats > $num_threads-$pim_or_host-stats.txt
-
     grep "timestamp$((num_threads-1))\|timestamp$num_threads" $original_stats > cut_stats.txt
 
 	echo "Getting stats and aggregating, cleaning into cut_stats.txt"
 	./aggregate_stats.bash "$((num_threads-1))" $num_threads 
+
+	echo "Copying aggregated stats file to $num_threads-$pim_or_host-stats.txt"
+    cat cut_stats.txt > $num_threads-$pim_or_host-stats.txt
 
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
 	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate
@@ -56,6 +57,10 @@ do
     echo "Writing detailed results to $num_threads-$pim_or_host-results.txt and just numbers to $experiment-$pim_or_host.tsv"
 	python record_results.py mcpat_power.txt $cacti_out $experiment-$pim_or_host.tsv > $num_threads-$pim_or_host-results.txt
 	cat mcpat_power.txt >> $num_threads-$pim_or_host-results.txt 
+
+    echo "Generating graphs"
+    python generate_graphs.py $experiment-$pim_or_host.tsv
+
 done
 
 
