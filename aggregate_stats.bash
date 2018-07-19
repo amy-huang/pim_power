@@ -19,9 +19,9 @@ sum () {  # Pulls all stats containing first argument, sums them, and print to n
     sum_pim=$(grep $1 $newstats | grep "pim_sys" | awk '{s+=$2}END{printf ("%f",s)}')  #include PIM core values
    
     # Write to new stats file under name of second argument      
-    echo $2"                       "$sum_both >> $newstats
-    #echo $2"                       "$sum_cpu >> $newstats
-    #echo $3"                       "$sum_pim >> $newstats
+    #echo $2"                       "$sum_both >> $newstats
+    echo $2"                       "$sum_cpu >> $newstats
+    echo $3"                       "$sum_pim >> $newstats
 }
 
 sum_cumulative () { # Add negative sum for prep timestamp, and positive sum for exec timestamp under same stat 

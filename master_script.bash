@@ -58,9 +58,6 @@ do
 	python record_results.py mcpat_power.txt $cacti_out $experiment-$pim_or_host.tsv > $num_threads-$pim_or_host-results.txt
 	cat mcpat_power.txt >> $num_threads-$pim_or_host-results.txt 
 
-    echo "Generating graphs"
-    python generate_graphs.py $experiment-$pim_or_host.tsv
-
 done
 
 
