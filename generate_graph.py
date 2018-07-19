@@ -6,42 +6,52 @@ import sys
 #####################################################################################
 
 if len(sys.argv) < 4:
-    print("\n Argument format: <title> <y axis label> [for each tsv file: <legend label> <tsv file>]\n")
+    print("\nIf you want spaces in an argument, use '-' instead and it'll be replaced by a space.")
+    print("Argument format: <Experiment name> <y axis label> [for each tsv file: <legend label> <tsv file>]\n")
     exit(0)
 
 graph_colors = ['m', 'b', 'r', 'c', 'g', 'y', 'k']
-data = {}   # Key is column header, and value is list of values for each thread number
 thread_nums = [2, 4, 6, 8]
 plt.xlabel("Number of threads")
 plt.xlim([0,10])
+data = {}
+col_headers = "Total-Energy McPAT-Energy Cacti-Operational-Energy Gem5-Operational-Energy Gem5-Refresh-Energy Gem5-Background-Energy Execution-Time Reads Writes Activations-and-Precharges".split()
 
-title = sys.argv[1]
-plt.title(title)
-y_axis = sys.argv[2]
-plt.ylabel(y_axis)
+experiment = sys.argv[1]
 num_tsvs = (len(sys.argv) - 3)/2
-curr_sys_arg = 3 
 
-for curr_tsv in range(num_tsvs): 
-    label = sys.argv[curr_sys_arg + 2*curr_tsv]
-    tsv_file = open(sys.argv[curr_sys_arg + 2*curr_tsv + 1], 'r')
-    tsv_lines = tsv_file.readlines()
-    tsv_file.close()
-    
-    # headers are Total_NG McPAT_NG Cacti_a/rw/p Gem5_a/rw/p Refr Background Seconds Reads Writes Acts/Pres 
-    col_headers = tsv_lines[0].split()
-    num_cols = len(col_headers)
-    
-    for header in col_headers:
-        data[header] = []
-    
-    for line in tsv_lines[1:]:
-        cols = line.split()
-    
-        for i in range(num_cols):
-            data[col_headers[i]].append(cols[i])
-    
-    plt.plot(thread_nums, data[col_headers[0]], color=graph_colors[curr_tsv % 7], marker='o', linestyle='-', label=label)
+for curr_graph in range(len(col_headers)):
 
-plt.legend()
-plt.show()
+    # Get title and y axis lable from command line arguments
+    plt.title(experiment.replace('-', ' ') + " " + col_headers[curr_graph].replace('-', ' '))
+    y_axis = sys.argv[2].replace('-', ' ')
+    plt.ylabel(y_axis)
+
+    # For keeping track of which arguments are legend names and tsv files
+    curr_sys_arg = 3
+
+    for curr_tsv in range(num_tsvs):
+        label = sys.argv[curr_sys_arg + 2*curr_tsv].replace('-', ' ')
+        tsv_file = open(sys.argv[curr_sys_arg + 2*curr_tsv + 1], 'r')
+        tsv_lines = tsv_file.readlines()
+        tsv_file.close()
+
+        # headers are Total_NG McPAT_NG Cacti_a/rw/p Gem5_a/rw/p Refr Background Seconds Reads Writes Acts/Pres 
+        num_cols = len(col_headers)
+
+        for header in col_headers:
+            data[header] = []
+
+        for line in tsv_lines[1:]:
+            cols = line.split()
+
+            for i in range(num_cols):
+                data[col_headers[i]].append(cols[i])
+
+        plt.plot(thread_nums, data[col_headers[curr_graph]], color=graph_colors[curr_tsv % 7], marker='o', linestyle='-', label=label)
+
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(experiment + "-" + col_headers[curr_graph])
+    plt.clf()
+
