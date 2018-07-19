@@ -3,9 +3,11 @@ Getting CACTI numbers
 	Writes: 10737.0
 	Reads: 273074.0
 	Seconds simulated: 0.166627 s
+	Write ng: 0.00070231090176
+	Write ng: -0.00066671714304
 in nJ:
 	Cacti per read: 1.8637		gem5 per read: 3.98684343145
-	Cacti per write: 1.86394		gem5 per read: 3.315056228
+	Cacti per write: 1.86394		gem5 per write: 3.315056228
 	Cacti per activation: 0.931097		gem5 per activation: 0.604739012542
 	Cacti per precharge: 0.298999		gem5 per precharge: 0.407958857667
 	Stats reported total energy activ/RW/prech: 0.00141553578432
