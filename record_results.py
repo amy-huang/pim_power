@@ -154,16 +154,20 @@ cacti_energy = (read_hits * cacti_read + (num_reads - read_hits) * (cacti_act + 
 
 ######################################################################################################
 
-print("\tTotal power is " + str(total_energy) + " J. ")
+print("\tTotal energy is " + str(total_energy) + " J. ")
+power = total_energy/sim_seconds
+print("\tAverage power is " + str(power) + " J. ")
 
 result_file = open(str(sys.argv[3]), 'a')
+result_file.write('%.4f' % power + "\t")
 result_file.write('%.4f' % total_energy + "\t")
+result_file.write('%.4f' % sim_seconds + "\t")
+
 result_file.write('%.4f' % mcpat_energy + "\t")
 result_file.write('%.4f' % cacti_energy + "\t")
 result_file.write('%.6f' % activ_rw_prech + "\t")
 result_file.write('%.4f' % gem5_refr_total + "\t")
 result_file.write('%.4f' % act_pre_back + "\t")
-result_file.write('%.4f' % sim_seconds + "\t")
 
 result_file.write('%.0f' % num_reads + "\t")
 result_file.write('%.0f' % num_writes + "\t")

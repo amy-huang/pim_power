@@ -33,7 +33,7 @@ experiment=$6
 cp $config_path ./config.json
 
 # Add column headers to result file that only has numbers
-echo "Total_NG McPAT_NG Cacti_a/rw/p Gem5_a/rw/p Refr Background Seconds Reads Writes Acts/Pres" > $experiment-$pim_or_host.tsv
+echo "Power Total_NG Seconds McPAT_NG Cacti_a/rw/p Gem5_a/rw/p Refr Background Reads Writes Acts/Pres" > $experiment-$pim_or_host.tsv
 
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads
