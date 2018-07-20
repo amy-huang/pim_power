@@ -15,8 +15,8 @@ exec_tstamp=$2
 sum () {  # Pulls all stats containing first argument, sums them, and print to new stats file as new stat with
           # value as non-scientific notated float
     sum_both=$(grep $1 $newstats | awk '{s+=$2}END{printf ("%f",s)}')
-    sum_cpu=$(grep $1 $newstats | grep -v "pim_sys" | awk '{s+=$2}END{printf ("%f",s)}')  #ignore pim CPU value
-    sum_pim=$(grep $1 $newstats | grep "pim_sys" | awk '{s+=$2}END{printf ("%f",s)}')  #include PIM core values
+    sum_cpu=$(grep $1 $newstats | grep -v "pim" | awk '{s+=$2}END{printf ("%f",s)}')  #ignore pim CPU value
+    sum_pim=$(grep $1 $newstats | grep "pim" | awk '{s+=$2}END{printf ("%f",s)}')  #include PIM core values
    
     # Write to new stats file under name of second argument      
     #echo $2"                       "$sum_both >> $newstats
@@ -26,10 +26,14 @@ sum () {  # Pulls all stats containing first argument, sums them, and print to n
 
 sum_cumulative () { # Add negative sum for prep timestamp, and positive sum for exec timestamp under same stat 
                     # name so that total sum is their difference 
-    prep=$(grep $1 $newstats | grep timestamp$prep_tstamp | awk '{s-=$2}END{printf ("%f",s)}')
-    exe=$(grep $1 $newstats | grep timestamp$exec_tstamp | awk '{s+=$2}END{printf ("%f",s)}')
-    echo $2"                       "$prep >> $newstats
-    echo $2"                       "$exe >> $newstats
+    cpu_prep=$(grep $1 $newstats | grep -v "pim" | grep timestamp$prep_tstamp | awk '{s-=$2}END{printf ("%f",s)}')
+    cpu_exe=$(grep $1 $newstats | grep -v "pim" | grep timestamp$exec_tstamp | awk '{s+=$2}END{printf ("%f",s)}')
+    echo $2"                       "$cpu_prep >> $newstats
+    echo $2"                       "$cpu_exe >> $newstats
+    pim_prep=$(grep $1 $newstats | grep "pim" | grep timestamp$prep_tstamp | awk '{s-=$2}END{printf ("%f",s)}')
+    pim_exe=$(grep $1 $newstats | grep "pim" | grep timestamp$exec_tstamp | awk '{s+=$2}END{printf ("%f",s)}')
+    echo $3"                       "$pim_prep >> $newstats
+    echo $3"                       "$pim_exe >> $newstats
 }
 
 sum_float () { 
@@ -52,13 +56,13 @@ peak () { # Find the highest value for some stat
 
 # Main memory energy is cumulative for both timestamps, so subtract the values at the first one from those
 # of the second. These are total energies from each kind of operation as recorded by DRAMpower in gem5
-sum_cumulative  actEnergy      system.all_ctrls.total_actEnergy      
-sum_cumulative  preEnergy      system.all_ctrls.total_preEnergy      
-sum_cumulative  readEnergy     system.all_ctrls.total_readEnergy     
-sum_cumulative  writeEnergy    system.all_ctrls.total_writeEnergy    
-sum_cumulative  refreshEnergy  system.all_ctrls.total_refreshEnergy  
-sum_cumulative  actBackEnergy  system.all_ctrls.total_actBackEnergy  
-sum_cumulative  preBackEnergy  system.all_ctrls.total_preBackEnergy  
+sum_cumulative  actEnergy      system.mem_ctrls.total_actEnergy       system.pim_vault_ctrls.total_actEnergy
+sum_cumulative  preEnergy      system.mem_ctrls.total_preEnergy       system.pim_vault_ctrls.total_preEnergy
+sum_cumulative  readEnergy     system.mem_ctrls.total_readEnergy      system.pim_vault_ctrls.total_readEnergy
+sum_cumulative  writeEnergy    system.mem_ctrls.total_writeEnergy     system.pim_vault_ctrls.total_writeEnergy
+sum_cumulative  refreshEnergy  system.mem_ctrls.total_refreshEnergy   system.pim_vault_ctrls.total_refreshEnergy
+sum_cumulative  actBackEnergy  system.mem_ctrls.total_actBackEnergy   system.pim_vault_ctrls.total_actBackEnergy
+sum_cumulative  preBackEnergy  system.mem_ctrls.total_preBackEnergy   system.pim_vault_ctrls.total_preBackEnergy
 
 # Remove lines of first timestamp, because rest of stats are not cumulative
 sed -i '/timestamp['$prep_tstamp']/d' $newstats
@@ -93,13 +97,12 @@ sum  dtb.misses                       system.cpu.dtlb.total_misses       system.
 sum  dcache.ReadReq_misses::total     system.cpu.dcache.read_misses      system.pim.dcache.read_misses
 sum  dcache.WriteReq_misses::total    system.cpu.dcache.write_misses     system.pim.dcache.write_misses
 sum_interconnect_accesses
-# To/from main memory
-sum [0-9].num_reads::total system.all_ctrls.total_reads
-sum [0-9].num_writes::total system.all_ctrls.total_writes
-sum bytesPerActivate::samples   system.all_ctrls.activations  
-sum readRowHits system.all_ctrls.total_readRowHits
-sum writeRowHits system.all_ctrls.total_writeRowHits
 
+sum  [0-9].num_reads::total     system.mem_ctrls.total_reads         system.pim_vault_ctrls.total_reads
+sum  [0-9].num_writes::total    system.mem_ctrls.total_writes        system.pim_vault_ctrls.total_writes
+sum  bytesPerActivate::samples  system.mem_ctrls.activations         system.pim_vault_ctrls.activations
+sum  readRowHits                system.mem_ctrls.total_readRowHits   system.pim_vault_ctrls.total_readRowHits
+sum  writeRowHits               system.mem_ctrls.total_writeRowHits  system.pim_vault_ctrls.total_writeRowHits
 #################################################################################################################
 # Further cleaning
 

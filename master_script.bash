@@ -15,19 +15,20 @@
 #####################################################################################################
 
 # Check that the number of arguments is correct and print usage if not
-if [ $# -ne 6 ]
+if [ $# -ne 7 ]
     then 
-     echo "./master_script.bash <XML template> <config.json path> <stats path> <cacti out file> <host or pim> <experiment dir or name>"
+     echo "./master_script.bash <cpu XML template> <pim XML template> <config.json path> <stats path> <cacti out file> <host or pim> <experiment dir or name>"
      exit 1
 fi
 
 # Name arguments
-xmltemplate=$1
-config_path=$2
-original_stats=$3
-cacti_out=$4
-pim_or_host=$5
-experiment=$6
+cpu_xml=$1
+pim_xml=$2
+config_path=$3
+original_stats=$4
+cacti_out=$5
+pim_or_host=$6
+experiment=$7
 
 # Copy config file to current directory for use by gem5tomcpat
 cp $config_path ./config.json
@@ -49,14 +50,19 @@ do
     cat cut_stats.txt > $num_threads-$pim_or_host-stats.txt
 
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
-	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $xmltemplate
-
+	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $cpu_xml
 	echo "Running McPAT - energy for cores, caches, interconnects"
-	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_power.txt
+	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_cpu_power.txt
 	
+	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
+	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $pim_xml
+	echo "Running McPAT - energy for cores, caches, interconnects"
+	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_pim_power.txt
+
     echo "Writing detailed results to $num_threads-$pim_or_host-results.txt and just numbers to $experiment-$pim_or_host.tsv"
-	python record_results.py mcpat_power.txt $cacti_out $experiment-$pim_or_host.tsv > $num_threads-$pim_or_host-results.txt
-	cat mcpat_power.txt >> $num_threads-$pim_or_host-results.txt 
+	python record_results.py mcpat_cpu_power.txt mcpat_pim_power.txt $cacti_out $experiment-$pim_or_host.tsv > $num_threads-$pim_or_host-results.txt
+	cat mcpat_cpu_power.txt >> $num_threads-$pim_or_host-results.txt 
+	cat mcpat_pim_power.txt >> $num_threads-$pim_or_host-results.txt 
 
 done
 

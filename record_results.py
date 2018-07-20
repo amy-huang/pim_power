@@ -3,15 +3,15 @@ import sys
 # This script calculates how much energy main memory has consumed based on CACTI and the stats file, and then adds it to the energy of everything else as estimated by McPAT to get a total number.
 # The CACTI output, McPAT, then stats file is parsed.
 
-if len(sys.argv) != 4:
-    print("\n Argument format: <mcpat text output> <cacti text output> <name of tsv file for totals> \n")
+if len(sys.argv) != 5:
+    print("\n Argument format: <cpu mcpat out> <pim mcpat out> <cacti text output> <name of tsv file for totals> \n")
     exit(0)
 
 ######################################################################################################
 
 print("Getting CACTI numbers")
 
-cacti_file = open(str(sys.argv[2]), 'r') 
+cacti_file = open(str(sys.argv[3]), 'r') 
 cacti_lines = cacti_file.readlines()
 cacti_file.close()
 
@@ -65,41 +65,41 @@ write_hits = 0
 for line in stat_lines[::-1]:
     cols = line.split()
     if len(cols):
-        if cols[0] == "total_sim_seconds":
+        if cols[0] == "total_sim_seconds" in cols[0]:
 	        sim_seconds = float(cols[1])
 	        print("\tSeconds simulated: " + str(sim_seconds) + " s")
 
-        if cols[0] == "system.all_ctrls.total_reads":
+        if "total_reads" in cols[0]:
             num_reads = float(cols[1])
             print("\tReads: " + str(num_reads))
 
-        if cols[0] == "system.all_ctrls.total_writes":
+        if "total_writes" in cols[0]:
             num_writes = float(cols[1])
             print("\tWrites: " + str(num_writes))
 
-        if cols[0] == "system.all_ctrls.activations":
+        if "activations" in cols[0]:
             num_act_pre += float(cols[1])  
 
-        if cols[0] == "system.all_ctrls.total_actEnergy":
+        if "total_actEnergy" in cols[0]:
             gem5_act_total += float(cols[1])/1e12 # Stats file records energy in pJ (1E-12 J)
 
-        if cols[0] == "system.all_ctrls.total_readEnergy":
+        if "total_readEnergy" in cols[0]:
             gem5_read_total += float(cols[1])/1e12
 
-        if cols[0] == "system.all_ctrls.total_writeEnergy":
+        if "total_writeEnergy" in cols[0]:
             gem5_write_total += float(cols[1])/1e12
             print("\tWrite ng: " + str(float(cols[1])/1e12))
 
-        if cols[0] == "system.all_ctrls.total_preEnergy":
+        if "total_preEnergy" in cols[0]:
             gem5_pre_total += float(cols[1])/1e12
 
-        if cols[0] == "system.all_ctrls.total_actBackEnergy":
+        if "total_actBackEnergy" in cols[0]:
             gem5_act_back_total += float(cols[1])/1e12
 
-        if cols[0] == "system.all_ctrls.total_preBackEnergy":
+        if "total_preBackEnergy" in cols[0]:
             gem5_pre_back_total += float(cols[1])/1e12
 
-        if cols[0] == "system.all_ctrls.total_refreshEnergy":
+        if "total_refreshEnergy" in cols[0]:
             gem5_refr_total += float(cols[1])/1e12  
 
 # Compare cacti versus gem5 stats per-operation energy
@@ -122,7 +122,7 @@ total_energy += act_pre_back
 
 ######################################################################################################
 
-print("Getting McPAT numbers")
+print("Getting cpu core, cache, interconnect, and memory controller McPAT numbers")
 mcpat_file = open(str(sys.argv[1]), 'r') 
 mcpat_lines = mcpat_file.readlines()
 mcpat_file.close()
@@ -141,7 +141,32 @@ for line in mcpat_lines:
         break
 
 #print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
-print("\tEnergy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
+print("\tCPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
+mcpat_energy = watts * sim_seconds
+total_energy += mcpat_energy
+
+######################################################################################################
+
+print("Getting pim core McPAT numbers")
+mcpat_file = open(str(sys.argv[2]), 'r') 
+mcpat_lines = mcpat_file.readlines()
+mcpat_file.close()
+
+watts = 0
+
+# Finds first Gate Leakage and Runtime Dynamic power entries, which are for the whole system
+for line in mcpat_lines:
+    words = line.split()
+    if len(words) and words[0] == "Gate":
+        #print("\tCore, cache and interconnect gate leakage: " + words[3] + " W")
+        watts += float(words[3])
+    if len(words) and words[0] == "Runtime":
+        #print("\tCore, cache and interconnect runtime dynamic: " + words[3] + " W")
+        watts += float(words[3])
+        break
+
+#print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
+print("\tPim core energy = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
 mcpat_energy = watts * sim_seconds
 total_energy += mcpat_energy
 
@@ -158,7 +183,7 @@ print("\tTotal energy is " + str(total_energy) + " J. ")
 power = total_energy/sim_seconds
 print("\tAverage power is " + str(power) + " J. ")
 
-result_file = open(str(sys.argv[3]), 'a')
+result_file = open(str(sys.argv[4]), 'a')
 result_file.write('%.4f' % power + "\t")
 result_file.write('%.4f' % total_energy + "\t")
 result_file.write('%.4f' % sim_seconds + "\t")
