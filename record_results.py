@@ -57,11 +57,18 @@ gem5_pre_total = 0
 gem5_act_back_total = 0
 gem5_pre_back_total = 0
 gem5_refr_total = 0
+l2_accesses = 0
+
+pim_reads = 0
+pim_writes = 0
+cpu_reads = 0
+cpu_writes = 0
 
 # Row buffer; used for cacti estimation energy
 read_hits = 0
 write_hits = 0
 
+# TODO: could be interesting to look at interconnect accesses, committed instructions, memory accesses
 for line in stat_lines[::-1]:
     cols = line.split()
     if len(cols):
@@ -69,13 +76,31 @@ for line in stat_lines[::-1]:
 	        sim_seconds = float(cols[1])
 	        print("\tSeconds simulated: " + str(sim_seconds) + " s")
 
+
         if "total_reads" in cols[0]:
-            num_reads = float(cols[1])
+            num_reads += float(cols[1])
             print("\tReads: " + str(num_reads))
+            if "pim" in cols[0]:
+                pim_reads += float(cols[1])
+            else:
+                cpu_reads += float(cols[1])
+
 
         if "total_writes" in cols[0]:
-            num_writes = float(cols[1])
+            num_writes += float(cols[1])
             print("\tWrites: " + str(num_writes))
+            if "pim" in cols[0]:
+                pim_writes += float(cols[1])
+            else:
+                cpu_writes += float(cols[1])
+
+        # For CACTI ng estimation
+        #if "total_readRowHits" in cols[0]:
+        #    read_hits += float(cols[1]) 
+        #    print("\tRead row hits: " + str(read_hits))
+        #if "total_writeRowHits" in cols[0]:
+        #    write_hits += float(cols[1])
+        #    print("\tWrites: " + str(write_hits))
 
         if "activations" in cols[0]:
             num_act_pre += float(cols[1])  
@@ -101,6 +126,10 @@ for line in stat_lines[::-1]:
 
         if "total_refreshEnergy" in cols[0]:
             gem5_refr_total += float(cols[1])/1e12  
+
+        if cols[0] == "system.l2.ReadReq_accesses::total" or cols[0] == "system.l2.Writeback_accesses::total":
+            l2_accesses += float(cols[1]) 
+
 
 # Compare cacti versus gem5 stats per-operation energy
 print("in nJ:")
@@ -142,8 +171,8 @@ for line in mcpat_lines:
 
 #print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
 print("\tCPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
-mcpat_energy = watts * sim_seconds
-total_energy += mcpat_energy
+cpu_energy = watts * sim_seconds
+total_energy += cpu_energy
 
 ######################################################################################################
 
@@ -167,8 +196,9 @@ for line in mcpat_lines:
 
 #print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
 print("\tPim core energy = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
-mcpat_energy = watts * sim_seconds
-total_energy += mcpat_energy
+if watts > 0: 
+    pim_energy = watts * sim_seconds
+    total_energy += pim_energy
 
 ######################################################################################################
 # Comparing CACTI estimation of DRAM energy vs. gem5 - not including refresh or background
@@ -176,6 +206,14 @@ total_energy += mcpat_energy
 cacti_energy = (read_hits * cacti_read + (num_reads - read_hits) * (cacti_act + cacti_read + cacti_pre) + \
                write_hits * cacti_write + (num_writes - write_hits) * (cacti_act + cacti_write + cacti_pre)) \
                / 1e9    # energy per operation is in nJ from CACTI 
+print read_hits
+print write_hits
+print cacti_read
+print cacti_write
+print num_reads
+print num_writes
+print cacti_act
+print cacti_pre
 
 ######################################################################################################
 
@@ -185,18 +223,24 @@ print("\tAverage power is " + str(power) + " J. ")
 
 result_file = open(str(sys.argv[4]), 'a')
 result_file.write('%.4f' % power + "\t")
-result_file.write('%.4f' % total_energy + "\t")
 result_file.write('%.4f' % sim_seconds + "\t")
+result_file.write('%.4f' % total_energy + "\t")
 
-result_file.write('%.4f' % mcpat_energy + "\t")
-result_file.write('%.4f' % cacti_energy + "\t")
-result_file.write('%.6f' % activ_rw_prech + "\t")
-result_file.write('%.4f' % gem5_refr_total + "\t")
-result_file.write('%.4f' % act_pre_back + "\t")
+#result_file.write('%.4f' % mcpat_energy + "\t")
+#result_file.write('%.6f' % activ_rw_prech + "\t")
+#result_file.write('%.4f' % gem5_refr_total + "\t")
+#result_file.write('%.4f' % act_pre_back + "\t")
+result_file.write('%.6f' % cpu_energy + "\t")
+result_file.write('%.6f' % pim_energy + "\t")
 
-result_file.write('%.0f' % num_reads + "\t")
-result_file.write('%.0f' % num_writes + "\t")
+result_file.write('%.0f' % cpu_reads + "\t")
+result_file.write('%.0f' % pim_reads + "\t")
+result_file.write('%.0f' % cpu_writes + "\t")
+result_file.write('%.0f' % pim_writes + "\t")
+#result_file.write('%.0f' % num_reads + "\t")
+#result_file.write('%.0f' % num_writes + "\t")
 result_file.write('%.0f' % num_act_pre + "\t")
+result_file.write('%.0f' % l2_accesses + "\t")
 
 result_file.write("\n")
 result_file.close()

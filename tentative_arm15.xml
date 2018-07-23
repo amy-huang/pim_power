@@ -57,7 +57,7 @@
 			<param name="instruction_window_scheme" value="0"/>
 			<param name="instruction_window_size" value="20"/>
 			<param name="fp_instruction_window_size" value="15"/>
-			<param name="ROB_size" value="0"/>
+			<param name="ROB_size" value="60"/>
 			<param name="archi_Regs_IRF_size" value="32"/>			
 			<param name="archi_Regs_FRF_size" value="32"/>
 			<param name="phy_Regs_IRF_size" value="64"/>
@@ -158,7 +158,7 @@
 				<stat name="write_misses" value="stats.system.cpu.dcache.write_misses"/>
 				<stat name="conflicts" value="0"/>
 			</component>
-			<param name="number_of_BTB" value="2"/>
+			<param name="number_of_BTB" value="0"/>
 			<component id="system.core0.BTB" name="BTB">
 				<param name="BTB_config" value="4096,4,2,2,1,1"/> 
 				<stat name="read_accesses" value="0"/>
@@ -194,9 +194,9 @@
 			    <stat name="duty_cycle" value="0.1"/>	
 		</component>
 		<component id="system.L20" name="L20">
-				<param name="L2_config" value="1048576,32,8,8,8,23,32,1"/> 
+				<param name="L2_config" value="2048000,32,16,8,8,8,32,1"/> 
 				<param name="buffer_sizes" value="16,16,16,16"/>
-				<param name="clockrate" value="3400"/>
+				<param name="clockrate" value="2000"/>
 				<param name="ports" value="1,1,1"/>
 				<param name="device_type" value="0"/>
 			<stat name="read_accesses" value="stats.system.l2.ReadReq_accesses::total"/>
