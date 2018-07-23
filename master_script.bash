@@ -31,7 +31,7 @@ pim_or_host=$6
 experiment=$7
 
 # Add column headers to result file that only has numbers
-echo "Power Seconds Total_NG CPU_NG PIM_NG CPU_reads PIM_reads CPU_writes PIM_writes Acts/Pres L2_accesses" > $experiment-$pim_or_host.tsv
+echo "Power Seconds Total_NG CPU_NG PIM_NG CPU_reads PIM_reads CPU_writes PIM_writes Acts/Pres L2_accesses readsFrmP writesToP" > $experiment-$pim_or_host.tsv
 
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads

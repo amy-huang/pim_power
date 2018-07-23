@@ -68,6 +68,9 @@ cpu_writes = 0
 read_hits = 0
 write_hits = 0
 
+reads_from_pim = 0
+writes_to_pim = 0
+
 # TODO: could be interesting to look at interconnect accesses, committed instructions, memory accesses
 for line in stat_lines[::-1]:
     cols = line.split()
@@ -76,6 +79,11 @@ for line in stat_lines[::-1]:
 	        sim_seconds = float(cols[1])
 	        print("\tSeconds simulated: " + str(sim_seconds) + " s")
 
+        if "reads_from_pim" in cols[0]:
+            reads_from_pim += float(cols[1])  
+
+        if "writes_from_pim" in cols[0]:
+            writes_to_pim += float(cols[1])  
 
         if "total_reads" in cols[0]:
             num_reads += float(cols[1])
@@ -84,7 +92,6 @@ for line in stat_lines[::-1]:
                 pim_reads += float(cols[1])
             else:
                 cpu_reads += float(cols[1])
-
 
         if "total_writes" in cols[0]:
             num_writes += float(cols[1])
@@ -241,6 +248,8 @@ result_file.write('%.0f' % pim_writes + "\t")
 #result_file.write('%.0f' % num_writes + "\t")
 result_file.write('%.0f' % num_act_pre + "\t")
 result_file.write('%.0f' % l2_accesses + "\t")
+result_file.write('%.0f' % reads_from_pim + "\t")
+result_file.write('%.0f' % writes_to_pim + "\t")
 
 result_file.write("\n")
 result_file.close()

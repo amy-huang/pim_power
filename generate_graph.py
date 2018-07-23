@@ -13,8 +13,8 @@ if len(sys.argv) < 4:
 graph_colors = ['m', 'b', 'r', 'c', 'g', 'y', 'k']
 thread_nums = [2, 4, 6, 8]
 data = {}
-col_headers = "Power Execution-Time Total-Energy Host-McPAT-Energy PIM-McPAT-Energy Host-Reads PIM-Reads Host-Writes PIM-Writes Activations-and-Precharges L2-Accesses".split()
-y_labels = "Watts Seconds Energy-in-Joules Energy-in-Joules Energy-in-Joules Amount Amount Amount Amount Amount Amount".split()
+col_headers = "Power Execution-Time Total-Energy Host-McPAT-Energy PIM-McPAT-Energy Host-Reads PIM-Reads Host-Writes PIM-Writes Activations-and-Precharges L2-Accesses Host-Reads-From-PIM-Cores Host-Writes-To-PIM-Cores".split()
+y_labels = "Watts Seconds Energy-in-Joules Energy-in-Joules Energy-in-Joules Amount Amount Amount Amount Amount Amount Amount Amount".split()
 
 experiment = sys.argv[1]
 num_tsvs = (len(sys.argv) - 2)/2
