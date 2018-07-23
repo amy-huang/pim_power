@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ $# -ne 2 ] 
+    then 
+     echo "usage: <preparation time stamp> <execution time stamp>"
+     exit 1
+fi
+
+
 #################################################################################################################
 # For each number of threads in {2 4 6 8}, the master script greps lines of the 2 relevant timestamps into below.
 newstats=./cut_stats.txt
@@ -103,6 +110,18 @@ sum  [0-9].num_writes::total    system.mem_ctrls.total_writes        system.pim_
 sum  bytesPerActivate::samples  system.mem_ctrls.activations         system.pim_vault_ctrls.activations
 sum  readRowHits                system.mem_ctrls.total_readRowHits   system.pim_vault_ctrls.total_readRowHits
 sum  writeRowHits               system.mem_ctrls.total_writeRowHits  system.pim_vault_ctrls.total_writeRowHits
+
+sum  smcxbar.trans_dist::ReadReq system.smcxbar.reads_from_pim
+sum  smcxbar.trans_dist::WriteReq system.smcxbar.writes_to_pim
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys0 not_applicable system.smcxbar.pkts_to_pim_sys0
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys1 not_applicable system.smcxbar.pkts_to_pim_sys1
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys2 not_applicable system.smcxbar.pkts_to_pim_sys2
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys3 not_applicable system.smcxbar.pkts_to_pim_sys3
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys4 not_applicable system.smcxbar.pkts_to_pim_sys4
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys5 not_applicable system.smcxbar.pkts_to_pim_sys5
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys6 not_applicable system.smcxbar.pkts_to_pim_sys6
+sum smcxbar.pkt_count_system.seriallink[0-9].master::system.pim_sys7 not_applicable system.smcxbar.pkts_to_pim_sys7
+
 #################################################################################################################
 # Further cleaning
 
