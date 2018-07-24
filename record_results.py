@@ -224,7 +224,7 @@ print("\tAverage power is " + str(power) + " J. ")
 result_file = open(str(sys.argv[4]), 'a')
 result_file.write('%.4f' % power + "\t")
 #result_file.write('%.4f' % sim_seconds + "\t")
-result_file.write('%.4f' % total_energy + "\t")
+result_file.write('%.6f' % total_energy + "\t")
 
 #result_file.write('%.4f' % mcpat_energy + "\t")
 #result_file.write('%.6f' % activ_rw_prech + "\t")

@@ -1,0 +1,5 @@
+Power   Total_NG  CPU_NG    PIM_NG    CPU_reads  PIM_reads  CPU_writes  PIM_writes  Acts/Pres  L2_accesses  readsFrmP  writesToP
+7.6842  0.0446    0.015690  0.000000  80         0          52          0           156        11941        44         1
+7.6838  0.0373    0.013122  0.000000  242        0          145         0           430        10846        119        1
+7.6842  0.0327    0.011496  0.000000  72         0          79          0           179        8234         7          1
+7.6855  0.0302    0.010620  0.000000  104        0          84          0           219        8034         11         1
