@@ -240,7 +240,7 @@
 			<param name="mc_clock" value="1250"/>
 			<param name="peak_transfer_rate" value="10500"/>
 			<param name="block_size" value="64"/>
-			<param name="number_mcs" value="16"/>
+			<param name="number_mcs" value="8"/>
 			<param name="memory_channels_per_mc" value="1"/>
 			<param name="number_ranks" value="8"/>
 			<param name="req_window_size_per_channel" value="32"/>

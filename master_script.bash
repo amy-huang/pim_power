@@ -31,7 +31,7 @@ pim_or_host=$6
 experiment=$7
 
 # Add column headers to result file that only has numbers
-echo "Power Seconds Total_NG CPU_NG PIM_NG CPU_reads PIM_reads CPU_writes PIM_writes Acts/Pres L2_accesses readsFrmP writesToP" > $experiment-$pim_or_host.tsv
+echo "Power Total_NG CPU_NG PIM_NG CPU_reads PIM_reads CPU_writes PIM_writes Acts/Pres L2_accesses readsFrmP writesToP" > $experiment-$pim_or_host.tsv
 
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads
@@ -48,12 +48,12 @@ do
 
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
 	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt $config_path $cpu_xml
-	echo "Running McPAT - energy for cores, caches, interconnects"
+	echo "Running McPAT - energy for host cores, caches, interconnects, memory controllers"
 	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_cpu_power.txt
 	
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
 	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $pim_xml
-	echo "Running McPAT - energy for cores, caches, interconnects"
+	echo "Running McPAT - energy for pim cores, memory controllers"
 	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_pim_power.txt
 
     echo "Writing detailed results to $num_threads-$pim_or_host-results.txt and just numbers to $experiment-$pim_or_host.tsv"

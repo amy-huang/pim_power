@@ -3,10 +3,10 @@
 		<param name="number_of_cores" value="8"/>
 		<param name="number_of_L1Directories" value="0"/>
 		<param name="number_of_L2Directories" value="0"/>
-		<param name="number_of_L2s" value="1"/>
+		<param name="number_of_L2s" value="0"/>
 		<param name="Private_L2" value="0"/>
 		<param name="number_of_L3s" value="0"/>
-		<param name="number_of_NoCs" value="1"/>
+		<param name="number_of_NoCs" value="0"/>
 		<param name="homogeneous_cores" value="1"/>
 		<param name="homogeneous_L2s" value="1"/>
 		<param name="homogeneous_L1Directories" value="1"/>
@@ -240,16 +240,16 @@
 			<param name="mc_clock" value="1250"/>
 			<param name="peak_transfer_rate" value="10500"/>
 			<param name="block_size" value="64"/>
-			<param name="number_mcs" value="16"/>
+			<param name="number_mcs" value="8"/>
 			<param name="memory_channels_per_mc" value="1"/>
 			<param name="number_ranks" value="8"/>
 			<param name="req_window_size_per_channel" value="32"/>
 			<param name="IO_buffer_size_per_channel" value="32"/>
 			<param name="databus_width" value="128"/>
 			<param name="addressbus_width" value="51"/>
-			<stat name="memory_accesses" value="system.mem_ctrls.total_reads+system.mem_ctrls.total_writes"/>
-			<stat name="memory_reads" value="system.mem_ctrls.total_reads"/>
-			<stat name="memory_writes" value="system.mem_ctrls.total_writes"/>
+			<stat name="memory_accesses" value="stats.system.pim_vault_ctrls.total_reads+stats.system.pim_vault_ctrls.total_writes"/>
+			<stat name="memory_reads" value="stats.system.pim_vault_ctrls.total_reads"/>
+			<stat name="memory_writes" value="stats.system.pim_vault_ctrls.total_writes"/>
 			<param name="withPHY" value="1"/>
 		</component>
 		<component id="system.niu" name="niu">

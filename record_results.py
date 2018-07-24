@@ -82,7 +82,7 @@ for line in stat_lines[::-1]:
         if "reads_from_pim" in cols[0]:
             reads_from_pim += float(cols[1])  
 
-        if "writes_from_pim" in cols[0]:
+        if "writes_to_pim" in cols[0]:
             writes_to_pim += float(cols[1])  
 
         if "total_reads" in cols[0]:
@@ -183,7 +183,7 @@ total_energy += cpu_energy
 
 ######################################################################################################
 
-print("Getting pim core McPAT numbers")
+print("Getting pim core and memory controller McPAT numbers")
 mcpat_file = open(str(sys.argv[2]), 'r') 
 mcpat_lines = mcpat_file.readlines()
 mcpat_file.close()
@@ -203,6 +203,7 @@ for line in mcpat_lines:
 
 #print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
 print("\tPim core energy = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
+pim_energy = 0
 if watts > 0: 
     pim_energy = watts * sim_seconds
     total_energy += pim_energy
@@ -213,14 +214,6 @@ if watts > 0:
 cacti_energy = (read_hits * cacti_read + (num_reads - read_hits) * (cacti_act + cacti_read + cacti_pre) + \
                write_hits * cacti_write + (num_writes - write_hits) * (cacti_act + cacti_write + cacti_pre)) \
                / 1e9    # energy per operation is in nJ from CACTI 
-print read_hits
-print write_hits
-print cacti_read
-print cacti_write
-print num_reads
-print num_writes
-print cacti_act
-print cacti_pre
 
 ######################################################################################################
 
@@ -230,7 +223,7 @@ print("\tAverage power is " + str(power) + " J. ")
 
 result_file = open(str(sys.argv[4]), 'a')
 result_file.write('%.4f' % power + "\t")
-result_file.write('%.4f' % sim_seconds + "\t")
+#result_file.write('%.4f' % sim_seconds + "\t")
 result_file.write('%.4f' % total_energy + "\t")
 
 #result_file.write('%.4f' % mcpat_energy + "\t")
