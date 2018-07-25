@@ -50,6 +50,7 @@ num_writes = 0
 num_act_pre = 0
 
 total_energy = 0
+
 gem5_act_total = 0
 gem5_read_total = 0
 gem5_write_total = 0
@@ -57,12 +58,26 @@ gem5_pre_total = 0
 gem5_act_back_total = 0
 gem5_pre_back_total = 0
 gem5_refr_total = 0
-l2_accesses = 0
+pim_act_total = 0
+pim_read_total = 0
+pim_write_total = 0
+pim_pre_total = 0
+pim_act_back_total = 0
+pim_pre_back_total = 0
+pim_refr_total = 0
+host_act_total = 0
+host_read_total = 0
+host_write_total = 0
+host_pre_total = 0
+host_act_back_total = 0
+host_pre_back_total = 0
+host_refr_total = 0
 
 pim_reads = 0
 pim_writes = 0
-cpu_reads = 0
-cpu_writes = 0
+host_reads = 0
+host_writes = 0
+l2_accesses = 0
 
 # Row buffer; used for cacti estimation energy
 read_hits = 0
@@ -81,7 +96,6 @@ for line in stat_lines[::-1]:
 
         if "reads_from_pim" in cols[0]:
             reads_from_pim += float(cols[1])  
-
         if "writes_to_pim" in cols[0]:
             writes_to_pim += float(cols[1])  
 
@@ -89,17 +103,17 @@ for line in stat_lines[::-1]:
             num_reads += float(cols[1])
             print("\tReads: " + str(num_reads))
             if "pim" in cols[0]:
-                pim_reads += float(cols[1])
+                pim_reads = float(cols[1])
             else:
-                cpu_reads += float(cols[1])
+                host_reads = float(cols[1])
 
         if "total_writes" in cols[0]:
             num_writes += float(cols[1])
             print("\tWrites: " + str(num_writes))
             if "pim" in cols[0]:
-                pim_writes += float(cols[1])
+                pim_writes = float(cols[1])
             else:
-                cpu_writes += float(cols[1])
+                host_writes = float(cols[1])
 
         # For CACTI ng estimation
         #if "total_readRowHits" in cols[0]:
@@ -111,39 +125,70 @@ for line in stat_lines[::-1]:
 
         if "activations" in cols[0]:
             num_act_pre += float(cols[1])  
+            if "pim" in cols[0]:
+                pim_act_pre = float(cols[1])
+            else:
+                host_act_pre = float(cols[1])
 
         if "total_actEnergy" in cols[0]:
             gem5_act_total += float(cols[1])/1e12 # Stats file records energy in pJ (1E-12 J)
+            if "pim" in cols[0]:
+                pim_act_total += float(cols[1])/1e12
+            else:
+                host_act_total += float(cols[1])/1e12
 
         if "total_readEnergy" in cols[0]:
             gem5_read_total += float(cols[1])/1e12
+            if "pim" in cols[0]:
+                pim_read_total += float(cols[1])/1e12
+            else:
+                host_read_total += float(cols[1])/1e12
 
         if "total_writeEnergy" in cols[0]:
             gem5_write_total += float(cols[1])/1e12
-            print("\tWrite ng: " + str(float(cols[1])/1e12))
+            if "pim" in cols[0]:
+                pim_write_total += float(cols[1])/1e12
+            else:
+                host_write_total += float(cols[1])/1e12
 
         if "total_preEnergy" in cols[0]:
             gem5_pre_total += float(cols[1])/1e12
+            if "pim" in cols[0]:
+                pim_pre_total += float(cols[1])/1e12
+            else:
+                host_pre_total += float(cols[1])/1e12
 
         if "total_actBackEnergy" in cols[0]:
             gem5_act_back_total += float(cols[1])/1e12
+            if "pim" in cols[0]:
+                pim_act_back_total += float(cols[1])/1e12
+            else:
+                host_act_back_total += float(cols[1])/1e12
 
         if "total_preBackEnergy" in cols[0]:
             gem5_pre_back_total += float(cols[1])/1e12
+            if "pim" in cols[0]:
+                pim_pre_back_total += float(cols[1])/1e12
+            else:
+                host_pre_back_total += float(cols[1])/1e12
 
         if "total_refreshEnergy" in cols[0]:
             gem5_refr_total += float(cols[1])/1e12  
+            if "pim" in cols[0]:
+                pim_refr_total += float(cols[1])/1e12
+            else:
+                host_refr_total += float(cols[1])/1e12
 
         if cols[0] == "system.l2.ReadReq_accesses::total" or cols[0] == "system.l2.Writeback_accesses::total":
             l2_accesses += float(cols[1]) 
 
 
 # Compare cacti versus gem5 stats per-operation energy
-print("in nJ:")
-print("\tCacti per read: " + str(cacti_read) + "\t\tgem5 per read: " + str(gem5_read_total*1e9/num_reads))
-print("\tCacti per write: " + str(cacti_write) + "\t\tgem5 per write: " + str(gem5_write_total*1e9/num_writes))
-print("\tCacti per activation: " + str(cacti_act) + "\t\tgem5 per activation: " + str(gem5_act_total*1e9/num_act_pre))
-print("\tCacti per precharge: " + str(cacti_pre) + "\t\tgem5 per precharge: " + str(gem5_pre_total*1e9/num_act_pre))
+#print("in nJ:")
+#print("\tCacti per read: " + str(cacti_read) + "\t\tgem5 per read: " + str(gem5_read_total*1e9/num_reads))
+#print("\tCacti per write: " + str(cacti_write) + "\t\tgem5 per write: " + str(gem5_write_total*1e9/num_writes))
+#print("\tCacti per activation: " + str(cacti_act) + "\t\tgem5 per activation: " + str(gem5_act_total*1e9/num_act_pre))
+#print("\tCacti per precharge: " + str(cacti_pre) + "\t\tgem5 per precharge: " + str(gem5_pre_total*1e9/num_act_pre))
 
 # Compare total energy by type of operation
 activ_rw_prech = gem5_act_total + gem5_read_total + gem5_write_total + gem5_pre_total
@@ -156,30 +201,41 @@ total_energy += activ_rw_prech
 total_energy += gem5_refr_total 
 total_energy += act_pre_back
 
+pim_mem_energy = pim_refr_total + pim_pre_back_total + pim_act_back_total + pim_pre_total + pim_write_total + pim_read_total + pim_act_total 
+host_mem_energy = host_refr_total + host_pre_back_total + host_act_back_total + host_pre_total + host_write_total + host_read_total + host_act_total 
+
+######################################################################################################
+# For both host and PIM McPAT outputs
+power_types = ["Processor", "Total Cores", "Total L2s", "Total NoCs (Network/Bus)", "Total MCs"]
+name = "no name"
 ######################################################################################################
 
-print("Getting cpu core, cache, interconnect, and memory controller McPAT numbers")
+print("Getting host core, cache, interconnect, and memory controller McPAT numbers")
 mcpat_file = open(str(sys.argv[1]), 'r') 
 mcpat_lines = mcpat_file.readlines()
 mcpat_file.close()
 
 watts = 0
+host_power_data = {}
 
 # Finds first Gate Leakage and Runtime Dynamic power entries, which are for the whole system
 for line in mcpat_lines:
-    words = line.split()
-    if len(words) and words[0] == "Gate":
-        #print("\tCore, cache and interconnect gate leakage: " + words[3] + " W")
-        watts += float(words[3])
-    if len(words) and words[0] == "Runtime":
-        #print("\tCore, cache and interconnect runtime dynamic: " + words[3] + " W")
-        watts += float(words[3])
-        break
+    if ':' in line:
+        name = line.strip().split(':')[0]
+    if "Subthreshold Leakage" in line:
+        host_power_data[name] = float(line.split()[3])
+    if "Gate Leakage" in line:
+        host_power_data[name] += float(line.split()[3])
+    if "Runtime Dynamic" in line:
+        host_power_data[name] += float(line.split()[3])
+        if "Total MCs" in name:
+            break
 
-#print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
+print host_power_data
+watts = sum(host_power_data.values()) / 2
 print("\tCPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
-cpu_energy = watts * sim_seconds
-total_energy += cpu_energy
+host_energy = watts * sim_seconds
+total_energy += host_energy
 
 ######################################################################################################
 
@@ -189,19 +245,23 @@ mcpat_lines = mcpat_file.readlines()
 mcpat_file.close()
 
 watts = 0
+pim_power_data = {}
 
 # Finds first Gate Leakage and Runtime Dynamic power entries, which are for the whole system
 for line in mcpat_lines:
-    words = line.split()
-    if len(words) and words[0] == "Gate":
-        #print("\tCore, cache and interconnect gate leakage: " + words[3] + " W")
-        watts += float(words[3])
-    if len(words) and words[0] == "Runtime":
-        #print("\tCore, cache and interconnect runtime dynamic: " + words[3] + " W")
-        watts += float(words[3])
-        break
+    if ':' in line:
+        name = line.strip().split(':')[0]
+    if "Subthreshold Leakage" in line:
+        pim_power_data[name] = float(line.split()[3])
+    if "Gate Leakage" in line:
+        pim_power_data[name] += float(line.split()[3])
+    if "Runtime Dynamic" in line:
+        pim_power_data[name] += float(line.split()[3])
+        if "Total MCs" in name:
+            break
 
-#print("\tCore, cache and interconnect total watts: " + str(watts) + " W")
+print pim_power_data
+watts = sum(pim_power_data.values()) / 2
 print("\tPim core energy = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
 pim_energy = 0
 if watts > 0: 
@@ -222,28 +282,54 @@ power = total_energy/sim_seconds
 print("\tAverage power is " + str(power) + " J. ")
 
 result_file = open(str(sys.argv[4]), 'a')
-result_file.write('%.4f' % power + "\t")
-#result_file.write('%.4f' % sim_seconds + "\t")
-result_file.write('%.6f' % total_energy + "\t")
 
-#result_file.write('%.4f' % mcpat_energy + "\t")
-#result_file.write('%.6f' % activ_rw_prech + "\t")
-#result_file.write('%.4f' % gem5_refr_total + "\t")
-#result_file.write('%.4f' % act_pre_back + "\t")
-result_file.write('%.6f' % cpu_energy + "\t")
+# Total power and energy
+result_file.write('%.6f' % total_energy + "\t")
+result_file.write('%.6f' % host_energy + "\t")
 result_file.write('%.6f' % pim_energy + "\t")
 
-result_file.write('%.0f' % cpu_reads + "\t")
+# Power for non-memory components
+result_file.write('%.4f' % power + "\t")
+result_file.write('%.6f' % host_power_data["Processor"] + "\t")
+result_file.write('%.6f' % pim_power_data["Processor"] + "\t")
+result_file.write('%.6f' % host_power_data["Total Cores"] + "\t")
+result_file.write('%.6f' % pim_power_data["Total Cores"] + "\t")
+result_file.write('%.6f' % host_power_data["Total MCs"] + "\t")
+result_file.write('%.6f' % pim_power_data["Total MCs"] + "\t")
+result_file.write('%.6f' % host_power_data["Total L2s"] + "\t")
+result_file.write('%.6f' % host_power_data["Total NoCs (Network/Bus)"] + "\t")
+
+# DRAM - host main memory and PIM vault stats
+result_file.write('%.0f' % num_reads + "\t")
+result_file.write('%.0f' % host_reads + "\t")
 result_file.write('%.0f' % pim_reads + "\t")
-result_file.write('%.0f' % cpu_writes + "\t")
+result_file.write('%.0f' % num_writes + "\t")
+result_file.write('%.0f' % host_writes + "\t")
 result_file.write('%.0f' % pim_writes + "\t")
-#result_file.write('%.0f' % num_reads + "\t")
-#result_file.write('%.0f' % num_writes + "\t")
 result_file.write('%.0f' % num_act_pre + "\t")
-result_file.write('%.0f' % l2_accesses + "\t")
+result_file.write('%.0f' % host_act_pre + "\t")
+result_file.write('%.0f' % pim_act_pre + "\t")
+result_file.write('%.6f' % (host_mem_energy + pim_mem_energy) + "\t")
+result_file.write('%.6f' % host_mem_energy + "\t")
+result_file.write('%.6f' % pim_mem_energy + "\t")
+result_file.write('%.6f' % host_act_total + "\t")
+result_file.write('%.6f' % pim_act_total + "\t")
+result_file.write('%.6f' % host_read_total + "\t")
+result_file.write('%.6f' % pim_read_total + "\t")
+result_file.write('%.6f' % host_write_total + "\t")
+result_file.write('%.6f' % pim_write_total + "\t")
+result_file.write('%.6f' % host_pre_total + "\t")
+result_file.write('%.6f' % pim_pre_total + "\t")
+result_file.write('%.6f' % host_act_back_total + "\t")
+result_file.write('%.6f' % pim_act_back_total + "\t")
+result_file.write('%.6f' % host_pre_back_total + "\t")
+result_file.write('%.6f' % pim_pre_back_total + "\t")
+
 result_file.write('%.0f' % reads_from_pim + "\t")
 result_file.write('%.0f' % writes_to_pim + "\t")
 
+result_file.write("\n")
+result_file.write("\n")
 result_file.write("\n")
 result_file.close()
 

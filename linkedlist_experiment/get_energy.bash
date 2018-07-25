@@ -17,5 +17,5 @@ mv *-hostLL* linkedlist_experiment
 ./master_script.bash arm15_HostCPUs-PIM.xml arm15_PimCPUs.xml linkedlist_experiment/pim-config.json linkedlist_experiment/pim-stats.txt cacti-out.txt pim linkedlist_experiment
 mv *-pim* linkedlist_experiment
 
-python generate_graph.py Linked-List Host-Flat-Combine linkedlist_experiment/linkedlist_experiment-hostFC.tsv Host-Lazy-Lock linkedlist_experiment/linkedlist_experiment-hostLL.tsv PIM linkedlist_experiment/linkedlist_experiment-pim.tsv
-mv *.png linkedlist_experiment
+#python generate_graph.py Linked-List Host-Flat-Combine linkedlist_experiment/linkedlist_experiment-hostFC.tsv Host-Lazy-Lock linkedlist_experiment/linkedlist_experiment-hostLL.tsv PIM linkedlist_experiment/linkedlist_experiment-pim.tsv
+#mv *.png linkedlist_experiment
