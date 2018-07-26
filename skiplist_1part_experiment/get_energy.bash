@@ -12,5 +12,7 @@ mv *-host* $exp
 ./master_script.bash arm15_HostCPUs-PIM.xml arm15_PimCPUs.xml $exp/pim-config.json $exp/pim-stats.txt cacti-out.txt pim $exp
 mv *-pim* $exp
 
-python generate_graph.py Skiplist Host $exp/$exp-host.tsv Pim $exp/$exp-pim.tsv
-mv *.png $exp
+mv ${exp}.tsv $exp 
+
+#python generate_graph.py Skiplist Host $exp/$exp-host.tsv Pim $exp/$exp-pim.tsv
+#mv *.png $exp

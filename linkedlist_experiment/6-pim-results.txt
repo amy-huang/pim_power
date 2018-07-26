@@ -1,4 +1,3 @@
-Getting CACTI numbers
 	Calculating hybrid memory cube energy using memory access stats
 	Writes: 448.0
 	Writes: 542.0

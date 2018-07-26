@@ -1,29 +1,21 @@
-Getting CACTI numbers
 	Calculating hybrid memory cube energy using memory access stats
 	Writes: 0.0
 	Writes: 79.0
 	Reads: 0.0
 	Reads: 72.0
 	Seconds simulated: 0.004254 s
-	Write ng: 0.0
-	Write ng: 0.0
-	Write ng: 7.499464704e-05
-	Write ng: -7.472922624e-05
-in nJ:
-	Cacti per read: 1.8637		gem5 per read: 3.9936
-	Cacti per write: 1.86394		gem5 per write: 3.35975696203
-	Cacti per activation: 0.931097		gem5 per activation: 0.6048
-	Cacti per precharge: 0.298999		gem5 per precharge: 0.408
 	Stats reported total energy activ/RW/prech: 7.342512e-07
 	Stats reported total energy act/pre background: 0.0165016193914
 	Stats reported total energy refr: 0.00468997349376
 	Total stats reported energy (used this for total energy): 0.0211923271363
-Getting cpu core, cache, interconnect, and memory controller McPAT numbers
-	CPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  2.7024571 * 0.004254 = 0.0114962525034 J
+Getting host core, cache, interconnect, and memory controller McPAT numbers
+{'Total Cores': 0.0820009, 'Total NoCs (Network/Bus)': 0.001073128, 'Total MCs': 2.66694899, 'Processor': 2.8612161, 'Total L2s': 0.1111979083}
+	CPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  2.86121851315 * 0.004254 = 0.0121716235549 J
 Getting pim core and memory controller McPAT numbers
+{'Total Cores': nan, 'Total MCs': nan, 'Processor': nan}
 	Pim core energy = Watts * seconds =  nan * 0.004254 = nan J
-	Total energy is 0.0326885796397 J. 
-	Average power is 7.68419831681 J. 
+	Total energy is 0.0333639506913 J. 
+	Average power is 7.84295972996 J. 
 McPAT (version 1.2 of June, 2014) is computing the target processor...
  
 

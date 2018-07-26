@@ -29,6 +29,8 @@ mv *-pim_small_on* $exp
 rename -v 's/-pim/-pim_small_onoff/' ./*
 mv *-pim_small_onoff* $exp
 
+mv ${exp}.tsv $exp
+
 #TODO: adapt for queue
 #python generate_graph.py Skiplist Host $exp/$exp-host.tsv Pim $exp/$exp-pim.tsv
 #mv *.png $exp

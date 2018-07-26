@@ -8,34 +8,34 @@ if len(sys.argv) != 5:
     exit(0)
 
 ######################################################################################################
-
-print("Getting CACTI numbers")
-
-cacti_file = open(str(sys.argv[3]), 'r') 
-cacti_lines = cacti_file.readlines()
-cacti_file.close()
-
-cacti_read = 0
-cacti_write = 0
-cacti_act = 0
-cacti_pre = 0
-
-for line in cacti_lines:
-    # Ignore whitespace at beginning of lines
-    while line[0] == '\t' or line[0] == ' ':
-        line = line[1:]
-    
-    cols = line.split(':')
-
-    if cols[0] == "Read energy": 
-        cacti_read = float(cols[1].split()[0])
-    if cols[0] == "Write energy": 
-        cacti_write = float(cols[1].split()[0])
-    if cols[0] == "Activation energy": 
-        cacti_act = float(cols[1].split()[0])
-    if cols[0] == "Precharge energy": 
-        cacti_pre = float(cols[1].split()[0])
-
+#
+#print("Getting CACTI numbers")
+#
+#cacti_file = open(str(sys.argv[3]), 'r') 
+#cacti_lines = cacti_file.readlines()
+#cacti_file.close()
+#
+#cacti_read = 0
+#cacti_write = 0
+#cacti_act = 0
+#cacti_pre = 0
+#
+#for line in cacti_lines:
+#    # Ignore whitespace at beginning of lines
+#    while line[0] == '\t' or line[0] == ' ':
+#        line = line[1:]
+#    
+#    cols = line.split(':')
+#
+#    if cols[0] == "Read energy": 
+#        cacti_read = float(cols[1].split()[0])
+#    if cols[0] == "Write energy": 
+#        cacti_write = float(cols[1].split()[0])
+#    if cols[0] == "Activation energy": 
+#        cacti_act = float(cols[1].split()[0])
+#    if cols[0] == "Precharge energy": 
+#        cacti_pre = float(cols[1].split()[0])
+#
 ######################################################################################################
 
 print("\tCalculating hybrid memory cube energy using memory access stats")
@@ -80,8 +80,8 @@ host_writes = 0
 l2_accesses = 0
 
 # Row buffer; used for cacti estimation energy
-read_hits = 0
-write_hits = 0
+#read_hits = 0
+#write_hits = 0
 
 reads_from_pim = 0
 writes_to_pim = 0
@@ -270,11 +270,11 @@ if watts > 0:
 
 ######################################################################################################
 # Comparing CACTI estimation of DRAM energy vs. gem5 - not including refresh or background
-
-cacti_energy = (read_hits * cacti_read + (num_reads - read_hits) * (cacti_act + cacti_read + cacti_pre) + \
-               write_hits * cacti_write + (num_writes - write_hits) * (cacti_act + cacti_write + cacti_pre)) \
-               / 1e9    # energy per operation is in nJ from CACTI 
-
+#
+#cacti_energy = (read_hits * cacti_read + (num_reads - read_hits) * (cacti_act + cacti_read + cacti_pre) + \
+#               write_hits * cacti_write + (num_writes - write_hits) * (cacti_act + cacti_write + cacti_pre)) \
+#               / 1e9    # energy per operation is in nJ from CACTI 
+#
 ######################################################################################################
 
 print("\tTotal energy is " + str(total_energy) + " J. ")
@@ -283,23 +283,33 @@ print("\tAverage power is " + str(power) + " J. ")
 
 result_file = open(str(sys.argv[4]), 'a')
 
-# Total power and energy
+# Energy breakdowns
 result_file.write('%.6f' % total_energy + "\t")
-result_file.write('%.6f' % host_energy + "\t")
-result_file.write('%.6f' % pim_energy + "\t")
+result_file.write('%.6f' % (host_power_data["Total Cores"] * sim_seconds) + "\t")
+result_file.write('%.6f' % (pim_power_data["Total Cores"] * sim_seconds) + "\t")
+result_file.write('%.6f' % (host_power_data["Total MCs"] * sim_seconds) + "\t")
+result_file.write('%.6f' % (pim_power_data["Total MCs"] * sim_seconds) + "\t")
+result_file.write('%.6f' % (host_mem_energy) + "\t")
+result_file.write('%.6f' % (pim_mem_energy) + "\t")
+result_file.write('%.6f' % (host_power_data["Total L2s"] * sim_seconds) + "\t")
+result_file.write('%.6f' % (host_power_data["Total NoCs (Network/Bus)"] * sim_seconds) + "\t")
 
-# Power for non-memory components
+# Power breakdowns 
 result_file.write('%.4f' % power + "\t")
-result_file.write('%.6f' % host_power_data["Processor"] + "\t")
-result_file.write('%.6f' % pim_power_data["Processor"] + "\t")
 result_file.write('%.6f' % host_power_data["Total Cores"] + "\t")
 result_file.write('%.6f' % pim_power_data["Total Cores"] + "\t")
 result_file.write('%.6f' % host_power_data["Total MCs"] + "\t")
 result_file.write('%.6f' % pim_power_data["Total MCs"] + "\t")
+result_file.write('%.6f' % (host_mem_energy / sim_seconds)+ "\t")
+result_file.write('%.6f' % (pim_mem_energy / sim_seconds) + "\t")
 result_file.write('%.6f' % host_power_data["Total L2s"] + "\t")
 result_file.write('%.6f' % host_power_data["Total NoCs (Network/Bus)"] + "\t")
 
-# DRAM - host main memory and PIM vault stats
+# Host-PIM communication breakdown
+result_file.write('%.0f' % reads_from_pim + "\t")
+result_file.write('%.0f' % writes_to_pim + "\t")
+
+# Memory access breakdowns 
 result_file.write('%.0f' % num_reads + "\t")
 result_file.write('%.0f' % host_reads + "\t")
 result_file.write('%.0f' % pim_reads + "\t")
@@ -309,12 +319,11 @@ result_file.write('%.0f' % pim_writes + "\t")
 result_file.write('%.0f' % num_act_pre + "\t")
 result_file.write('%.0f' % host_act_pre + "\t")
 result_file.write('%.0f' % pim_act_pre + "\t")
-result_file.write('%.6f' % (host_mem_energy + pim_mem_energy) + "\t")
-result_file.write('%.6f' % host_mem_energy + "\t")
-result_file.write('%.6f' % pim_mem_energy + "\t")
-result_file.write('%.6f' % host_act_total + "\t")
+
+# Memory energy breakdowns
+result_file.write('%.8f' % host_act_total + "\t")
 result_file.write('%.6f' % pim_act_total + "\t")
-result_file.write('%.6f' % host_read_total + "\t")
+result_file.write('%.8f' % host_read_total + "\t")
 result_file.write('%.6f' % pim_read_total + "\t")
 result_file.write('%.6f' % host_write_total + "\t")
 result_file.write('%.6f' % pim_write_total + "\t")
@@ -325,11 +334,7 @@ result_file.write('%.6f' % pim_act_back_total + "\t")
 result_file.write('%.6f' % host_pre_back_total + "\t")
 result_file.write('%.6f' % pim_pre_back_total + "\t")
 
-result_file.write('%.0f' % reads_from_pim + "\t")
-result_file.write('%.0f' % writes_to_pim + "\t")
 
-result_file.write("\n")
-result_file.write("\n")
 result_file.write("\n")
 result_file.close()
 
