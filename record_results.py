@@ -321,6 +321,8 @@ result_file.write('%.0f' % host_act_pre + "\t")
 result_file.write('%.0f' % pim_act_pre + "\t")
 
 # Memory energy breakdowns
+result_file.write('%.8f' % host_refr_total + "\t")
+result_file.write('%.6f' % pim_refr_total + "\t")
 result_file.write('%.8f' % host_act_total + "\t")
 result_file.write('%.6f' % pim_act_total + "\t")
 result_file.write('%.8f' % host_read_total + "\t")
