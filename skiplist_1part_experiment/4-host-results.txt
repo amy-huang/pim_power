@@ -1,21 +1,21 @@
 	Calculating hybrid memory cube energy using memory access stats
 	Writes: 0.0
-	Writes: 10737.0
+	Writes: 10494.0
 	Reads: 0.0
-	Reads: 273074.0
-	Seconds simulated: 0.166627 s
-	Stats reported total energy activ/RW/prech: 0.00141553578432
-	Stats reported total energy act/pre background: 1.2831326748
-	Stats reported total energy refr: 0.0908844252365
-	Total stats reported energy (used this for total energy): 1.37543263582
+	Reads: 271642.0
+	Seconds simulated: 0.161089 s
+	Stats reported total energy activ/RW/prech: 0.00140961953856
+	Stats reported total energy act/pre background: 0.625074502906
+	Stats reported total energy refr: 0.1776107187
+	Total stats reported energy (used this for total energy): 0.804094841144
 Getting host core, cache, interconnect, and memory controller McPAT numbers
-{'Total Cores': 0.08078070000000001, 'Total NoCs (Network/Bus)': 0.000425134, 'Total MCs': 2.66715899, 'Processor': 2.8596060999999997, 'Total L2s': 0.1112383374}
-	CPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  2.8596046307 * 0.166627 = 0.4764873408 J
+{'Total Cores': 0.082347, 'Total NoCs (Network/Bus)': 0.000744331, 'Total MCs': 2.66786899, 'Processor': 2.8624361, 'Total L2s': 0.111473379}
+	CPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  2.8624349 * 0.161089 = 0.461106775606 J
 Getting pim core and memory controller McPAT numbers
 {'Total Cores': nan, 'Total MCs': nan, 'Processor': nan}
-	Pim core energy = Watts * seconds =  nan * 0.166627 = nan J
-	Total energy is 1.85191997662 J. 
-	Average power is 11.114165031 J. 
+	Pim core energy = Watts * seconds =  nan * 0.161089 = nan J
+	Total energy is 1.26520161675 J. 
+	Average power is 7.85405345337 J. 
 McPAT (version 1.2 of June, 2014) is computing the target processor...
  
 
@@ -34,7 +34,7 @@ Processor:
   Peak Dynamic = 28.0378 W
   Subthreshold Leakage = 0.158759 W
   Gate Leakage = 0.0180571 W
-  Runtime Dynamic = 2.68279 W
+  Runtime Dynamic = 2.68562 W
 
   Total Cores: 8 cores 
   Device Type= ITRS low operating power device type
@@ -42,7 +42,7 @@ Processor:
     Peak Dynamic = 0.96542 W
     Subthreshold Leakage = 0.0440477 W
     Gate Leakage = 0.0052786 W
-    Runtime Dynamic = 0.0314544 W
+    Runtime Dynamic = 0.0330207 W
 
   Total L2s: 
   Device Type= ITRS high performance device type
@@ -50,7 +50,7 @@ Processor:
     Peak Dynamic = 0.533899 W
     Subthreshold Leakage = 0.101958 W
     Gate Leakage = 0.00920442 W
-    Runtime Dynamic = 7.59174e-05 W
+    Runtime Dynamic = 0.000310959 W
 
   Total NoCs (Network/Bus): 
   Device Type= ITRS low operating power device type
@@ -58,7 +58,7 @@ Processor:
     Peak Dynamic = 0.0293855 W
     Subthreshold Leakage = 0.000275303 W
     Gate Leakage = 3.3245e-05 W
-    Runtime Dynamic = 0.000116586 W
+    Runtime Dynamic = 0.000435783 W
 
   Total MCs: 16 Memory Controllers 
   Device Type= ITRS low operating power device type
@@ -66,7 +66,7 @@ Processor:
     Peak Dynamic = 26.5091 W
     Subthreshold Leakage = 0.0124782 W
     Gate Leakage = 0.00354079 W
-    Runtime Dynamic = 2.65114 W
+    Runtime Dynamic = 2.65185 W
 
 *****************************************************************************************
 Core:
@@ -74,7 +74,7 @@ Core:
       Peak Dynamic = 0.120678 W
       Subthreshold Leakage = 0.00550596 W
       Gate Leakage = 0.000659825 W
-      Runtime Dynamic = 0.0314544 W
+      Runtime Dynamic = 0.0330207 W
 
       Instruction Fetch Unit:
         Area = 0.298882 mm^2
@@ -199,28 +199,28 @@ Core:
         Area = 0.658149 mm^2
         Peak Dynamic = 0.120678 W
         Subthreshold Leakage = 0.00468941 W
-        Runtime Dynamic = 0.0314544 W
+        Runtime Dynamic = 0.0330207 W
 
           Register Files:
             Area = 0.0550765 mm^2
             Peak Dynamic = 0.0473408 W
             Subthreshold Leakage = 6.90317e-05 W
             Gate Leakage = 7.11245e-06 W
-            Runtime Dynamic = 0.000206738 W
+            Runtime Dynamic = 0.000824326 W
 
               Integer RF:
                 Area = 0.0393771 mm^2
                 Peak Dynamic = 0.0473408 W
                 Subthreshold Leakage = 4.60916e-05 W
                 Gate Leakage = 4.80192e-06 W
-                Runtime Dynamic = 0.000206738 W
+                Runtime Dynamic = 0.000824326 W
 
               Floating Point RF:
                 Area = 0.0156994 mm^2
                 Peak Dynamic = 0 W
                 Subthreshold Leakage = 2.29401e-05 W
                 Gate Leakage = 2.31053e-06 W
-                Runtime Dynamic = 5.19002e-11 W
+                Runtime Dynamic = 2.12462e-10 W
 
           Instruction Scheduler:
             Area = 0 mm^2
@@ -234,14 +234,14 @@ Core:
             Peak Dynamic = 0.0107976 W
             Subthreshold Leakage = 0.000882717 W
             Gate Leakage = 0.000104731 W
-            Runtime Dynamic = 0.000316681 W
+            Runtime Dynamic = 0.00126531 W
 
           Floating Point Units (FPUs) (Count: 1 ):
             Area = 0.475917 mm^2
             Peak Dynamic = 0 W
             Subthreshold Leakage = 0.00217251 W
             Gate Leakage = 0.00025776 W
-            Runtime Dynamic = 7.69893e-10 W
+            Runtime Dynamic = 3.15167e-09 W
 
           Complex ALUs (Mul/Div) (Count: 1 ):
             Area = 0.072514 mm^2
@@ -263,7 +263,7 @@ L2
       Peak Dynamic = 0.533899 W
       Subthreshold Leakage = 0.101958 W
       Gate Leakage = 0.00920442 W
-      Runtime Dynamic = 7.59174e-05 W
+      Runtime Dynamic = 0.000310959 W
 
 *****************************************************************************************
 Memory Controller:
@@ -271,28 +271,28 @@ Memory Controller:
       Peak Dynamic = 1.65682 W
       Subthreshold Leakage = 0.00077989 W
       Gate Leakage = 0.000221299 W
-      Runtime Dynamic = 2.65114 W
+      Runtime Dynamic = 2.65185 W
 
       Front End Engine:
         Area = 0.0455383 mm^2
         Peak Dynamic = 0.0477136 W
         Subthreshold Leakage = 0.000141188 W
         Gate Leakage = 1.55429e-05 W
-        Runtime Dynamic = 0.0763478 W
+        Runtime Dynamic = 0.0763664 W
 
       Transaction Engine:
         Area = 0.0556686 mm^2
         Peak Dynamic = 1.47844 W
         Subthreshold Leakage = 0.00012774 W
         Gate Leakage = 4.11513e-05 W
-        Runtime Dynamic = 2.36569 W
+        Runtime Dynamic = 2.36627 W
 
       PHY:
         Area = 0.826835 mm^2
         Peak Dynamic = 0.130667 W
         Subthreshold Leakage = 0.000510962 W
         Gate Leakage = 0.000164605 W
-        Runtime Dynamic = 0.209103 W
+        Runtime Dynamic = 0.209213 W
 
 *****************************************************************************************
 BUSES
@@ -300,14 +300,14 @@ BUSES
       Peak Dynamic = 0.0293855 W
       Subthreshold Leakage = 0.000275303 W
       Gate Leakage = 3.3245e-05 W
-      Runtime Dynamic = 0.000116586 W
+      Runtime Dynamic = 0.000435783 W
 
       Bus: 
         Area = 0.0438457 mm^2
         Peak Dynamic = 0.0293855 W
         Subthreshold Leakage = 0.000275303 W
         Gate Leakage = 3.3245e-05 W
-        Runtime Dynamic = 0.000116586 W
+        Runtime Dynamic = 0.000435783 W
 
 *****************************************************************************************
 McPAT (version 1.2 of June, 2014) is computing the target processor...
