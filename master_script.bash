@@ -36,30 +36,26 @@ experiment=$7
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads
 do
-    # Copy the relevant timestamps to new stats file with both timestamps; some stats are cumulative
-    # Ex. if num_threads is 6, we copy timestamps 5 and 6 to cut_stats.txt
-    grep "timestamp$((num_threads-1))\|timestamp$num_threads" $original_stats > cut_stats.txt
-
-	echo "Getting stats and aggregating, cleaning into cut_stats.txt"
-	./aggregate_stats.bash "$((num_threads-1))" $num_threads 
-
-	echo "Copying aggregated stats file to $num_threads-$pim_or_host-stats.txt"
-    cat cut_stats.txt > $num_threads-$pim_or_host-stats.txt
+	echo "Getting stats and aggregating, cleaning into $num_threads $num_threads-$pim_or_host-stats.txt"
+    grep "timestamp$((num_threads-1))\|timestamp$num_threads" $original_stats > $num_threads-$pim_or_host-stats.txt
+	./aggregate_stats.bash "$((num_threads-1))" $num_threads $num_threads-$pim_or_host-stats.txt
 
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
-	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt $config_path $cpu_xml
+	python gem5tomcpat/GEM5ToMcPAT.py $num_threads-$pim_or_host-stats.txt $config_path $cpu_xml
+
 	echo "Running McPAT - energy for host cores, caches, interconnects, memory controllers"
-	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_cpu_power.txt
+	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > $num_threads-$pim_or_host-cpu_power.txt
 	
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
-	python gem5tomcpat/GEM5ToMcPAT.py cut_stats.txt config.json $pim_xml
+	python gem5tomcpat/GEM5ToMcPAT.py $num_threads-$pim_or_host-stats.txt $config_path $pim_xml
+
 	echo "Running McPAT - energy for pim cores, memory controllers"
-	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > mcpat_pim_power.txt
+	./mcpat/mcpat -infile mcpat-out.xml -print_level 5 > $num_threads-$pim_or_host-pim_power.txt 
 
     echo "Writing detailed results to $num_threads-$pim_or_host-results.txt and just numbers to $experiment-$pim_or_host.tsv"
-	python record_results.py mcpat_cpu_power.txt mcpat_pim_power.txt $cacti_out ${experiment}.tsv > $num_threads-$pim_or_host-results.txt
-	cat mcpat_cpu_power.txt >> $num_threads-$pim_or_host-results.txt 
-	cat mcpat_pim_power.txt >> $num_threads-$pim_or_host-results.txt 
+	python record_results.py $num_threads-$pim_or_host-stats.txt $num_threads-$pim_or_host-cpu_power.txt $num_threads-$pim_or_host-pim_power.txt $cacti_out ${experiment}.tsv > $num_threads-$pim_or_host-results.txt
+	cat $num_threads-$pim_or_host-cpu_power.txt >> $num_threads-$pim_or_host-results.txt 
+	cat $num_threads-$pim_or_host-pim_power.txt >> $num_threads-$pim_or_host-results.txt 
 
 done
 

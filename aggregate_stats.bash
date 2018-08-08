@@ -1,17 +1,16 @@
 #!/bin/bash
 
-if [ $# -ne 2 ] 
+if [ $# -ne 3 ] 
     then 
-     echo "usage: <preparation time stamp> <execution time stamp>"
+     echo "usage: <preparation time stamp> <execution time stamp> <new stats file>"
      exit 1
 fi
 
-
 #################################################################################################################
 # For each number of threads in {2 4 6 8}, the master script greps lines of the 2 relevant timestamps into below.
-newstats=./cut_stats.txt
 prep_tstamp=$1
 exec_tstamp=$2
+newstats=$3
 
 # DRAM energy is the only cumulative stat, so that is found by subtracting the energy stat at the execution 
 # timestamp from the one at the preparation timestamp. The others are taken just from execution timestamp. 

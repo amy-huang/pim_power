@@ -3,8 +3,8 @@ import sys
 # This script calculates how much energy main memory has consumed based on CACTI and the stats file, and then adds it to the energy of everything else as estimated by McPAT to get a total number.
 # The CACTI output, McPAT, then stats file is parsed.
 
-if len(sys.argv) != 5:
-    print("\n Argument format: <cpu mcpat out> <pim mcpat out> <cacti text output> <name of tsv file for totals> \n")
+if len(sys.argv) != 6:
+    print("\n Argument format: <new stats file> <cpu mcpat out> <pim mcpat out> <cacti text output> <name of tsv file for totals> \n")
     exit(0)
 
 ######################################################################################################
@@ -40,7 +40,7 @@ if len(sys.argv) != 5:
 
 print("\tCalculating hybrid memory cube energy using memory access stats")
 
-stats = open('cut_stats.txt', 'r')
+stats = open(str(sys.argv[1]), 'r')
 stat_lines = stats.readlines()
 stats.close()
 
@@ -211,7 +211,7 @@ name = "no name"
 ######################################################################################################
 
 print("Getting host core, cache, interconnect, and memory controller McPAT numbers")
-mcpat_file = open(str(sys.argv[1]), 'r') 
+mcpat_file = open(str(sys.argv[2]), 'r') 
 mcpat_lines = mcpat_file.readlines()
 mcpat_file.close()
 
@@ -240,7 +240,7 @@ total_energy += host_energy
 ######################################################################################################
 
 print("Getting pim core and memory controller McPAT numbers")
-mcpat_file = open(str(sys.argv[2]), 'r') 
+mcpat_file = open(str(sys.argv[3]), 'r') 
 mcpat_lines = mcpat_file.readlines()
 mcpat_file.close()
 
@@ -281,7 +281,7 @@ print("\tTotal energy is " + str(total_energy) + " J. ")
 power = total_energy/sim_seconds
 print("\tAverage power is " + str(power) + " J. ")
 
-result_file = open(str(sys.argv[4]), 'a')
+result_file = open(str(sys.argv[5]), 'a')
 
 # Energy breakdowns
 result_file.write('%.6f' % total_energy + "\t")
