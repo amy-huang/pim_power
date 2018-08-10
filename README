@@ -2,7 +2,7 @@ This tool is meant to measure power consumption of concurrent data structure app
 simulated on a PIM setup in SMCSim, an ongoing hardware/software design project 
 directed by Professors R. Bahar and M. Herlihy at Brown University.
 
-This README explains McPAT, its supporting tools, and how to get it set up; the same is 
+This part of the README explains McPAT, its supporting tools, and how to get it set up; the same is 
 done for CACTI. See the master script after that.
 
  __  __      ____      _____
@@ -99,6 +99,31 @@ What to do:
 
 
 
+This part of the README explains how to set up a new experiment directory and get 
+power results.
+
+1. Make a directory describing the experiment - for example, queue_page_policy 
+   for running a queue simulation twice, changing only the page policy between
+   the 2 runs.
+2. Copy the 2 relevant stats files into this directory. For us, that will be 
+   from the smc directory, probably from a paper-specific sub-directory.
+3. Copy over the config files needed - if cache size or page policy is a 
+   changed variable, then 1 for each simulation is needed.
+4. Copy a "get_energy.bash" script from the one of the other experiment directories
+   and change it to use the new directory name, stats files, config files. 
+   These will already use the right XMLs for our host/pim setups.
+5. Run it and check that the output looks about right - no errors, just status 
+   messages. If one of the scripts fails, it won't stop, but the output files
+   will clue you in on what happened.
+    -> Be sure to check one of the -results.txt, -stats.txt, -cpu_power.txt, 
+    -pim_power.txt and .tsv files in that case.
+6. You should end up with many intermediate files for each # of threads per run
+   and an aggregate .tsv file listing all important stats. Copy+paste those
+   into a google sheet and borrow formatting/headers from previous ones, and
+   share on the dropbox as an .xlsx
+
+Other notes: paper latex things are in the svn group for Brown embedded systems,
+and extensive docs are in google drive.
 
 
 
@@ -107,7 +132,4 @@ What to do:
 
 
 
-
-
-
-Amy Huang, summer UTRA 2018, with the gracious help of Jiwon Choe (PhD)
+Amy Huang, summer UTRA 2018, with the gracious help of Jiwon Choe (PhD student)
