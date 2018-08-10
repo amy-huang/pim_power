@@ -112,6 +112,10 @@ power results.
 4. Copy a "get_energy.bash" script from the one of the other experiment directories
    and change it to use the new directory name, stats files, config files. 
    These will already use the right XMLs for our host/pim setups.
+    -> arm15_HostCPUs.xml and arm15HostCPUs-PIM.xml are for host cores, L2, 
+       interconnects, host memory controllers; the first one is for host 
+       applications with 16 mc's and the second one is for pim with 8 mc's.
+    -> arm15_PimCPUs.xml is for pim cores and memory controllers (8 each.)
 5. Run it and check that the output looks about right - no errors, just status 
    messages. If one of the scripts fails, it won't stop, but the output files
    will clue you in on what happened.
@@ -131,8 +135,11 @@ stats are appended to the .tsv file for each run as well (4 lines per run).
 Other notes: paper latex things are in the svn group for Brown embedded systems,
 and extensive docs are in google drive.
 
-
-
+TODO: write very extensive explanation about how the scripts work, and brainstorm
+ways to make them better - faster, more readable, more extensible, less prone
+to silly mistakes. ex. handling common mistakes, descriptive error messages,
+not having to repeat calculations if all that's needed is 1 part of them.
+Makes it easier to have someone else pick up this stuff too.
 
 
 
