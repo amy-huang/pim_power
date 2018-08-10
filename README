@@ -122,6 +122,12 @@ power results.
    into a google sheet and borrow formatting/headers from previous ones, and
    share on the dropbox as an .xlsx
 
+What "get_energy.bash" will do is call the master script for each simulation run.
+Given the stats file, config file, and a name to identify that run, it will
+produce all intermediate files for each thread count - the aggregated stats file,
+mcpat outputs, and final results accounting for DRAM power too. The important
+stats are appended to the .tsv file for each run as well (4 lines per run).
+
 Other notes: paper latex things are in the svn group for Brown embedded systems,
 and extensive docs are in google drive.
 
