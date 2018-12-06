@@ -54,7 +54,7 @@ do
     rm mcpat-out.xml
 
     echo "Writing detailed results to $num_threads-$pim_or_host-results.txt and just numbers to $experiment-$pim_or_host.tsv"
-	python record_results.py $num_threads-$pim_or_host-stats.txt $num_threads-$pim_or_host-cpu_power.txt $num_threads-$pim_or_host-pim_power.txt $cacti_out ${experiment}.tsv > $num_threads-$pim_or_host-results.txt
+	python calculate_results.py $num_threads-$pim_or_host-stats.txt $num_threads-$pim_or_host-cpu_power.txt $num_threads-$pim_or_host-pim_power.txt $cacti_out ${experiment}.tsv > $num_threads-$pim_or_host-results.txt
 	cat $num_threads-$pim_or_host-cpu_power.txt >> $num_threads-$pim_or_host-results.txt 
 	cat $num_threads-$pim_or_host-pim_power.txt >> $num_threads-$pim_or_host-results.txt 
 
