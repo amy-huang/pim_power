@@ -1,4 +1,4 @@
-This tool is meant to measure power consumption of concurrent data structure applications 
+This tool is meant to measure energy and power consumption of concurrent data structure applications 
 simulated on a PIM (also known as near-data processing) setup in SMCSim, an ongoing hardware/software design project 
 directed by Professors R. Bahar and M. Herlihy at Brown University.
 
