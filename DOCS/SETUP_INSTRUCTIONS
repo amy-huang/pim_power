@@ -1,0 +1,5 @@
+1) Set up SMCSim
+2) Run SCRIPTS/setup_gem5tomcpat_and_mcpat.bash from the main repo dir. 
+3) Add a try/except surrounding line 34 of Gem5ToMcPAT.py in gem5tomcpat/, and a 'continue' in the except statement. This I added because our stats files being formatted weirdly caused an error to be thrown.
+
+To create a new experiment, make a new dir in the EXPERIMENTS/ dir and use the existing example rowbuffer_linkedlist/ as a guide - you will need to copy over the relevant stats file, config.json file, xml files, and write a new get_energy.bash script to use said files.
