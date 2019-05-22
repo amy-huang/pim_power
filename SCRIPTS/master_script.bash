@@ -9,8 +9,10 @@
 #    and the even ones showing stats for the application execution - what we care about
 #
 # First, the stats processing script get_stats_and_config.bash is called to aggregate stats across
-# multiple cores/memory controllers for the right timestamp durations. Then gem5tomcpat, mcpat, and
-# cacti are run, then final calculation of energy is put into a result file.
+# multiple cores/memory controllers for the right timestamp durations. Then gem5tomcpat and mcpat are 
+# run, then final calculation of energy is put into a result file.
+#
+# THIS MUST BE RUN FROM THE MAIN REPO DIR.
 #####################################################################################################
 
 # Check that the number of arguments is correct and print usage if not
@@ -28,18 +30,13 @@ original_stats=$4
 pim_or_host=$5
 experiment=$6
 
-# Add column headers to result file that only has numbers
-#echo "Power Total_NG CPU_NG PIM_NG CPU_reads PIM_reads CPU_writes PIM_writes Acts/Pres L2_accesses readsFrmP writesToP" > $experiment-$pim_or_host.tsv
-
-#base_dir="../"
-#cd $base_dir
-
 # Calculate energy for each number of threads
 for num_threads in 2 4 6 8 # For 2, 4, 6, 8 threads
 do
-	echo "Getting stats and aggregating, cleaning into $num_threads $num_threads-$pim_or_host-stats.txt"
-    grep "timestamp$((num_threads-1))\|timestamp$num_threads" $original_stats > $num_threads-$pim_or_host-stats.txt
-	./SCRIPTS/aggregate_stats.bash "$((num_threads-1))" $num_threads $num_threads-$pim_or_host-stats.txt
+	relevant_stats="$num_threads-$pim_or_host-stats.txt"
+	echo "Getting stats and aggregating, cleaning into $relevant_stats"
+    	grep "timestamp$((num_threads-1))\|timestamp$num_threads" $original_stats > $relevant_stats
+	./SCRIPTS/aggregate_stats.bash "$((num_threads-1))" $num_threads $relevant_stats
 
 	echo "Running gem5tomcpat to pull stats and put into XML for mcpat"
 	python gem5tomcpat/GEM5ToMcPAT.py $num_threads-$pim_or_host-stats.txt $config_path $cpu_xml
