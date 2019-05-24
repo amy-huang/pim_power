@@ -1,13 +1,3 @@
-0) Explain what mcpat briefly does and what we want to accomplish w these scripts
-1) Explain how to create a new experiment and run the scripts, and what they do
-    1a) first as a very quick overview of bare minimum
-    1b) second as in depth walk through of what is happening
-2) Explain how to customize the scripts 
-    20) changing num threads, how stats are aggregated
-    2a) changing params within existing components
-    2b) by adding/removing components
-        2bi) this covers using diff kinds of memory I think?? yea
-
 # Overview
 
 This collection of scripts was written to provide energy and power statistics for simulating concurrent data structure microbenchmarks on novel NDP architecture designs on [SMCSim](https://iis-git.ee.ethz.ch/erfan.azarkhish/SMCSim). It uses statistics files provided by [gem5](http://gem5.org/Main_Page), the architecture simulator SMCSim is based on, and system configuration files as inputs to the architecture energy estimation tool [McPAT](https://github.com/HewlettPackard/mcpat) to get energy statistics, from which power can be calculated.  
