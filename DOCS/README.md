@@ -43,6 +43,12 @@ The output for each number of threads should look like:
     Writing input to McPAT in: mcpat-out.xml 
     Running McPAT - energy for pim cores, memory controllers 
     Writing detailed results to 8-pim-results.txt and just numbers to /home/amy/new_pim_power/EXPERIMENTS/rowbuffer_linkedlist-pim.tsv
+Afterwards, there should be new dirs named after each 'run' or simulation. Each should contain:
+* for each *number of threads*,
+	* a **stats file** with the two relevant timestamps' lines from the original stats file
+	* **cpu power and pim power files** that are simply the printouts of the mcpat tool for cpu cores and memory controllers, and pim cores/mcs, respectively
+	* **results text files** containing both cpu/pim power files and additional reference printouts made by **`calculate_results.py`**
+* **.tsv files** for each simulation, which can be copy pasted [into this google sheets template](https://docs.google.com/spreadsheets/d/1mwKPn-BNp2J4LLqhCkfSk6GMR2c_H86D2sv7m2mKpaw/edit?usp=sharing) for easily readable formatting and chart generation (in google sheets, or from excel when downloaded as an excel file)
 
 # Acknowledgements
 
