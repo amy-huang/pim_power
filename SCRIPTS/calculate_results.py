@@ -57,7 +57,6 @@ for line in stat_lines[::-1]:
     if len(cols):
         if cols[0] == "total_sim_seconds" in cols[0]:
 	        sim_seconds = float(cols[1])
-	        print("\tSeconds simulated: " + str(sim_seconds) + " s")
 
         if "reads_from_pim" in cols[0]:
             reads_from_pim += float(cols[1])  
@@ -66,7 +65,6 @@ for line in stat_lines[::-1]:
 
         if "total_reads" in cols[0]:
             num_reads += float(cols[1])
-            print("\tReads: " + str(num_reads))
             if "pim" in cols[0]:
                 pim_reads = float(cols[1])
             else:
@@ -74,7 +72,6 @@ for line in stat_lines[::-1]:
 
         if "total_writes" in cols[0]:
             num_writes += float(cols[1])
-            print("\tWrites: " + str(num_writes))
             if "pim" in cols[0]:
                 pim_writes = float(cols[1])
             else:
@@ -142,10 +139,6 @@ for line in stat_lines[::-1]:
 # Compare total energy by type of operation
 activ_rw_prech = gem5_act_total + gem5_read_total + gem5_write_total + gem5_pre_total
 act_pre_back = gem5_act_back_total + gem5_pre_back_total
-print("\tStats reported total energy activ/RW/prech: " + str(activ_rw_prech))
-print("\tStats reported total energy act/pre background: " + str(act_pre_back))
-print("\tStats reported total energy refr: " + str(gem5_refr_total))
-print("\tTotal stats reported energy (used this for total energy): " + str(activ_rw_prech + gem5_refr_total + act_pre_back))
 total_energy += activ_rw_prech
 total_energy += gem5_refr_total 
 total_energy += act_pre_back
@@ -180,9 +173,7 @@ for line in mcpat_lines:
         if "Total MCs" in name:
             break
 
-print host_power_data
 watts = sum(host_power_data.values()) / 2
-print("\tCPU cores, caches, interconnects, memory controller energy consumed = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
 host_energy = watts * sim_seconds
 total_energy += host_energy
 
@@ -209,9 +200,7 @@ for line in mcpat_lines:
         if "Total MCs" in name:
             break
 
-print pim_power_data
 watts = sum(pim_power_data.values()) / 2
-print("\tPim core energy = Watts * seconds =  " + str(watts) + " * " + str(sim_seconds) + " = " + str(watts * sim_seconds) + " J")
 pim_energy = 0
 if watts > 0: 
     pim_energy = watts * sim_seconds

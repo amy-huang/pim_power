@@ -5,9 +5,9 @@ git clone https://github.com/HewlettPackard/mcpat.git
 git clone https://bitbucket.org/dskhudia/gem5tomcpat.git
 
 # Have git ignore both repos
-cat "mcpat" >> .gitignore
-cat "gem5tomcpat" >> .gitignore
-cat ".gitignore" >> .gitignore
+echo "mcpat" >> .gitignore
+echo "gem5tomcpat" >> .gitignore
+echo ".gitignore" >> .gitignore
 
 # Build mcpat
 cd mcpat

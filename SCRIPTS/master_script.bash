@@ -22,12 +22,14 @@ if [ $# -ne 6 ]
      exit 1
 fi
 
-# Name arguments
+# The XML, config, and stats files affect the calculations done for the final energy numbers
 cpu_xml=$1
 pim_xml=$2
 config_path=$3
 original_stats=$4
+# This variable is entirely for naming results files, and doesn't affect calculations
 pim_or_host=$5
+# This variable ensures that result files are stored in the right experiment dir, under the appropriate results dir
 experiment=$6
 
 # Calculate energy for each number of threads
@@ -52,9 +54,7 @@ do
     rm mcpat-out.xml
 
     echo "Writing detailed results to $num_threads-$pim_or_host-results.txt and just numbers to $experiment-$pim_or_host.tsv"
-	python ./SCRIPTS/calculate_results.py $num_threads-$pim_or_host-stats.txt $num_threads-$pim_or_host-cpu_power.txt $num_threads-$pim_or_host-pim_power.txt ${experiment}.tsv > $num_threads-$pim_or_host-results.txt
-	cat $num_threads-$pim_or_host-cpu_power.txt >> $num_threads-$pim_or_host-results.txt 
-	cat $num_threads-$pim_or_host-pim_power.txt >> $num_threads-$pim_or_host-results.txt 
+	python ./SCRIPTS/calculate_results.py $num_threads-$pim_or_host-stats.txt $num_threads-$pim_or_host-cpu_power.txt $num_threads-$pim_or_host-pim_power.txt ${experiment}.tsv
 
 done
 
