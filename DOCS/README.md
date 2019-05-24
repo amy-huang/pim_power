@@ -21,7 +21,7 @@ This collection of scripts was written to provide energy and power statistics fo
 
        try:
         	statKind = statLine.match(line).group(1)
-        except:
+       except:
         	continue
 	This was a hack I made to get around this script not recognizing regex patterns of stats that we weren't interested in - the one leading to this quick fix was `system.pim_vault_ctrls0.rdPerTurnAround::1.31072e+06-1.44179e+06`
 
