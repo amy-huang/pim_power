@@ -7,7 +7,7 @@ This collection of scripts was written to provide energy and power statistics fo
 1. **Set up SMCSim on your machine.**
 2. **Clone this repo somewhere.** We will be copying stats files from the results directory of SMCSim to experiment directories within here.
 3. **From the main repo dir, run** **`SCRIPTS/setup_gem5tomcpat_and_mcpat.bash`**. This should clone both the gem5tomcpat and mcpat repos to your base, add them to your .gitignore, and compile mcpat.
-5. Change line 134 of gem5tomcpat/Gem5ToMcPAT.py from `statKind = statLine.match(line).group(1)` to 
+5. **Change line 134 of gem5tomcpat/Gem5ToMcPAT.py** from `statKind = statLine.match(line).group(1)` to 
 
        try:
         	statKind = statLine.match(line).group(1)
@@ -16,17 +16,17 @@ This collection of scripts was written to provide energy and power statistics fo
 	This was a hack I made to get around this script not recognizing regex patterns of stats that we weren't interested in - the one leading to this quick fix was `system.pim_vault_ctrls0.rdPerTurnAround::1.31072e+06-1.44179e+06`
 
 # Creating an experiment
-1. **Make a new directory in EXPERIMENTS/ and name it however you like.** 
-2. **Copy over the **`get_energy.bash`** script of the example experiment directory to your new one.** This script calls the master script and then places the result files neatly in a results dir within this experiment dir.
-3. Copy over or create the following files for each simulation. These need to be fed as arguments to the master script:
+1. **Make a new directory in EXPERIMENTS/**. Name it however you like. 
+2. **Copy over the **`get_energy.bash`** script** of the example experiment directory to your new one. This script calls the master script and then places the result files neatly in a results dir within this experiment dir.
+3. **Copy over or create the following files for each simulation**. These need to be fed as arguments to the master script:
 	1. the **XML file** for the host cores. The sample experiment uses the 8 core one for the NDP setup; the host setup one has 16 (that's the only difference between the two)
 	2. the **XML file** for NDP cores. The sample experiment uses an 8 core one (which is used both for NDP and host setups)
 	4. the **config.json** from the SMCSim results directory
 	5. the **stats.txt** from the SMCSim results directory. The master script assumes the structure of this file is 8 timestamps representing 2, 4, 6, and 8 thread executions of the same benchmark.
-4.  Replace the file paths in the template script with the desired ones. If you want to have multiple simulations analyzed, then repeat this process, making sure to assign a different **run_name** for the result files to be put in.
-5. Run **`get_energy.bash`** from the experiment directory.
+4.  **Replace the file paths in the template script with the desired ones**. If you want to have multiple simulations analyzed, then repeat this process, making sure to assign a different **run_name** for the result files to be put in.
+5. **Run** **`get_energy.bash`** from the experiment directory.
 
-The output for each number of threads should look like:
+The terminal print outs for each number of threads should look like:
 
     Getting stats and aggregating, cleaning into 8 8-pim-stats.txt
 		Aggregating stats across all CPUs, interconnects, and memory controllers
@@ -53,7 +53,6 @@ Afterwards, there should be new dirs named after each 'run' or simulation. Each 
 * for each *number of threads*,
 	* a **stats file** with the two relevant timestamps' lines from the original stats file
 	* **cpu power and pim power files** that are simply the printouts of the mcpat tool for cpu cores and memory controllers, and pim cores/mcs, respectively
-	* **results text files** containing both cpu/pim power files and additional reference printouts made by **`calculate_results.py`**
 * **.tsv files** for each simulation, which can be copy pasted [into this google sheets template](https://docs.google.com/spreadsheets/d/1mwKPn-BNp2J4LLqhCkfSk6GMR2c_H86D2sv7m2mKpaw/edit?usp=sharing) for easily readable formatting and chart generation (in google sheets, or from excel when downloaded as an excel file)
 
 # Walk-through of the script functionality
@@ -64,7 +63,7 @@ This will be deeper description of what scripts are called when, and what each o
 	* A new stats file containing just the relevant timestamps' data (# threads, # threads - 1) is created using `grep`. 
 	* **`aggregate_stats.bash`** adds additional lines of statistics that total numbers of interest across all components of the same type; e.g., # of reads for all host memory controllers.
 	* **`gem5tomcpat/Gem5ToMcPAT.py`** is called with the *new stats file*, *the config.json file*, and *the host core XML file*. The XML file has *system configuration parameters* that stay the same between runs (like # cores), and *performance statistics parameters*. The values of these are set to names of corresponding gem5 stats.txt statistic names. **`gem5tomcpat/Gem5ToMcPAT.py`** then replaces those gem5 statistic names with the corresponding values from the new stats file in a new XML called `mcpat-out.xml`.
-	* **`mcpat`** is run with `mcpat-out.xml` as the input, and the resulting printout is saved to a file whose name ends with "cpu_power.txt". This is the energy info for host cores and memory controllers.
+	* **`mcpat`** is run with `mcpat-out.xml` as a single argument, and the resulting printout is saved to a file whose name ends with "cpu_power.txt". This is the energy info for host cores and memory controllers.
 	* The above 2 bullet points are repeated for NDP cores and memory controllers. **`gem5tomcpat/Gem5ToMcPAT.py`** is called again, but now with the NDP core XML file. **`mcpat`** is run with the output. Printout is saved in a file whose name ends in "pim_power.txt".
 	* **`calculate_results.py`** is run with the stats file and newly created power files as arguments. This is where the memory energy and power are parsed from the stats file, and combined with the McPAT-created numbers into the final .tsv file.
 
