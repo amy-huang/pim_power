@@ -71,12 +71,33 @@ All result files were made in the main repo dir, so **`get_energy.bash`** finall
 
 # Changing experiment parameters
 ## Changing number of threads
-In the master script, we divide the original stats file into separate files containing two timestamps' data each for each number of threads. This is because for each num_threads, timestamp # num_threads - 1 is for preparing the execution of the benchmark, while timestamp # num_threads is for stats from the actual execution. If the structure of execution changes - we either don't need a prep timestamp any more, or there are multiple timestamps of preparation or execution consecutively - then the function used to aggregate the affected stats must be changed.
-This is because the value of some stats must be calculated by subtracting the value for it from the first timestamp from the total recorded at the second timestamp, because we aren't interested in measuring energy or performance of setting up the data structures needed for our benchmarks.
-This is done in **`SCRIPTS/aggregate_stats.bash`**, by the function **sum_cumulative**. One can then add sum functions if the order/number of relevant timestamps changes.
-## Changing the number and type of existing components 
+In the master script, we divide the original stats file into separate files containing two timestamps' data each for each number of threads. 
+This is because for each num_threads, timestamp # num_threads - 1 is for preparing the execution of the benchmark, while timestamp # num_threads is for stats from the actual execution. 
 
-## Adding and removing components
+If the structure of execution changes - we either don't need a prep timestamp any more, or there are multiple timestamps of preparation or execution consecutively - then the function used to aggregate the affected stats must be changed.
+
+This is because the value of some stats must be calculated by subtracting the value for it from the first timestamp from the total recorded at the second timestamp, because we aren't interested in measuring energy or performance of setting up the data structures needed for our benchmarks.
+
+This is done in **`SCRIPTS/aggregate_stats.bash`**, by the function **sum_cumulative**. One can then add sum functions if the order/number of relevant timestamps changes.
+
+## XML file editing overview
+We need to edit the XML template files directly in **`XML_FILES`** if we are to get energy numbers for numbers of or types of components different from the default ones. The existing default files describe the following system conigurations:
+    * **`arm15_HostCPUs.xml`** - 8 host cores and 8 memory controllers, meant for host system
+    * **`arm15_HostCPUs-PIM.xml`** - 8 host cores and 16 memory controllers, meant for NDP-enhanced system
+    * **`arm15_PimCPUs.xml`** - 8 NDP cores and 8 memory controllers
+All core configuration settings are based on what I could find about the Arm 15 Cortex.
+
+The relevant differences between NDP cores/memory controllers and host ones with respect to the XML files are that NDP cores are simpler (lacking caches, NoCs) and must get their stats from different places in the stats file (the aggregated pim component stats that **`aggregate_stats.bash`** calculates, instead of the host ones).
+
+### Changing the number and type of existing components 
+To edit system configuration settings, find the relevant "param" tag and change its value. For example, for cores there is "number_or_cores" or "number_of_L2s". If there is a type of configuration not listed as a paramter, then it isn't taken into account when McPAT does its calculations and thus won't make a difference in the final energy numbers.
+
+There are more templates in the **`mcpat/ProcessorDescriptionFiles/`** if you'd like to see more.
+
+### Adding and removing components
+The other kind of components are L1 and L2 directories (a different configuration of caches than what we needed), niu (network interface unit?), pcie, and flashc (flash controller). There are additionally sub-components within cores that I ultimately did not include, like BTB's. They are included as components in the default files but not used in the energy calculations at all, since the number of units for each is 0. 
+
+If you want to include one, you must change the number of units and change the settings to be representative of your system. If in **`mcpat/ProcessorDescriptionFiles`** you don't find any example XML file with the type of component you want, then there isn't a way to account for it in McPAT energy calculations, as that would require writing more McPAT code to calculate circuit energy given certain configurations of it+performance stats.
 
 # Acknowledgements
 
