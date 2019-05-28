@@ -71,7 +71,11 @@ All result files were made in the main repo dir, so **`get_energy.bash`** finall
 
 # Changing experiment parameters
 ## Changing number of threads
+In the master script, we divide the original stats file into separate files containing two timestamps' data each for each number of threads. This is because for each num_threads, timestamp # num_threads - 1 is for preparing the execution of the benchmark, while timestamp # num_threads is for stats from the actual execution. If the structure of execution changes - we either don't need a prep timestamp any more, or there are multiple timestamps of preparation or execution consecutively - then the function used to aggregate the affected stats must be changed.
+This is because the value of some stats must be calculated by subtracting the value for it from the first timestamp from the total recorded at the second timestamp, because we aren't interested in measuring energy or performance of setting up the data structures needed for our benchmarks.
+This is done in **`SCRIPTS/aggregate_stats.bash`**, by the function **sum_cumulative**. One can then add sum functions if the order/number of relevant timestamps changes.
 ## Changing the number and type of existing components 
+
 ## Adding and removing components
 
 # Acknowledgements
