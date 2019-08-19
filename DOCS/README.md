@@ -1,6 +1,6 @@
 ﻿# Overview
 
-This collection of scripts was written to provide energy and power statistics for simulating concurrent data structure microbenchmarks on novel NDP architecture designs on [SMCSim](https://iis-git.ee.ethz.ch/erfan.azarkhish/SMCSim). It uses statistics files provided by [gem5](http://gem5.org/Main_Page), the architecture simulator SMCSim is based on, and system configuration files as inputs to the architecture energy estimation tool [McPAT](https://github.com/HewlettPackard/mcpat) to get energy statistics, from which power can be calculated.  
+This collection of scripts was written to provide energy and power statistics for simulating concurrent data structure microbenchmarks on novel near-data processing (NDP) architecture designs on [SMCSim](https://iis-git.ee.ethz.ch/erfan.azarkhish/SMCSim). It uses statistics files provided by [gem5](http://gem5.org/Main_Page), the architecture simulator SMCSim is based on, and system configuration files as inputs to the architecture energy estimation tool [McPAT](https://github.com/HewlettPackard/mcpat) to get energy statistics, from which power can be calculated.  
 
 
 # Setting up for the first time
